@@ -1,31 +1,39 @@
 package com.rsd_movieshop.controller;
 
-import com.rsd_movieshop.model.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import com.rsd_movieshop.model.Movie;
+import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
 
 
 @RestController
+@RequestMapping("/movies")
 public class MovieController {
     
-    @GetMapping ("/")
-    public String getIndex() {
-        return "";
-    }
-    @GetMapping   ("/register")
-    public String getRegister() {
-        return "";
+    private Movie movie;
+    
+    @GetMapping
+    public ArrayList<Movie> getMovies() {
+        // return movie catalogue
     }
     
-    @GetMapping("/user/{userID}")
-    public User getUser(@PathVariable int userID) {
-        // TODO DB-Abfrage auf userID
-        
+    @GetMapping("/{movieID}")
+    public Movie getMovieDesc(@PathVariable int movieID) {
+        // return movie description
     }
     
-    @GetMapping ("/cart")
-    public Cart getCart(userID) {
-        // get user cart
+    @PostMapping
+    public void addNewMovie(Movie newMovie) {
+        // add a new movie
+    }
+    
+    @PutMapping(path = "/{movieID}")
+    public void updateMovie(@PathVariable int movieID) {
+        // update specific movie
+    }
+    
+    
+    @DeleteMapping("/{movieID}")
+    public void deleteMovie(@PathVariable int movieID) {
+        // delete a movie
     }
 }
