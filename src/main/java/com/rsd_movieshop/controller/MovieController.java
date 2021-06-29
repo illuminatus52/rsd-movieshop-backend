@@ -9,31 +9,36 @@ import java.util.ArrayList;
 @RequestMapping("/movies")
 public class MovieController {
     
-    private Movie movie;
-    
     @GetMapping
     public ArrayList<Movie> getMovies() {
         // return movie catalogue
+        System.out.println("MovieController: getMovies");
+        return null;
     }
     
     @GetMapping("/{movieID}")
     public Movie getMovieDesc(@PathVariable int movieID) {
         // return movie description
+        System.out.println("MovieController: getMovieDescription");
+        return null;
     }
     
     @PostMapping
-    public void addNewMovie(Movie newMovie) {
+    public void addNewMovie(@RequestBody Movie newMovie) {
         // add a new movie
+        System.out.println("MovieController: addNewMovie");
     }
     
     @PutMapping(path = "/{movieID}")
     public void updateMovie(@PathVariable int movieID) {
         // update specific movie
+        System.out.println("MovieController: updateMovie");
     }
     
     
     @DeleteMapping("/{movieID}")
     public void deleteMovie(@PathVariable int movieID) {
         // delete a movie
+        System.out.println("MovieController: deleteMovie");
     }
 }

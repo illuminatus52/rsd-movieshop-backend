@@ -1,18 +1,20 @@
 package com.rsd_movieshop.model;
 
+import java.util.ArrayList;
+
 public class Movie {
 	
 	private int movieID, releaseYear, movieStock;
 	private String title;
-	private Genre genre;
+	private ArrayList<Genre> genres;
 	private double price;
 	
-	public Movie(int movieID, String title, String genre, int releaseYear, int movieStock, double price) {
+	public Movie(int movieID, int releaseYear, int movieStock, String title, ArrayList<Genre> genres, double price) {
 		this.movieID = movieID;
-		this.title = title;
-		this.genre = genre;
 		this.releaseYear = releaseYear;
 		this.movieStock = movieStock;
+		this.title = title;
+		this.genres = genres;
 		this.price = price;
 	}
 	
@@ -32,12 +34,12 @@ public class Movie {
 		this.title = title;
 	}
 	
-	public String getGenre() {
-		return genre;
+	public ArrayList<Genre> getGenres() {
+		return genres;
 	}
 	
-	public void setGenre(String genre) {
-		this.genre = genre;
+	public void setGenres(ArrayList<Genre> genres) {
+		this.genres = genres;
 	}
 	
 	public int getReleaseYear() {
@@ -69,7 +71,7 @@ public class Movie {
 		return "Movie{" +
 				"movieID=" + movieID +
 				", title='" + title + '\'' +
-				", genre='" + genre + '\'' +
+				", genre='" + genres + '\'' +
 				", releaseYear=" + releaseYear +
 				", movieStock=" + movieStock +
 				", price=" + price +

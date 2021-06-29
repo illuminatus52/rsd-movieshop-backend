@@ -1,17 +1,15 @@
 package com.rsd_movieshop.model;
 
-import java.util.HashMap;
-
 public class Order {
 	
 	private int orderID;
 	private boolean orderStatus;
-	private orderItem;
+	private CartItem cartItem;
 	
-	public Order(int orderID, boolean orderStatus, HashMap<Movie, Integer> movieOrder) {
+	public Order(int orderID, boolean orderStatus, CartItem cartItem) {
 		this.orderID = orderID;
 		this.orderStatus = orderStatus;
-		this.movieOrder = movieOrder;
+		this.cartItem = cartItem;
 	}
 	
 	public int getOrderID() {
@@ -30,11 +28,20 @@ public class Order {
 		this.orderStatus = orderStatus;
 	}
 	
-	public HashMap<Movie, Integer> getMovieOrder() {
-		return movieOrder;
+	public CartItem getCartItem() {
+		return cartItem;
 	}
 	
-	public void setMovieOrder(HashMap<Movie, Integer> movieOrder) {
-		this.movieOrder = movieOrder;
+	public void setCartItem(CartItem cartItem) {
+		this.cartItem = cartItem;
+	}
+	
+	@Override
+	public String toString() {
+		return "Order{" +
+				"orderID=" + orderID +
+				", orderStatus=" + orderStatus +
+				", cartItem=" + cartItem +
+				'}';
 	}
 }
