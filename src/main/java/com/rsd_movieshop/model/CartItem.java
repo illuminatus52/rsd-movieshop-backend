@@ -5,10 +5,13 @@ public class CartItem {
     private Movie movie;
     private int itemID;
 
-    public CartItem(int amount, Movie movie, int itemID) {
+    public CartItem() {
+    }
+
+    public CartItem(int amount, Movie movie ) {
         this.amount = amount;
         this.movie = movie;
-        this.itemID = itemID;
+
     }
 
     public int getAmount() {

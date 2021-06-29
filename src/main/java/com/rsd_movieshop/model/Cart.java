@@ -1,12 +1,13 @@
 package com.rsd_movieshop.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Cart {
     private List<CartItem> movieOrder;
     private int cartID;
+
+    public Cart() {
+    }
 
     public List<CartItem> getMovieOrder() {
         return movieOrder;

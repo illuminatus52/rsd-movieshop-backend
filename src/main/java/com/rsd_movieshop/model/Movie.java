@@ -4,20 +4,24 @@ import java.util.ArrayList;
 
 public class Movie {
 	
-	private int movieID, releaseYear, movieStock;
+	private int movieID;
+	private int releaseYear;
+	private int movieStock;
 	private String title;
 	private ArrayList<Genre> genres;
 	private double price;
-	
-	public Movie(int movieID, int releaseYear, int movieStock, String title, ArrayList<Genre> genres, double price) {
-		this.movieID = movieID;
+
+	public Movie() {
+	}
+
+	public Movie( int releaseYear, int movieStock, String title, ArrayList<Genre> genres, double price) {
 		this.releaseYear = releaseYear;
 		this.movieStock = movieStock;
 		this.title = title;
 		this.genres = genres;
 		this.price = price;
 	}
-	
+
 	public int getMovieID() {
 		return movieID;
 	}
