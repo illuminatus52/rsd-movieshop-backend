@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class UserController {
 
     @GetMapping
-    public ArrayList<User> getUser() {
+    public ArrayList<User> getUsers() {
         //get all users
         return null;
     }

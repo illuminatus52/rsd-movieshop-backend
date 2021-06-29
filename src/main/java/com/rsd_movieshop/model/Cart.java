@@ -28,4 +28,12 @@ public class Cart {
         this.movieOrder = movieOrder;
         this.cartID = cartID;
     }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "movieOrder=" + movieOrder +
+                ", cartID=" + cartID +
+                '}';
+    }
 }

@@ -20,4 +20,8 @@ public class CartController {
     public void updateCart(@PathVariable int cartid) {
         //update cart
     }
+    @PostMapping
+    public void createCart(@RequestBody Cart cart) {
+        //Create Cart
+    }
 }

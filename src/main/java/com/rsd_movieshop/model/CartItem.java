@@ -34,4 +34,13 @@ public class CartItem {
     public void setItemID(int itemID) {
         this.itemID = itemID;
     }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "amount=" + amount +
+                ", movie=" + movie +
+                ", itemID=" + itemID +
+                '}';
+    }
 }

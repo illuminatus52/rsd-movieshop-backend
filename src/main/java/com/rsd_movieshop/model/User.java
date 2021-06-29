@@ -14,7 +14,9 @@ public class User {
 	private String role;
 
 
-	public User(int id, Cart userCart, ArrayList<Order> userOrders, String familyName, String firstName, String email, String passwordHash, String userName, String role) {
+	public User(int id, Cart userCart, ArrayList<Order> userOrders,
+				String familyName, String firstName, String email,
+				String passwordHash, String userName, String role) {
 		this.id = id;
 		this.userCart = userCart;
 		this.userOrders = userOrders;
@@ -96,5 +98,20 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", userCart=" + userCart +
+				", userOrders=" + userOrders +
+				", familyName='" + familyName + '\'' +
+				", firstName='" + firstName + '\'' +
+				", email='" + email + '\'' +
+				", passwordHash='" + passwordHash + '\'' +
+				", userName='" + userName + '\'' +
+				", role='" + role + '\'' +
+				'}';
 	}
 }
