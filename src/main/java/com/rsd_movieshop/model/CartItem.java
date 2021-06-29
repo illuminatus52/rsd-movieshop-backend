@@ -1,25 +1,25 @@
 package com.rsd_movieshop.model;
 
 public class CartItem {
-    private int amount;
+    private int quantity;
     private Movie movie;
     private int itemID;
 
     public CartItem() {
     }
 
-    public CartItem(int amount, Movie movie ) {
-        this.amount = amount;
+    public CartItem(int quantity, Movie movie ) {
+        this.quantity = quantity;
         this.movie = movie;
 
     }
 
-    public int getAmount() {
-        return amount;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public Movie getMovie() {
@@ -41,7 +41,7 @@ public class CartItem {
     @Override
     public String toString() {
         return "CartItem{" +
-                "amount=" + amount +
+                "quantity=" + quantity +
                 ", movie=" + movie +
                 ", itemID=" + itemID +
                 '}';

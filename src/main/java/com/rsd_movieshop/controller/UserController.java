@@ -15,7 +15,7 @@ public class UserController {
     }
 
     @GetMapping("/{userID}")
-    public String getUser(@PathVariable int userID) {
+    public User getUser(@PathVariable int userID) {
         //Informationen zu spezifischem user
         return null;
     }
