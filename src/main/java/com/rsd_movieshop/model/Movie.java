@@ -9,16 +9,18 @@ public class Movie {
 	private int movieStock;
 	private String title;
 	private ArrayList<Genre> genres;
+	private String Picture;
 	private double price;
 
 	public Movie() {
 	}
 
-	public Movie( int releaseYear, int movieStock, String title, ArrayList<Genre> genres, double price) {
+	public Movie(int releaseYear, int movieStock, String title, ArrayList<Genre> genres, String picture, double price) {
 		this.releaseYear = releaseYear;
 		this.movieStock = movieStock;
 		this.title = title;
 		this.genres = genres;
+		Picture = picture;
 		this.price = price;
 	}
 
@@ -61,7 +63,15 @@ public class Movie {
 	public void setMovieStock(int movieStock) {
 		this.movieStock = movieStock;
 	}
-	
+
+	public String getPicture() {
+		return Picture;
+	}
+
+	public void setPicture(String picture) {
+		Picture = picture;
+	}
+
 	public double getPrice() {
 		return price;
 	}
@@ -69,15 +79,17 @@ public class Movie {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
+
+
 	@Override
 	public String toString() {
 		return "Movie{" +
 				"movieID=" + movieID +
-				", title='" + title + '\'' +
-				", genre='" + genres + '\'' +
 				", releaseYear=" + releaseYear +
 				", movieStock=" + movieStock +
+				", title='" + title + '\'' +
+				", genres=" + genres +
+				", Picture='" + Picture + '\'' +
 				", price=" + price +
 				'}';
 	}
