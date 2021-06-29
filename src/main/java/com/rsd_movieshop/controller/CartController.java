@@ -10,12 +10,13 @@ import java.util.HashMap;
 @RequestMapping(path = "/cart")
 public class CartController {
 
-    @GetMapping("{cartid}")
+    @GetMapping("/{cartid}")
     public Cart getCart(@PathVariable int cartid) {
         //Get Cart
+        return null;
     }
 
-    @PutMapping("{cartid")
+    @PutMapping("/{cartid")
     public void updateCart(@PathVariable int cartid) {
         //update cart
     }

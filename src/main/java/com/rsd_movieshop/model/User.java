@@ -6,24 +6,48 @@ public class User {
 	private int id;
 	private Cart userCart;
 	private ArrayList<Order> userOrders;
-	private String familyName, firstName, email, passwordHash, userName;
+	private String familyName;
+	private String firstName;
+	private String email;
+	private String passwordHash;
+	private String userName;
+	private String role;
 
 
-	public User(int userID, String familyName, String firstName, String email, String passwordHash, String userName) {
-		this.userID = userID;
+	public User(int id, Cart userCart, ArrayList<Order> userOrders, String familyName, String firstName, String email, String passwordHash, String userName, String role) {
+		this.id = id;
+		this.userCart = userCart;
+		this.userOrders = userOrders;
 		this.familyName = familyName;
 		this.firstName = firstName;
 		this.email = email;
 		this.passwordHash = passwordHash;
 		this.userName = userName;
+		this.role = role;
 	}
 
-	public int getUserID() {
-		return userID;
+	public int getId() {
+		return id;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Cart getUserCart() {
+		return userCart;
+	}
+
+	public void setUserCart(Cart userCart) {
+		this.userCart = userCart;
+	}
+
+	public ArrayList<Order> getUserOrders() {
+		return userOrders;
+	}
+
+	public void setUserOrders(ArrayList<Order> userOrders) {
+		this.userOrders = userOrders;
 	}
 
 	public String getFamilyName() {
@@ -64,5 +88,13 @@ public class User {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

@@ -11,24 +11,25 @@ public class UserController {
     @GetMapping
     public ArrayList<User> getUser() {
         //get all users
+        return null;
     }
 
     @GetMapping("/{userID}")
     public String getUser(@PathVariable int userID) {
         //Informationen zu spezifischem user
-        return "";
+        return null;
     }
 
     @PostMapping
-    public void addUser(User user) {
+    public void addUser(@RequestBody User user) {
         //Hinzufügen eines users
     }
 
-    @PutMapping("{userID}")
+    @PutMapping("/{userID}")
     public void updateUser(@PathVariable int userID) {
         //update user data
     }
-    @DeleteMapping("{userID}")
+    @DeleteMapping("/{userID}")
     public void deleteUser(@PathVariable int userID) {
         //Delete user with id
     }
