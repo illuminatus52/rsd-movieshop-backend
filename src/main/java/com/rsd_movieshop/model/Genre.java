@@ -4,12 +4,14 @@ public class Genre {
 	
 	private int genreID;
 	private String movieGenre;
-	
-	public Genre(int genreID, String movieGenre) {
-		this.genreID = genreID;
+
+	public Genre() {
+	}
+
+	public Genre( String movieGenre) {
 		this.movieGenre = movieGenre;
 	}
-	
+
 	public int getGenreID() {
 		return genreID;
 	}

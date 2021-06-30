@@ -5,9 +5,11 @@ public class Order {
 	private int orderID;
 	private boolean orderStatus;
 	private CartItem cartItem;
-	
-	public Order(int orderID, boolean orderStatus, CartItem cartItem) {
-		this.orderID = orderID;
+
+	public Order() {
+	}
+
+	public Order(boolean orderStatus, CartItem cartItem) {
 		this.orderStatus = orderStatus;
 		this.cartItem = cartItem;
 	}

@@ -13,7 +13,10 @@ public class User {
 	private String passwordHash;
 	private String userName;
 	private String role;
-	
+
+	public User() {
+	}
+
 	public User(Cart userCart, ArrayList<Order> userOrders,
 				String familyName, String firstName, String email,
 				String passwordHash, String userName, String role) {
@@ -26,20 +29,7 @@ public class User {
 		this.userName = userName;
 		this.role = role;
 	}
-	
-	public User(int userID, Cart userCart, ArrayList<Order> userOrders,
-				String familyName, String firstName, String email,
-				String passwordHash, String userName, String role) {
-		this.userID = userID;
-		this.userCart = userCart;
-		this.userOrders = userOrders;
-		this.familyName = familyName;
-		this.firstName = firstName;
-		this.email = email;
-		this.passwordHash = passwordHash;
-		this.userName = userName;
-		this.role = role;
-	}
+
 	
 	public int getUserID() {
 		return userID;
