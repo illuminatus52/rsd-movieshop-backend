@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 @RestController
-@RequestMapping("/movies")
+@RequestMapping(path = "/movies")
 public class MovieController {
     
     @GetMapping

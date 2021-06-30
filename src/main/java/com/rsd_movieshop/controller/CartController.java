@@ -5,7 +5,6 @@ import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 
 @RestController
 @RequestMapping(path = "/cart")
