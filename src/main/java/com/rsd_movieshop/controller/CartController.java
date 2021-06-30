@@ -2,6 +2,7 @@ package com.rsd_movieshop.controller;
 
 
 import com.rsd_movieshop.model.Cart;
+import com.rsd_movieshop.model.CartItem;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class CartController {
     }
 
     @PutMapping("/{cartid")
-    public void updateCart(@PathVariable int cartid) {
+    public void updateCart(@RequestBody CartItem cartItem) {
         //update cart
     }
     @PostMapping
