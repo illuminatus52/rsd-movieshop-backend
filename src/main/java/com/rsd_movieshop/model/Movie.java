@@ -9,7 +9,7 @@ public class Movie {
 	private int movieStock;
 	private String title;
 	private ArrayList<Genre> genres;
-	private String Picture;
+	private String picture;
 	private double price;
 
 	public Movie() {
@@ -20,7 +20,7 @@ public class Movie {
 		this.movieStock = movieStock;
 		this.title = title;
 		this.genres = genres;
-		Picture = picture;
+		this.picture = picture;
 		this.price = price;
 	}
 
@@ -65,11 +65,11 @@ public class Movie {
 	}
 
 	public String getPicture() {
-		return Picture;
+		return picture;
 	}
 
 	public void setPicture(String picture) {
-		Picture = picture;
+		this.picture = picture;
 	}
 
 	public double getPrice() {
@@ -89,7 +89,7 @@ public class Movie {
 				", movieStock=" + movieStock +
 				", title='" + title + '\'' +
 				", genres=" + genres +
-				", Picture='" + Picture + '\'' +
+				", Picture='" + picture + '\'' +
 				", price=" + price +
 				'}';
 	}
