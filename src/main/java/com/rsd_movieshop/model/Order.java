@@ -1,19 +1,36 @@
 package com.rsd_movieshop.model;
 
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "Bestellung")
 public class Order {
-	
+	@Id
 	private int orderID;
+
 	private boolean orderStatus;
-	private CartItem cartItem;
+
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "itemid")
+	private List<CartItem> cartItem = new ArrayList<>();
+
+	@ManyToOne
+	@JoinColumn(name = "userid")
+	private User user;
+
+	public Order(int orderID, boolean orderStatus, List<CartItem> cartItem, User user) {
+		this.orderID = orderID;
+		this.orderStatus = orderStatus;
+		this.cartItem = cartItem;
+		this.user = user;
+	}
 
 	public Order() {
 	}
 
-	public Order(boolean orderStatus, CartItem cartItem) {
-		this.orderStatus = orderStatus;
-		this.cartItem = cartItem;
-	}
-	
 	public int getOrderID() {
 		return orderID;
 	}
@@ -29,15 +46,23 @@ public class Order {
 	public void setOrderStatus(boolean orderStatus) {
 		this.orderStatus = orderStatus;
 	}
-	
-	public CartItem getCartItem() {
+
+	public List<CartItem> getCartItem() {
 		return cartItem;
 	}
-	
-	public void setCartItem(CartItem cartItem) {
+
+	public void setCartItem(List<CartItem> cartItem) {
 		this.cartItem = cartItem;
 	}
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
 		return "Order{" +
