@@ -1,4 +1,4 @@
-package com.rsd_movieshop.repositorie;
+package com.rsd_movieshop.repository;
 
 import com.rsd_movieshop.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;

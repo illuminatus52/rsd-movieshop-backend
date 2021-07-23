@@ -16,7 +16,7 @@ public class OrderController {
 		this.orderService = orderService;
 	}
 
-	@GetMapping("{orderID}")
+
 	@GetMapping("/{orderID}")
 	public Order getOrder(@PathVariable int orderID) {
 		// get specific order

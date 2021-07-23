@@ -1,6 +1,6 @@
 package com.rsd_movieshop.service;
 
-import com.rsd_movieshop.repositorie.OrderRepo;
+import com.rsd_movieshop.repository.OrderRepo;
 import org.springframework.stereotype.Service;
 
 @Service
