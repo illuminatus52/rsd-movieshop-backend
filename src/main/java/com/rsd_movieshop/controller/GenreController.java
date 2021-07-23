@@ -2,7 +2,6 @@ package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.Genre;
 import com.rsd_movieshop.service.GenreService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
