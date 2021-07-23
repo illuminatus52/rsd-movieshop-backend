@@ -1,12 +1,20 @@
 package com.rsd_movieshop.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 
+@Entity
 public class User {
-	
+	@Id
+	@Column(name = "userid")
 	private int userID;
+
+	@OneToOne
+	@JoinColumn(name = "cartid")
 	private Cart userCart;
-	private ArrayList<Order> userOrders;
+
+	//private Order userOrders;
+
 	private String familyName;
 	private String firstName;
 	private String email;
@@ -17,11 +25,9 @@ public class User {
 	public User() {
 	}
 
-	public User(Cart userCart, ArrayList<Order> userOrders,
-				String familyName, String firstName, String email,
-				String passwordHash, String userName, String role) {
+	public User(int userID, Cart userCart, String familyName, String firstName, String email, String passwordHash, String userName, String role) {
+		this.userID = userID;
 		this.userCart = userCart;
-		this.userOrders = userOrders;
 		this.familyName = familyName;
 		this.firstName = firstName;
 		this.email = email;
@@ -30,7 +36,7 @@ public class User {
 		this.role = role;
 	}
 
-	
+
 	public int getUserID() {
 		return userID;
 	}
@@ -46,14 +52,7 @@ public class User {
 	public void setUserCart(Cart userCart) {
 		this.userCart = userCart;
 	}
-	
-	public ArrayList<Order> getUserOrders() {
-		return userOrders;
-	}
-	
-	public void setUserOrders(ArrayList<Order> userOrders) {
-		this.userOrders = userOrders;
-	}
+
 	
 	public String getFamilyName() {
 		return familyName;
@@ -102,13 +101,12 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "User{" +
-				"id=" + userID +
+				"userID=" + userID +
 				", userCart=" + userCart +
-				", userOrders=" + userOrders +
 				", familyName='" + familyName + '\'' +
 				", firstName='" + firstName + '\'' +
 				", email='" + email + '\'' +

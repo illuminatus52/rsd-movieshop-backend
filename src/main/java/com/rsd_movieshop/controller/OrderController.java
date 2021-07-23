@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @RequestMapping(path = "/orders")
 public class OrderController {
 	
-	@GetMapping("{orderID}")
+	@GetMapping("/{orderID}")
 	public Order getOrder(@PathVariable int orderID) {
 		// get specific order
 		return null;

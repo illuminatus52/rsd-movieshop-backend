@@ -1,17 +1,36 @@
 package com.rsd_movieshop.model;
 
+import javax.persistence.*;
+
+@Entity
 public class CartItem {
-    private int quantity;
-    private Movie movie;
+
+    @Id
+    @Column(name = "itemid")
     private int itemID;
+
+    @OneToOne
+    @JoinColumn(name = "movieid")
+    private Movie movie;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cartid")
+    private Cart cart;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "orderid")
+    private Order order;
+
+    private int quantity;
 
     public CartItem() {
     }
 
-    public CartItem(int quantity, Movie movie ) {
-        this.quantity = quantity;
+    public CartItem(Movie movie, Cart cart, int itemID, int quantity) {
         this.movie = movie;
-
+        this.cart = cart;
+        this.itemID = itemID;
+        this.quantity = quantity;
     }
 
     public int getQuantity() {

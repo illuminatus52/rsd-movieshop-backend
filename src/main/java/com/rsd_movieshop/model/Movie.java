@@ -1,28 +1,46 @@
 package com.rsd_movieshop.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
+
+@Entity
+@Table(name = "Movie")
 public class Movie {
-	
+	@Id
+	@Column(name = "movieid")
 	private int movieID;
+
 	private int releaseYear;
 	private int movieStock;
 	private String title;
-	private ArrayList<Genre> genres;
+
+	@ManyToMany
+	@JoinTable(
+			name = "Movie_Genre",
+			joinColumns = { @JoinColumn(name = "movieid")},
+			inverseJoinColumns = { @JoinColumn(name = "genreid")}
+	)
+	private Set<Genre> genres = new HashSet<>();
+
 	private String picture;
 	private double price;
 
 	public Movie() {
 	}
 
-	public Movie(int releaseYear, int movieStock, String title, ArrayList<Genre> genres, String picture, double price) {
+	public Movie(int movieID, int releaseYear, int movieStock, String title, String picture, double price) {
+		this.movieID = movieID;
 		this.releaseYear = releaseYear;
 		this.movieStock = movieStock;
 		this.title = title;
-		this.genres = genres;
 		this.picture = picture;
 		this.price = price;
 	}
+
 
 	public int getMovieID() {
 		return movieID;
@@ -39,15 +57,15 @@ public class Movie {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	public ArrayList<Genre> getGenres() {
+
+	public Set<Genre> getGenres() {
 		return genres;
 	}
-	
-	public void setGenres(ArrayList<Genre> genres) {
+
+	public void setGenres(Set<Genre> genres) {
 		this.genres = genres;
 	}
-	
+
 	public int getReleaseYear() {
 		return releaseYear;
 	}
