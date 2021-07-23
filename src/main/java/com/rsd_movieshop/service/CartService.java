@@ -10,7 +10,7 @@ public class CartService {
 
     private final CartRepo cartRepo;
 
-    @Autowired
+
     public CartService(CartRepo cartRepo) {
         this.cartRepo = cartRepo;
     }

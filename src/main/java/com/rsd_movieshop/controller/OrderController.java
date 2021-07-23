@@ -1,6 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.Order;
+import com.rsd_movieshop.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -8,7 +9,13 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping(path = "/orders")
 public class OrderController {
-	
+
+	private final OrderService orderService;
+
+	public OrderController(OrderService orderService) {
+		this.orderService = orderService;
+	}
+
 	@GetMapping("{orderID}")
 	public Order getOrder(@PathVariable int orderID) {
 		// get specific order

@@ -9,7 +9,7 @@ public class MovieService {
 
     private final MovieRepo movieRepo;
 
-    @Autowired
+
     public MovieService(MovieRepo movieRepo) {
         this.movieRepo = movieRepo;
     }

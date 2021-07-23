@@ -1,12 +1,20 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.User;
+import com.rsd_movieshop.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 @RestController
 @RequestMapping(path = "/user")
 public class UserController {
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
 
     @GetMapping
     public ArrayList<User> getUsers() {

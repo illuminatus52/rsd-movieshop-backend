@@ -1,6 +1,8 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.Genre;
+import com.rsd_movieshop.service.GenreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -8,7 +10,15 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping(path = "/genre")
 public class GenreController {
-	
+
+	private final GenreService genreService;
+
+
+	public GenreController(GenreService genreService) {
+		this.genreService = genreService;
+	}
+
+
 	@GetMapping("/{genreID}")
 	public Genre getGenre (@PathVariable int genreID){
 		// return specific genre

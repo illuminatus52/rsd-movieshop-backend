@@ -9,7 +9,7 @@ public class GenreService {
 
     private final GenreRepo genreRepo;
 
-    @Autowired
+
     public GenreService(GenreRepo genreRepo) {
         this.genreRepo = genreRepo;
     }

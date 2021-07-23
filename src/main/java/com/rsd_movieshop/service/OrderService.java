@@ -9,7 +9,7 @@ public class OrderService {
 
     private final OrderRepo orderRepo;
 
-    @Autowired
+
     public OrderService(OrderRepo orderRepo) {
         this.orderRepo = orderRepo;
     }

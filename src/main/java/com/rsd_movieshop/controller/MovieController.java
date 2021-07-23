@@ -1,6 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.Movie;
+import com.rsd_movieshop.service.MovieService;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
@@ -8,7 +9,15 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping(path = "/movies")
 public class MovieController {
-    
+
+    private final MovieService movieService;
+
+
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
+
     @GetMapping
     public ArrayList<Movie> getMovies() {
         // return movie catalogue
