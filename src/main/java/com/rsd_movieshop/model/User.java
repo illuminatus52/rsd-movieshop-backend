@@ -1,118 +1,169 @@
 package com.rsd_movieshop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 import javax.persistence.*;
+
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "user")
 public class User {
 	@Id
-	@Column(name = "userid")
-	private int userID;
+	@SequenceGenerator(name = "userid_seq", allocationSize = 1)
+	@GeneratedValue(generator = "userid_seq")
+	@Column(name = "user_id")
+	private long userId;
 
-	@OneToOne
-	@JoinColumn(name = "cartid")
-	private Cart userCart;
-
-	//private Order userOrders;
+	@OneToMany(mappedBy = "userid")
+	private List<Orders> orders = new ArrayList<Orders>();
 
 	private String familyName;
 	private String firstName;
 	private String email;
-	private String passwordHash;
+
+	@Column(nullable = false, unique = true)
 	private String userName;
-	private String role;
+
+	@JsonIgnore
+	@Column(nullable = false)
+	private String password;
+	@Column(nullable = false)
+	private String role = "ROLE_USER";
+
+
+	@OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@JoinColumn(name = "cart")
+	private Cart cart;
+
+	
 
 	public User() {
+		super();
 	}
 
-	public User(int userID, Cart userCart, String familyName, String firstName, String email, String passwordHash, String userName, String role) {
-		this.userID = userID;
-		this.userCart = userCart;
+
+	
+	
+
+	
+	public User(String familyName, String firstName, String email, String userName, String password, String role) {
+		super();
 		this.familyName = familyName;
 		this.firstName = firstName;
 		this.email = email;
-		this.passwordHash = passwordHash;
 		this.userName = userName;
+		this.password = password;
 		this.role = role;
 	}
 
 
-	public int getUserID() {
-		return userID;
-	}
-	
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-	
-	public Cart getUserCart() {
-		return userCart;
-	}
-	
-	public void setUserCart(Cart userCart) {
-		this.userCart = userCart;
+
+
+
+
+	public User(List<Orders> orders, String familyName, String firstName, String email, String userName,
+			String password, String role) {
+		super();
+		this.orders = orders;
+		this.familyName = familyName;
+		this.firstName = firstName;
+		this.email = email;
+		this.userName = userName;
+		this.password = password;
+		this.role = role;
 	}
 
-	
+
+
+
+
+	public User(List<Orders> orders, String familyName, String firstName, String email, String userName,
+			String password, String role, Cart cart) {
+		super();
+		this.orders = orders;
+		this.familyName = familyName;
+		this.firstName = firstName;
+		this.email = email;
+		this.userName = userName;
+		this.password = password;
+		this.role = role;
+		this.cart = cart;
+	}
+
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public List<Orders> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Orders> orders) {
+		this.orders = orders;
+	}
+
 	public String getFamilyName() {
 		return familyName;
 	}
-	
+
 	public void setFamilyName(String familyName) {
 		this.familyName = familyName;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
-	
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-	
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-	
+
 	public String getUserName() {
 		return userName;
 	}
-	
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getRole() {
 		return role;
 	}
-	
+
 	public void setRole(String role) {
 		this.role = role;
 	}
 
-	@Override
-	public String toString() {
-		return "User{" +
-				"userID=" + userID +
-				", userCart=" + userCart +
-				", familyName='" + familyName + '\'' +
-				", firstName='" + firstName + '\'' +
-				", email='" + email + '\'' +
-				", passwordHash='" + passwordHash + '\'' +
-				", userName='" + userName + '\'' +
-				", role='" + role + '\'' +
-				'}';
+	public Cart getCart() {
+		return cart;
 	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+	
 }

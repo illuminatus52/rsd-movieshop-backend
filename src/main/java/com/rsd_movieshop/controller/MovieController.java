@@ -3,11 +3,13 @@ package com.rsd_movieshop.controller;
 import com.rsd_movieshop.model.Movie;
 import com.rsd_movieshop.service.MovieService;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
+import java.util.List;
+import java.util.Optional;
 
 
 @RestController
-@RequestMapping(path = "/movies")
+@RequestMapping(path = "/api/movies")
 public class MovieController {
 
     private final MovieService movieService;
@@ -19,23 +21,21 @@ public class MovieController {
 
 
     @GetMapping
-    public ArrayList<Movie> getMovies() {
-        // return movie catalogue
+    public List<Movie> getMovies() {
         System.out.println("MovieController: getMovies");
-        return null;
+        return movieService.findMovies();
     }
     
     @GetMapping("/{movieID}")
-    public Movie getMovieDesc(@PathVariable int movieID) {
-        // return movie description
+    public Optional<Movie> getMovieDesc(@PathVariable int movieID) {
         System.out.println("MovieController: getMovieDescription");
-        return null;
+        return movieService.findMovieById(movieID);
     }
     
     @PostMapping
     public void addNewMovie(@RequestBody Movie newMovie) {
-        // add a new movie
         System.out.println("MovieController: addNewMovie");
+        movieService.saveMovie(newMovie);
     }
     
     @PutMapping(path = "/{movieID}")
@@ -47,7 +47,7 @@ public class MovieController {
     
     @DeleteMapping("/{movieID}")
     public void deleteMovie(@PathVariable int movieID) {
-        // delete a movie
+        movieService.deleteMovieById(movieID);
         System.out.println("MovieController: deleteMovie");
     }
 }

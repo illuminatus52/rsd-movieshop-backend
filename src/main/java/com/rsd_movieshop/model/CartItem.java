@@ -3,11 +3,14 @@ package com.rsd_movieshop.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "items")
 public class CartItem {
 
     @Id
-    @Column(name = "itemid")
-    private int itemID;
+    @SequenceGenerator(name = "item_seq", allocationSize = 1)
+    @GeneratedValue(generator = "item_seq")
+    @Column(name = "item_id")
+    private long itemId;
 
     @OneToOne
     @JoinColumn(name = "movieid")
@@ -16,24 +19,42 @@ public class CartItem {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cartid")
     private Cart cart;
-
+    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "orderid")
-    private Order order;
-
+    private Orders orderid;
+    
     private int quantity;
 
-    public CartItem() {
-    }
 
-    public CartItem(Movie movie, Cart cart, int itemID, int quantity) {
-        this.movie = movie;
-        this.cart = cart;
-        this.itemID = itemID;
-        this.quantity = quantity;
-    }
+	public CartItem() {
+		super();
+	}
 
-    public int getQuantity() {
+
+	public CartItem(long itemId, Movie movie, Cart cart, Orders order, int quantity) {
+		super();
+		this.itemId = itemId;
+		this.movie = movie;
+		this.cart = cart;
+		this.orderid = order;
+		this.quantity = quantity;
+	}
+
+
+	public CartItem(Movie movie, Cart cart, Orders order, int quantity) {
+		super();
+		this.movie = movie;
+		this.cart = cart;
+		this.orderid = order;
+		this.quantity = quantity;
+	}
+
+
+
+
+
+	public int getQuantity() {
         return quantity;
     }
 
@@ -49,20 +70,30 @@ public class CartItem {
         this.movie = movie;
     }
 
-    public int getItemID() {
-        return itemID;
+    public long getItemID() {
+        return itemId;
     }
 
-    public void setItemID(int itemID) {
-        this.itemID = itemID;
+    public void setItemID(long itemID) {
+        this.itemId = itemID;
     }
 
-    @Override
-    public String toString() {
-        return "CartItem{" +
-                "quantity=" + quantity +
-                ", movie=" + movie +
-                ", itemID=" + itemID +
-                '}';
-    }
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	public Orders getOrder() {
+		return orderid;
+	}
+
+	public void setOrder(Orders order) {
+		this.orderid = order;
+	}
+
+    
+
 }

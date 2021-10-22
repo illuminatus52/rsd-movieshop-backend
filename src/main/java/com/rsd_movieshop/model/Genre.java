@@ -1,41 +1,44 @@
 package com.rsd_movieshop.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table(name = "Genre")
+@Table(name = "genre")
 public class Genre {
 	@Id
-	@Column(name = "genreid")
-	private int genreID;
+	@SequenceGenerator(name = "genre_seq", allocationSize = 1)
+	@GeneratedValue(generator = "genre_seq")
+	@Column(name = "genre_id")
+	private long genreId;
 
+	@Column(name = "Genre_Name")
 	private String movieGenre;
 
 	@ManyToMany(mappedBy = "genres")
-	private Set<Movie> movies = new HashSet<>();
+	private List<Movie> movies = new ArrayList<>();
+
+	
 
 	public Genre() {
+		super();
 	}
 
-	public Genre(int genreID, String movieGenre) {
-		this.genreID = genreID;
+	public Genre(String movieGenre, List<Movie> movies) {
 		this.movieGenre = movieGenre;
+		this.movies = movies;
 	}
 
 	public Genre(String movieGenre) {
 		this.movieGenre = movieGenre;
 	}
 
-	public int getGenreID() {
-		return genreID;
+	public long getGenreID() {
+		return genreId;
 	}
 	
-	public void setGenreID(int genreID) {
-		this.genreID = genreID;
+	public void setGenreID(long genreID) {
+		this.genreId = genreID;
 	}
 	
 	public String getMovieGenre() {
@@ -45,12 +48,5 @@ public class Genre {
 	public void setMovieGenre(String movieGenre) {
 		this.movieGenre = movieGenre;
 	}
-	
-	@Override
-	public String toString() {
-		return "Genre{" +
-				"genreID=" + genreID +
-				", movieGenre='" + movieGenre + '\'' +
-				'}';
-	}
+
 }
