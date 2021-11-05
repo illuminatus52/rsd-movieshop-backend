@@ -1,53 +1,51 @@
 package com.rsd_movieshop.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
 
 
 @Entity
 @Table(name = "Movie")
 public class Movie {
 	@Id
-	@Column(name = "movieid")
-	private int movieID;
+	@SequenceGenerator(name = "movie_seq", allocationSize = 1)
+	@GeneratedValue(generator = "movie_seq")
+	@Column(name = "movie_id")
+	private long movieId;
 
 	private int releaseYear;
 	private int movieStock;
 	private String title;
 
-	@ManyToMany
-	@JoinTable(
-			name = "Movie_Genre",
-			joinColumns = { @JoinColumn(name = "movieid")},
-			inverseJoinColumns = { @JoinColumn(name = "genreid")}
-	)
-	private Set<Genre> genres = new HashSet<>();
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(name = "movie_genre", joinColumns = @JoinColumn(name = "movieid"), 
+				inverseJoinColumns = @JoinColumn(name = "genreid"))
+	private List<Genre> genres = new ArrayList<>();
 
 	private String picture;
 	private double price;
 
+
 	public Movie() {
+		super();
 	}
 
-	public Movie(int movieID, int releaseYear, int movieStock, String title, String picture, double price) {
-		this.movieID = movieID;
+	public Movie(int releaseYear, int movieStock, String title, List<Genre> genres, String picture, double price) {
 		this.releaseYear = releaseYear;
 		this.movieStock = movieStock;
 		this.title = title;
+		this.genres = genres;
 		this.picture = picture;
 		this.price = price;
 	}
 
-
-	public int getMovieID() {
-		return movieID;
+	public long getMovieID() {
+		return movieId;
 	}
 	
-	public void setMovieID(int movieID) {
-		this.movieID = movieID;
+	public void setMovieID(long movieID) {
+		this.movieId = movieID;
 	}
 	
 	public String getTitle() {
@@ -58,11 +56,11 @@ public class Movie {
 		this.title = title;
 	}
 
-	public Set<Genre> getGenres() {
+	public List<Genre> getGenres() {
 		return genres;
 	}
 
-	public void setGenres(Set<Genre> genres) {
+	public void setGenres(List<Genre> genres) {
 		this.genres = genres;
 	}
 
@@ -98,17 +96,4 @@ public class Movie {
 		this.price = price;
 	}
 
-
-	@Override
-	public String toString() {
-		return "Movie{" +
-				"movieID=" + movieID +
-				", releaseYear=" + releaseYear +
-				", movieStock=" + movieStock +
-				", title='" + title + '\'' +
-				", genres=" + genres +
-				", Picture='" + picture + '\'' +
-				", price=" + price +
-				'}';
-	}
 }

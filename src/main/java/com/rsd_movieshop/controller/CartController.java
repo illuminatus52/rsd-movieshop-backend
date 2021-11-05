@@ -6,9 +6,11 @@ import com.rsd_movieshop.model.CartItem;
 import com.rsd_movieshop.service.CartService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 
 @RestController
-@RequestMapping(path = "/cart")
+@RequestMapping(path = "/api/cart")
 public class CartController {
 
     private final CartService cartService;
@@ -19,19 +21,18 @@ public class CartController {
     }
 
 
-
     @GetMapping("/{cartid}")
-    public Cart getCart(@PathVariable int cartid) {
-        //Get Cart
-        return null;
+    public Optional<Cart> getCart(@PathVariable int cartid) {
+        return cartService.findCartById(cartid);
     }
 
     @PutMapping("/{cartid")
     public void updateCart(@RequestBody CartItem cartItem) {
         //update cart
     }
+
     @PostMapping
     public void createCart(@RequestBody Cart cart) {
-        //Create Cart
+        cartService.saveCart(cart);
     }
 }

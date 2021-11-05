@@ -1,13 +1,15 @@
 package com.rsd_movieshop.controller;
 
-import com.rsd_movieshop.model.Order;
+import com.rsd_movieshop.model.Orders;
 import com.rsd_movieshop.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/orders")
+@RequestMapping(path = "/api/orders")
 public class OrderController {
 
 	private final OrderService orderService;
@@ -18,21 +20,19 @@ public class OrderController {
 
 
 	@GetMapping("/{orderID}")
-	public Order getOrder(@PathVariable int orderID) {
-		// get specific order
-		return null;
+	public Optional<Orders> getOrder(@PathVariable int orderID) {
+		return orderService.findOrderById(orderID);
 	}
 	
 	@GetMapping
-	public ArrayList<Order> getOrders() {
-		// return all orders (admin only)
+	public List<Orders> getOrders() {
 		System.out.println("OrderController: getOrders");
-		return null;
+		return orderService.findAllOrders();
 	}
 	
 	@PostMapping
-	public void addNewOrder(@RequestBody Order order) {
-		// add Order from Cart
+	public void addNewOrder(@RequestBody Orders order) {
+		orderService.saveOrder(order);
 	}
 	
 	@PutMapping(path = "/{orderID}")
@@ -43,7 +43,7 @@ public class OrderController {
 	
 	@DeleteMapping("/{orderID}")
 	public void deleteOrder(@PathVariable int orderID) {
-		// delete specific order (admin only)
+
 		System.out.println("OrderController: deleteOrder");
 	}
 }

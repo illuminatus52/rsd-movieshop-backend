@@ -5,9 +5,11 @@ import com.rsd_movieshop.service.GenreService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/genre")
+@RequestMapping(path = "/api/genre")
 public class GenreController {
 
 	private final GenreService genreService;
@@ -19,21 +21,20 @@ public class GenreController {
 
 
 	@GetMapping("/{genreID}")
-	public Genre getGenre (@PathVariable int genreID){
-		// return specific genre
+	public Optional<Genre> getGenre (@PathVariable int genreID){
 		System.out.println("GenreController: ");
-		return null;
+		return genreService.findGenreById(genreID);
 	}
 	
 	@GetMapping
-	public ArrayList<Genre> getGenres() {
-		// return all orders
+	public List<Genre> getGenres() {
 		System.out.println("GenreController: getAllOrders");
-		return null;
+		return genreService.findAllGenre();
 	}
 	
 	@PostMapping
 	public void addNewGenre(@RequestBody Genre genre) {
+		genreService.saveGenre(genre);
 		System.out.println("GenreController: addNewGenre");
 	}
 	
@@ -44,6 +45,7 @@ public class GenreController {
 	
 	@DeleteMapping(path = "/{genreID}")
 	public void deleteGenre(@PathVariable int genreID) {
+		genreService.deleteGenre(genreID);
 		System.out.println("GenreController: deleteGenre");
 	}
 }
