@@ -31,7 +31,7 @@ public class OrderController {
 
 	@PostMapping
 	public ResponseEntity<Orders> createNewOrder(@PathVariable long cartID) {
-		return orderService.createOrderfromCart(cartID);
+		return orderService.createOrderFromCart(cartID);
 	}
 
 	@PutMapping(path = "/{orderID}")

@@ -47,7 +47,7 @@ public class OrderService {
 		}
 	}
 
-	public ResponseEntity<Orders> createOrderfromCart(long id) {
+	public ResponseEntity<Orders> createOrderFromCart(long id) {
 		try {
 			Cart cart = cartRepo.getById(id);
 			List<CartItem> items = cart.getCartItems();
