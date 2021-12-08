@@ -1,7 +1,15 @@
 package com.rsd_movieshop.model;
 
-import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "genre")
@@ -12,7 +20,7 @@ public class Genre {
 	@Column(name = "genre_id")
 	private long genreId;
 
-	@Column(name = "Genre_Name")
+	@Column(name = "Genre_Name", unique = true)
 	private String movieGenre;
 
 	@ManyToMany(mappedBy = "genres")
@@ -28,7 +36,7 @@ public class Genre {
 		this.movieGenre = movieGenre;
 		this.movies = movies;
 	}
-
+	
 	public Genre(String movieGenre) {
 		this.movieGenre = movieGenre;
 	}
@@ -49,4 +57,13 @@ public class Genre {
 		this.movieGenre = movieGenre;
 	}
 
+	public List<Movie> getMovies() {
+		return movies;
+	}
+
+	public void setMovies(List<Movie> movies) {
+		this.movies = movies;
+	}
+
+	
 }

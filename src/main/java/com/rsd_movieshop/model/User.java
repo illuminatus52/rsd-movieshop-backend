@@ -34,9 +34,9 @@ public class User {
 	private String role = "ROLE_USER";
 
 
-	@OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name = "cart")
-	private Cart cart;
+	private Cart cart = new Cart();
 
 	
 
@@ -49,6 +49,21 @@ public class User {
 	
 
 	
+	public User(long userId, String familyName, String firstName, String email, String userName, String password) {
+		super();
+		this.userId = userId;
+		this.familyName = familyName;
+		this.firstName = firstName;
+		this.email = email;
+		this.userName = userName;
+		this.password = password;
+	}
+
+
+
+
+
+
 	public User(String familyName, String firstName, String email, String userName, String password, String role) {
 		super();
 		this.familyName = familyName;

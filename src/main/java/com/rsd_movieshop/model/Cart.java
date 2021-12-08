@@ -14,9 +14,6 @@ public class Cart {
     @Column(name = "cartid")
     private long cartId;
     
-    @OneToOne
-    @JoinColumn(name = "userid")
-    private User user;
 
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems =  new ArrayList<>();
@@ -29,30 +26,18 @@ public class Cart {
 
 
 
-	public Cart(long cartId, User user, List<CartItem> cartItems) {
+	public Cart(long cartId, List<CartItem> cartItems) {
 		super();
 		this.cartId = cartId;
-		this.user = user;
 		this.cartItems = cartItems;
 	}
 
 
 
-
-
-	public Cart(User user, List<CartItem> cartItems) {
+	public Cart(List<CartItem> cartItems) {
 		super();
-		this.user = user;
 		this.cartItems = cartItems;
 	}
-
-
-
-	public Cart(User user) {
-		super();
-		this.user = user;
-	}
-
 
 
 	public long getCartId() {
@@ -65,17 +50,6 @@ public class Cart {
 		this.cartId = cartId;
 	}
 
-
-
-	public User getUser() {
-		return user;
-	}
-
-
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 
 

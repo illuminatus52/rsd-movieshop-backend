@@ -4,52 +4,48 @@ import com.rsd_movieshop.dto.UserDto;
 import com.rsd_movieshop.model.User;
 import com.rsd_movieshop.service.UserService;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/user")
+@RequestMapping(path = "/api")
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
+	@GetMapping(path = "/user")
+	public ResponseEntity<List<User>> getUsers() {
+		return userService.findAllUser();
+	}
 
-    @GetMapping
-    public List<User> getUsers() {
-        return null;
-    }
+	@GetMapping(path = "/user/{userID}")
+	public ResponseEntity<User> getUser(@PathVariable int userID) {
+		return userService.findUserById(userID);
+	}
 
-    @GetMapping("/{userID}")
-    public User getUser(@PathVariable int userID) {
-        //Informationen zu spezifischem user
-        return null;
-    }
+	@PostMapping(path = "/Register")
+	public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
+		return userService.saveUser(userDto);
+	}
 
-    @PostMapping
-    public void addUser(@RequestBody UserDto userDto) {
-    	User user =  new User();
-    	user.setEmail(userDto.email);
-    	user.setFamilyName(userDto.familyName);
-    	user.setFirstName(userDto.firstName);
-    	user.setUserName(userDto.userName);
-    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(userDto.password);
-        user.setPassword(encodedPassword);
-        userService.saveUser(user);
-    }
+	@PutMapping(path = "/user/{userID}")
+	public ResponseEntity<User> updateUser(@PathVariable int userID, @RequestParam String firstName,
+			@RequestParam String lastName, @RequestParam String email, @RequestParam String password,
+			@RequestParam String username) {
 
-    @PutMapping("/{userID}")
-    public void updateUser(@PathVariable int userID) {
-        //update user data
-    }
-    @DeleteMapping("/{userID}")
-    public void deleteUser(@PathVariable int userID) {
-        userService.deleteUser(userID);
-    }
+		UserDto user = new UserDto(lastName, firstName, email, username, password);
+
+		return userService.saveUser(user);
+	}
+
+	@DeleteMapping("/user/{userID}")
+	public ResponseEntity<String> deleteUser(@PathVariable int userID) {
+		return userService.deleteUser(userID);
+	}
 }

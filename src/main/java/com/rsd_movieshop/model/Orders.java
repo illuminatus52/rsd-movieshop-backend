@@ -15,7 +15,8 @@ public class Orders {
 	@Column(name = "order_id")
 	private long orderId;
 
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private OrderStatus status = OrderStatus.In_process;
 
 	@OneToMany(mappedBy = "orderid")
 	private List<CartItem> cartItems = new ArrayList<>();
@@ -29,8 +30,18 @@ public class Orders {
 	public Orders() {
 		super();
 	}
+	
+	
 
-	public Orders(String orderStatus, List<CartItem> cartItem, User user) {
+	public Orders(List<CartItem> cartItems, User userid) {
+		super();
+		this.cartItems = cartItems;
+		this.userid = userid;
+	}
+
+
+
+	public Orders(OrderStatus orderStatus, List<CartItem> cartItem, User user) {
 		this.status = orderStatus;
 		this.cartItems = cartItem;
 		this.userid = user;
@@ -44,11 +55,11 @@ public class Orders {
 		this.orderId = orderID;
 	}
 	
-	public String isOrderStatus() {
+	public OrderStatus getOrderStatus() {
 		return status;
 	}
 	
-	public void setOrderStatus(String orderStatus) {
+	public void setOrderStatus(OrderStatus orderStatus) {
 		this.status = orderStatus;
 	}
 
