@@ -3,7 +3,10 @@ package com.rsd_movieshop.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,22 +60,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomAuthenticationSuccessHandler();
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+
     	http.cors();
     	
-    	http.headers().frameOptions().disable();
+    	http.authorizeRequests()
+    	.antMatchers("/api/**").permitAll();
     	
     	http.authorizeRequests()
     			.antMatchers("/h2-console/**").permitAll();
     	
         http.authorizeRequests()
-                .antMatchers("/api/**").permitAll();
-
+        .antMatchers("/api/admin/**")
+        .access("hasRole('ROLE_ADMIN')");
+        
         http.authorizeRequests()
-                .antMatchers("/api/admin/**")
-                .access("hasRole('ROLE_ADMIN')");
+        		.antMatchers("/api/user/**")
+        		.access("hasRole('ROLE_USER')");
+
 
         http.authorizeRequests()
                 .anyRequest()
@@ -80,14 +90,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable();
 
-
         http.formLogin()
-                .loginProcessingUrl("/login")
-                .permitAll();
-
+        .loginProcessingUrl("/login")
+        .permitAll();
+        
         http.logout()
-                .logoutUrl("/logout")
-                .permitAll();
+        .logoutUrl("/logout")
+        .permitAll();
+        
 
         http.addFilterAt(
                 usernamePasswordAuthenticationFilter(),
@@ -104,6 +114,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(
                         new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
                 );
+        
 
+    }
+    
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
+    
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return roleHierarchy;
     }
 }

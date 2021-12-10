@@ -28,7 +28,6 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
 
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password);
-
             return this.getAuthenticationManager().authenticate(authenticationToken);
         } catch (IOException e) {
             throw new InternalAuthenticationServiceException(ERROR_MESSAGE, e);

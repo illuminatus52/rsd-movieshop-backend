@@ -4,13 +4,13 @@ package com.rsd_movieshop.controller;
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
 import com.rsd_movieshop.service.CartService;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(path = "/api/cart")
+@RequestMapping(path = "/api/")
 public class CartController {
 
     private final CartService cartService;
@@ -21,18 +21,18 @@ public class CartController {
     }
 
 
-    @GetMapping("/{cartid}")
-    public Optional<Cart> getCart(@PathVariable int cartid) {
+    @GetMapping("user/{cartid}")
+    public ResponseEntity<Cart> getCart(@PathVariable long cartid) {
         return cartService.findCartById(cartid);
     }
 
-    @PutMapping("/{cartid")
-    public void updateCart(@RequestBody CartItem cartItem) {
-        //update cart
+    @PutMapping("user/{cartid}")
+    public ResponseEntity<Cart> addCartItem(@PathVariable long cartid, @RequestBody CartItem cartItem) {
+        return cartService.addCartItem(cartid, cartItem);
     }
 
-    @PostMapping
-    public void createCart(@RequestBody Cart cart) {
-        cartService.saveCart(cart);
+    @DeleteMapping("admin/{cartid}")
+    public ResponseEntity<Cart> deleteCartItem(@PathVariable long cartid, @RequestBody CartItem cartItem) {
+    	return cartService.deleteItem(cartid, cartItem);
     }
 }
