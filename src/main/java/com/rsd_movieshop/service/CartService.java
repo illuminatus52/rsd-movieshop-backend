@@ -4,7 +4,6 @@ import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
 import com.rsd_movieshop.repository.CartRepo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -39,6 +38,8 @@ public class CartService {
 			Cart cart = cartRepo.getById(id);
 			List<CartItem> items = cart.getCartItems();
 			items.add(item);
+			cart.setCartItems(items);
+			cartRepo.save(cart);
 			return new ResponseEntity<Cart>(cart, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -48,14 +49,9 @@ public class CartService {
 	public ResponseEntity<Cart> deleteItem(long id, CartItem item) {
 		try {
 			Cart cart = cartRepo.getById(id);
-			List<CartItem> newItemList = new ArrayList<>();
 			List<CartItem> items = cart.getCartItems();
-			for (CartItem cartItem : items) {
-				if (cartItem != item) {
-					newItemList.add(cartItem);
-				}
-			}
-			cart.setCartItems(newItemList);
+			items.remove(item);
+			cart.setCartItems(items);
 			cartRepo.save(cart);
 			return new ResponseEntity<Cart>(cart, HttpStatus.OK);
 		} catch (Exception e) {

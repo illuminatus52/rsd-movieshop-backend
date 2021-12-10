@@ -21,7 +21,7 @@ public class GenreService {
 
 	public ResponseEntity<Genre> findGenreByName(String genreName) {
 		if (genreRepo.findGenreByMovieGenre(genreName) == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The genre " + genreName + " doesn't existed!");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The genre " + genreName + " doesn't exist!");
 		} else {
 			try {
 				Genre genre = genreRepo.findGenreByMovieGenre(genreName);
@@ -44,7 +44,7 @@ public class GenreService {
 	public ResponseEntity<Genre> saveGenre(String genreName) {
 		if (genreRepo.findGenreByMovieGenre(genreName) != null) {
 			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
-					"The genre " + genreName + " existes already!");
+					"The genre " + genreName + " exists already!");
 		}
 		try {
 			Genre genre = new Genre(genreName);
@@ -57,7 +57,7 @@ public class GenreService {
 
 	public ResponseEntity<Genre> updateGenre(long id, String genreName, String movies) {
 		if (genreRepo.getById(id) == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The genre with id: " + id + " doesn't existed!");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The genre with id: " + id + " doesn't exist!");
 		} else {
 			try {
 				Genre genre = genreRepo.getById(id);

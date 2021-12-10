@@ -29,19 +29,14 @@ public class UserController {
 		return userService.findUserById(userID);
 	}
 
-	@PostMapping(path = "user/Register")
+	@PostMapping(path = "user/register")
 	public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
 		return userService.saveUser(userDto);
 	}
 
 	@PutMapping(path = "user/{userID}")
-	public ResponseEntity<User> updateUser(@PathVariable int userID, @RequestParam String firstName,
-			@RequestParam String lastName, @RequestParam String email, @RequestParam String password,
-			@RequestParam String username) {
-
-		UserDto user = new UserDto(lastName, firstName, email, username, password);
-
-		return userService.saveUser(user);
+	public ResponseEntity<User> updateUser(@PathVariable int userID, @RequestBody UserDto userDto) {
+		return userService.saveUser(userDto);
 	}
 
 	@DeleteMapping("user/{userID}")

@@ -23,14 +23,14 @@ public class MovieController {
 		return movieService.findMovies();
 	}
 
-	@GetMapping("user/movies/{movieID}")
+	@GetMapping("movies/{movieID}")
 	public ResponseEntity<Movie> getMovieDesc(@PathVariable int movieID) {
 		return movieService.findMovieById(movieID);
 	}
 
 	@PostMapping(path = "admin/movies/addMovie")
 	public ResponseEntity<Movie> addNewMovie(@RequestBody Movie newMovie) {
-		return movieService.saveMovie(newMovie);
+		return movieService.saveNewMovie(newMovie);
 	}
 
 	@PutMapping(path = "admin/movies/{movieID}")

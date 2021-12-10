@@ -21,7 +21,7 @@ public class CartController {
     }
 
 
-    @GetMapping("user{cartid}")
+    @GetMapping("user/{cartid}")
     public ResponseEntity<Cart> getCart(@PathVariable long cartid) {
         return cartService.findCartById(cartid);
     }

@@ -2,6 +2,7 @@ package com.rsd_movieshop.service;
 
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
+import com.rsd_movieshop.model.Movie;
 import com.rsd_movieshop.model.OrderStatus;
 import com.rsd_movieshop.model.Orders;
 import com.rsd_movieshop.repository.CartRepo;
@@ -31,7 +32,7 @@ public class OrderService {
 
 	public ResponseEntity<Orders> findOrderById(long id) {
 		if (orderRepo.getById(id) == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The order with id: " + id + " doesn't existed!");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The order with id: " + id + " doesn't exist!");
 		} else {
 			Orders order = orderRepo.getById(id);
 			return new ResponseEntity<Orders>(order, HttpStatus.OK);
@@ -48,15 +49,30 @@ public class OrderService {
 	}
 
 	public ResponseEntity<Orders> createOrderFromCart(long id) {
+
 		try {
+			double sum = 0;
+			int newStockQuantity = 0;
 			Cart cart = cartRepo.getById(id);
 			List<CartItem> items = cart.getCartItems();
 			Orders order = new Orders(items, userRepo.findByCart_CartId(id));
 			List<CartItem> newCartList = new ArrayList<CartItem>();
+			for (CartItem cartItem : items) {
+				sum += cartItem.getMovie().getPrice();
+				Movie movie = cartItem.getMovie();
+				if (movie.getMovieStock() < cartItem.getQuantity()) {
+					newStockQuantity = movie.getMovieStock();
+				} else {
+					newStockQuantity = movie.getMovieStock() - cartItem.getQuantity();
+				}
+				movie.setMovieStock(newStockQuantity);
+				cartItem.setMovie(movie);
+			}
+			order.setTotalPrice(sum);
 			cart.setCartItems(newCartList);
 			cartRepo.save(cart);
 			orderRepo.save(order);
-			//FIXME: when creating new order, the items should be subtracted from the stock quantity!
+			//FIXME error handling!
 			return new ResponseEntity<Orders>(order, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -69,7 +85,7 @@ public class OrderService {
 					null);
 		} else {
 			Orders order = orderRepo.getById(id);
-			order.setOrderStatus(orderStatus);
+			order.setStatus(orderStatus);
 			return new ResponseEntity<Orders>(order, HttpStatus.OK);
 		}
 	}

@@ -18,12 +18,12 @@ public class GenreController {
 		this.genreService = genreService;
 	}
 
-	@GetMapping("user/{genreName}")
+	@GetMapping("{genreName}")
 	public ResponseEntity<Genre> getGenre(@PathVariable String genreName) {
 		return genreService.findGenreByName(genreName);
 	}
 
-	@GetMapping("user/gerne")
+	@GetMapping("genre")
 	public ResponseEntity<List<Genre>> getGenres() {
 		return genreService.findAllGenre();
 	}

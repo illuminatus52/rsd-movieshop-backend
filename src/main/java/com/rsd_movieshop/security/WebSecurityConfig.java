@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,8 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 import javax.servlet.http.HttpServletResponse;
@@ -61,22 +60,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomAuthenticationSuccessHandler();
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("FIXME-BITCH").allowedOrigins("FIXME-MF");
-            }
-        };
-    }
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
 
-    	http.headers().frameOptions().disable();
+    	http.cors();
+    	
+    	http.authorizeRequests()
+    	.antMatchers("/api/**").permitAll();
     	
     	http.authorizeRequests()
     			.antMatchers("/h2-console/**").permitAll();
@@ -89,8 +82,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         		.antMatchers("/api/user/**")
         		.access("hasRole('ROLE_USER')");
 
-        http.authorizeRequests()
-        .antMatchers("/api/**").permitAll();
 
         http.authorizeRequests()
                 .anyRequest()
@@ -99,14 +90,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable();
 
-
         http.formLogin()
-                .loginProcessingUrl("/login")
-                .permitAll();
-
+        .loginProcessingUrl("/login")
+        .permitAll();
+        
         http.logout()
-                .logoutUrl("/logout")
-                .permitAll();
+        .logoutUrl("/logout")
+        .permitAll();
+        
 
         http.addFilterAt(
                 usernamePasswordAuthenticationFilter(),
@@ -123,8 +114,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(
                         new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
                 );
+        
 
     }
+    
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
+    
 
     @Bean
     public RoleHierarchy roleHierarchy() {

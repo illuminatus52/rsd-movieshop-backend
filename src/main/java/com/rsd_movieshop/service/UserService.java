@@ -28,7 +28,7 @@ public class UserService {
     		throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
     	}
     	if (userRepo.getById(id) == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with id: " + id + " doesn't existed!");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with id: " + id + " doesn't exist!");
     	}else {
     		try {
     			User user = userRepo.getById(id);
@@ -83,7 +83,7 @@ public class UserService {
 
     public ResponseEntity<String> deleteUser(long id){
     	if (userRepo.getById(id) == null) {
-    		throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
+    		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     	}
         userRepo.deleteById(id);
         return new ResponseEntity<String>("The user with the Id = " + id + " is deleted!", HttpStatus.OK);
