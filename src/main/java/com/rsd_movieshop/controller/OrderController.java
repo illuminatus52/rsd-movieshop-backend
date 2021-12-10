@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/orders")
+@RequestMapping(path = "/api/")
 public class OrderController {
 
 	private final OrderService orderService;
@@ -19,28 +19,28 @@ public class OrderController {
 		this.orderService = orderService;
 	}
 
-	@GetMapping("/{orderID}")
+	@GetMapping("user/{orderID}")
 	public ResponseEntity<Orders> getOrder(@PathVariable long orderID) {
 		return orderService.findOrderById(orderID);
 	}
 
-	@GetMapping
+	@GetMapping("admin/orders")
 	public ResponseEntity<List<Orders>> getOrders() {
 		return orderService.findAllOrders();
 	}
 
-	@PostMapping
+	@PostMapping("user/order/{cartID}")
 	public ResponseEntity<Orders> createNewOrder(@PathVariable long cartID) {
 		return orderService.createOrderFromCart(cartID);
 	}
 
-	@PutMapping(path = "/{orderID}")
+	@PutMapping(path = "admin/{orderID}")
 	public ResponseEntity<Orders> updateOrder(@PathVariable long orderID,
 			@RequestParam OrderStatus orderStatus) {
 		return orderService.updateOrder(orderID, orderStatus);
 	}
 
-	@DeleteMapping("/{orderID}")
+	@DeleteMapping("admin/{orderID}")
 	public ResponseEntity<String> deleteOrder(@PathVariable long orderID) {
 		return orderService.deleteOrder(orderID);
 	}

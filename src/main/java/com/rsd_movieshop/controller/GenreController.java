@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/genre")
+@RequestMapping(path = "/api/")
 public class GenreController {
 
 	private final GenreService genreService;
@@ -18,28 +18,28 @@ public class GenreController {
 		this.genreService = genreService;
 	}
 
-	@GetMapping("/{genreName}")
+	@GetMapping("user/{genreName}")
 	public ResponseEntity<Genre> getGenre(@PathVariable String genreName) {
 		return genreService.findGenreByName(genreName);
 	}
 
-	@GetMapping
+	@GetMapping("user/gerne")
 	public ResponseEntity<List<Genre>> getGenres() {
 		return genreService.findAllGenre();
 	}
 
-	@PostMapping
+	@PostMapping("admin/addGenre")
 	public ResponseEntity<Genre> addNewGenre(@RequestBody String genreName) {
 		return genreService.saveGenre(genreName);
 	}
 
-	@PutMapping(path = "/{genreID}")
+	@PutMapping(path = "admin/{genreID}")
 	public ResponseEntity<Genre> updateGenre(@PathVariable long genreID, @RequestParam String genreName,
 			@RequestParam String movies) {
 		return genreService.updateGenre(genreID, genreName, movies);
 	}
 
-	@DeleteMapping(path = "/{genreID}")
+	@DeleteMapping(path = "admin/{genreID}")
 	public ResponseEntity<String> deleteGenre(@PathVariable int genreID) {
 		return genreService.deleteGenre(genreID);
 	}
