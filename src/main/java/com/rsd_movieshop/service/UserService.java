@@ -27,11 +27,11 @@ public class UserService {
     	if (id <= 0) {
     		throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
     	}
-    	if (userRepo.getById(id) == null) {
+    	if (userRepo.findByUserId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with id: " + id + " doesn't exist!");
     	}else {
     		try {
-    			User user = userRepo.getById(id);
+    			User user = userRepo.findByUserId(id);
     			return new ResponseEntity<User>(user, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -48,7 +48,20 @@ public class UserService {
 		}
     }
 
+    public ResponseEntity<User> updateUser(String username, UserDto userDto) {
+    	if (userRepo.findByUserName(username) != null) {
+    		return saveUser(userDto);
+		} else {
+    		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user  " + username + " doesn't exist!");
+		}
+
+	}
+
+
+
+	//FIXME find user by username for save and update
     public ResponseEntity<User> saveUser(UserDto userDto){
+
     	if (userDto.email == null) {
     		throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
     	}
@@ -82,7 +95,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> deleteUser(long id){
-    	if (userRepo.getById(id) == null) {
+    	if (userRepo.findByUserId(id) == null) {
     		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     	}
         userRepo.deleteById(id);

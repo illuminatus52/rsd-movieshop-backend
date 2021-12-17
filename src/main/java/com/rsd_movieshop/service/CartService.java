@@ -21,11 +21,11 @@ public class CartService {
 	}
 
 	public ResponseEntity<Cart> findCartById(long id) {
-		if (cartRepo.getById(id) == null) {
+		if (cartRepo.findByCartId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no cart with this ID!");
 		} else {
 			try {
-				Cart cart = cartRepo.getById(id);
+				Cart cart = cartRepo.findByCartId(id);
 				return new ResponseEntity<Cart>(cart, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -35,7 +35,7 @@ public class CartService {
 
 	public ResponseEntity<Cart> addCartItem(long id, CartItem item) {
 		try {
-			Cart cart = cartRepo.getById(id);
+			Cart cart = cartRepo.findByCartId(id);
 			List<CartItem> items = cart.getCartItems();
 			items.add(item);
 			cart.setCartItems(items);
@@ -48,7 +48,7 @@ public class CartService {
 	
 	public ResponseEntity<Cart> deleteItem(long id, CartItem item) {
 		try {
-			Cart cart = cartRepo.getById(id);
+			Cart cart = cartRepo.findByCartId(id);
 			List<CartItem> items = cart.getCartItems();
 			items.remove(item);
 			cart.setCartItems(items);

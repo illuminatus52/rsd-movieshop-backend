@@ -18,17 +18,17 @@ public class MovieController {
 		this.movieService = movieService;
 	}
 
-	@GetMapping(path = "movies")
+	@GetMapping(path = "movies/all")
 	public ResponseEntity<List<Movie>> getMovies() {
 		return movieService.findMovies();
 	}
 
-	@GetMapping("movies/{movieID}")
+	@GetMapping(path = "movies/{movieID}")
 	public ResponseEntity<Movie> getMovieDesc(@PathVariable int movieID) {
 		return movieService.findMovieById(movieID);
 	}
 
-	@PostMapping(path = "admin/movies/addMovie")
+	@PostMapping(path = "admin/addMovie")
 	public ResponseEntity<Movie> addNewMovie(@RequestBody Movie newMovie) {
 		return movieService.saveNewMovie(newMovie);
 	}
@@ -40,7 +40,7 @@ public class MovieController {
 		return movieService.updateMovie(movieID, releaseYear, movieStock, title, genres, picture, price);
 	}
 
-	@DeleteMapping("admin/movies/{movieID}")
+	@DeleteMapping(path = "admin/movies/{movieID}")
 	public ResponseEntity<String> deleteMovie(@PathVariable int movieID) {
 		return movieService.deleteMovieById(movieID);
 	}

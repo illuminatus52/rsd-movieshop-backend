@@ -31,10 +31,10 @@ public class OrderService {
 	}
 
 	public ResponseEntity<Orders> findOrderById(long id) {
-		if (orderRepo.getById(id) == null) {
+		if (orderRepo.findByOrderId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The order with id: " + id + " doesn't exist!");
 		} else {
-			Orders order = orderRepo.getById(id);
+			Orders order = orderRepo.findByOrderId(id);
 			return new ResponseEntity<Orders>(order, HttpStatus.OK);
 		}
 	}
@@ -53,7 +53,7 @@ public class OrderService {
 		try {
 			double sum = 0;
 			int newStockQuantity = 0;
-			Cart cart = cartRepo.getById(id);
+			Cart cart = cartRepo.findByCartId(id);
 			List<CartItem> items = cart.getCartItems();
 			Orders order = new Orders(items, userRepo.findByCart_CartId(id));
 			List<CartItem> newCartList = new ArrayList<CartItem>();
@@ -80,18 +80,18 @@ public class OrderService {
 	}
 
 	public ResponseEntity<Orders> updateOrder(long id, OrderStatus orderStatus) {
-		if (orderRepo.getById(id) == null) {
+		if (orderRepo.findByOrderId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "the order with the id: " + id + " doesn't exist!",
 					null);
 		} else {
-			Orders order = orderRepo.getById(id);
+			Orders order = orderRepo.findByOrderId(id);
 			order.setStatus(orderStatus);
 			return new ResponseEntity<Orders>(order, HttpStatus.OK);
 		}
 	}
 
 	public ResponseEntity<String> deleteOrder(long id) {
-		if (orderRepo.getById(id) == null) {
+		if (orderRepo.findByOrderId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "the order with the id: " + id + " doesn't exist!",
 					null);
 		} else {

@@ -21,17 +21,17 @@ public class CartController {
     }
 
 
-    @GetMapping("user/{cartid}")
+    @GetMapping(path = "user/cart/{cartid}")
     public ResponseEntity<Cart> getCart(@PathVariable long cartid) {
         return cartService.findCartById(cartid);
     }
 
-    @PutMapping("user/{cartid}")
+    @PutMapping(path = "user/cart/{cartid}")
     public ResponseEntity<Cart> addCartItem(@PathVariable long cartid, @RequestBody CartItem cartItem) {
         return cartService.addCartItem(cartid, cartItem);
     }
 
-    @DeleteMapping("admin/{cartid}")
+    @DeleteMapping(path = "admin/cart/{cartid}")
     public ResponseEntity<Cart> deleteCartItem(@PathVariable long cartid, @RequestBody CartItem cartItem) {
     	return cartService.deleteItem(cartid, cartItem);
     }

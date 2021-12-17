@@ -18,28 +18,28 @@ public class GenreController {
 		this.genreService = genreService;
 	}
 
-	@GetMapping("{genreName}")
+	@GetMapping(path = "genre/{genreName}")
 	public ResponseEntity<Genre> getGenre(@PathVariable String genreName) {
 		return genreService.findGenreByName(genreName);
 	}
 
-	@GetMapping("genre")
+	@GetMapping(path = "genre/all")
 	public ResponseEntity<List<Genre>> getGenres() {
 		return genreService.findAllGenre();
 	}
 
-	@PostMapping("admin/addGenre")
+	@PostMapping(path = "admin/genre/addGenre")
 	public ResponseEntity<Genre> addNewGenre(@RequestBody String genreName) {
 		return genreService.saveGenre(genreName);
 	}
 
-	@PutMapping(path = "admin/{genreID}")
+	@PutMapping(path = "admin/genre/{genreID}")
 	public ResponseEntity<Genre> updateGenre(@PathVariable long genreID, @RequestParam String genreName,
 			@RequestParam String movies) {
 		return genreService.updateGenre(genreID, genreName, movies);
 	}
 
-	@DeleteMapping(path = "admin/{genreID}")
+	@DeleteMapping(path = "admin/genre/{genreID}")
 	public ResponseEntity<String> deleteGenre(@PathVariable int genreID) {
 		return genreService.deleteGenre(genreID);
 	}

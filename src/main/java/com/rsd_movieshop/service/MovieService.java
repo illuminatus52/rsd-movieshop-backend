@@ -26,10 +26,10 @@ public class MovieService {
 	}
 
 	public ResponseEntity<Movie> findMovieById(long id) {
-		if (movieRepo.getById(id) == null) {
+		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie with id: " + id + " doesn't exist!");
 		} else {
-			Movie movie = movieRepo.getById(id); 
+			Movie movie = movieRepo.findByMovieId(id);
 			return new ResponseEntity<Movie>(movie, HttpStatus.OK);
 		}
 	}
@@ -68,11 +68,11 @@ public class MovieService {
 
 	public ResponseEntity<Movie> updateMovie(long id, int releaseYear, int movieStock, String title, String genres,
 			String pic, double price) {
-		if (movieRepo.getById(id) == null) {
+		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie with id: " + id + " doesn't exist!");
 		} else {
 			try {
-				Movie movie = movieRepo.getById(id);
+				Movie movie = movieRepo.findByMovieId(id);
 				movie.setReleaseYear(releaseYear);
 				movie.setMovieStock(movieStock);
 				movie.setTitle(title);
@@ -100,7 +100,7 @@ public class MovieService {
 	}
 
 	public ResponseEntity<String> deleteMovieById(long id) {
-		if (movieRepo.getById(id) == null) {
+		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		} else {
 			movieRepo.deleteById(id);

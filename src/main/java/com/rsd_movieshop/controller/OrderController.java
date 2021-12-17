@@ -19,28 +19,28 @@ public class OrderController {
 		this.orderService = orderService;
 	}
 
-	@GetMapping("user/{orderID}")
+	@GetMapping(path = "user/orders/{orderID}")
 	public ResponseEntity<Orders> getOrder(@PathVariable long orderID) {
 		return orderService.findOrderById(orderID);
 	}
 
-	@GetMapping("admin/orders")
+	@GetMapping(path = "admin/orders/all")
 	public ResponseEntity<List<Orders>> getOrders() {
 		return orderService.findAllOrders();
 	}
 
-	@PostMapping("user/order/{cartID}")
+	@PostMapping(path = "user/orders/{cartID}")
 	public ResponseEntity<Orders> createNewOrder(@PathVariable long cartID) {
 		return orderService.createOrderFromCart(cartID);
 	}
 
-	@PutMapping(path = "admin/{orderID}")
+	@PutMapping(path = "admin/orders/{orderID}")
 	public ResponseEntity<Orders> updateOrder(@PathVariable long orderID,
 			@RequestParam OrderStatus orderStatus) {
 		return orderService.updateOrder(orderID, orderStatus);
 	}
 
-	@DeleteMapping("admin/{orderID}")
+	@DeleteMapping(path = "admin/orders/{orderID}")
 	public ResponseEntity<String> deleteOrder(@PathVariable long orderID) {
 		return orderService.deleteOrder(orderID);
 	}

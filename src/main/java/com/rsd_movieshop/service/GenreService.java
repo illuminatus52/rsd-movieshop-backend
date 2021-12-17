@@ -56,11 +56,11 @@ public class GenreService {
 	}
 
 	public ResponseEntity<Genre> updateGenre(long id, String genreName, String movies) {
-		if (genreRepo.getById(id) == null) {
+		if (genreRepo.findByGenreId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The genre with id: " + id + " doesn't exist!");
 		} else {
 			try {
-				Genre genre = genreRepo.getById(id);
+				Genre genre = genreRepo.findByGenreId(id);
 				genre.setMovieGenre(genreName);
 				return new ResponseEntity<Genre>(genre, HttpStatus.OK);
 			} catch (Exception e) {
@@ -70,7 +70,7 @@ public class GenreService {
 	}
 
 	public ResponseEntity<String> deleteGenre(long id) {
-		if (genreRepo.getById(id) == null) {
+		if (genreRepo.findByGenreId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		} else {
 			genreRepo.deleteById(id);
