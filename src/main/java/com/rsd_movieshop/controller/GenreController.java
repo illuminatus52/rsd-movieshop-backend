@@ -1,6 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.Genre;
+import com.rsd_movieshop.model.GenreResponse;
 import com.rsd_movieshop.service.GenreService;
 
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,12 @@ public class GenreController {
 	}
 
 	@GetMapping(path = "genre/{genreName}")
-	public ResponseEntity<Genre> getGenre(@PathVariable String genreName) {
+	public ResponseEntity<GenreResponse> getGenre(@PathVariable String genreName) {
 		return genreService.findGenreByName(genreName);
 	}
 
 	@GetMapping(path = "genre/all")
-	public ResponseEntity<List<Genre>> getGenres() {
+	public ResponseEntity<List<GenreResponse>> getGenres() {
 		return genreService.findAllGenre();
 	}
 

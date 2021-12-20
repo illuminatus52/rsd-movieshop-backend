@@ -2,6 +2,7 @@ package com.rsd_movieshop.service;
 
 import com.rsd_movieshop.model.Genre;
 import com.rsd_movieshop.model.Movie;
+import com.rsd_movieshop.model.MovieResponse;
 import com.rsd_movieshop.repository.GenreRepo;
 import com.rsd_movieshop.repository.MovieRepo;
 
@@ -25,19 +26,38 @@ public class MovieService {
 		this.genreRepo = genreRepo;
 	}
 
-	public ResponseEntity<Movie> findMovieById(long id) {
+	public ResponseEntity<MovieResponse> findMovieById(long id) {
 		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie with id: " + id + " doesn't exist!");
 		} else {
 			Movie movie = movieRepo.findByMovieId(id);
-			return new ResponseEntity<Movie>(movie, HttpStatus.OK);
+			MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
+					movie.getPrice(), movie.getMovieStock());
+			List<String> genreList = new ArrayList<>();
+			for (Genre genre : movie.getGenres()) {
+				String name = genre.getName();
+				genreList.add(name);
+			}
+			movieResponse.setGenres(genreList);
+			return new ResponseEntity<MovieResponse>(movieResponse, HttpStatus.OK);
 		}
 	}
 
-	public ResponseEntity<List<Movie>> findMovies() {
+	public ResponseEntity<List<MovieResponse>> findMovies() {
 		try {
-			List<Movie> movies = movieRepo.findAll();
-			return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+			List<MovieResponse> movies = new ArrayList<>();
+			for (Movie movie : movieRepo.findAll()) {
+				MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
+						movie.getPrice(), movie.getMovieStock());
+				List<String> genreList = new ArrayList<>();
+				for (Genre genre : movie.getGenres()) {
+					String name = genre.getName();
+					genreList.add(name);
+				}
+				movieResponse.setGenres(genreList);
+				movies.add(movieResponse);
+			}
+			return new ResponseEntity<List<MovieResponse>>(movies, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -48,15 +68,15 @@ public class MovieService {
 			List<Genre> genres = movie.getGenres();
 			List<Movie> movies = new ArrayList<Movie>();
 			movies.add(movie);
-			for (Genre genre : genres) {
-				Genre genre2 = genreRepo.findGenreByMovieGenre(genre.getMovieGenre());
-				if (genre2 == null) {
-					Genre newGenre = new Genre(genre.getMovieGenre());
-					newGenre.setMovies(movies);
-					genreRepo.save(newGenre);
-				} else {
-					genre2.setMovies(movies);
-					genreRepo.save(genre2);
+			if (genres.size() != 0) {
+				for (Genre genre : genres) {
+					Genre genre2 = genreRepo.findGenreByName(genre.getName());
+					if (genre2 == null) {
+						Genre newGenre = new Genre(genre.getName());
+						newGenre.setMovies(movies);
+					} else {
+						genre2.setMovies(movies);
+					}
 				}
 			}
 			movieRepo.save(movie);
@@ -80,7 +100,7 @@ public class MovieService {
 				movie.setPrice(price);
 				List<String> splitGenres = Arrays.asList(genres.split(","));
 				for (String genre : splitGenres) {
-					Genre genre2 = genreRepo.findGenreByMovieGenre(genre);
+					Genre genre2 = genreRepo.findGenreByName(genre);
 					if (genre2 == null) {
 						Genre genre3 = new Genre(genre);
 						List<Movie> movies = new ArrayList<Movie>();

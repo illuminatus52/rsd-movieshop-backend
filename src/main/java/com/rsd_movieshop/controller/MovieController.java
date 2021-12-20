@@ -1,6 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.Movie;
+import com.rsd_movieshop.model.MovieResponse;
 import com.rsd_movieshop.service.MovieService;
 
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,12 @@ public class MovieController {
 	}
 
 	@GetMapping(path = "movies/all")
-	public ResponseEntity<List<Movie>> getMovies() {
+	public ResponseEntity<List<MovieResponse>> getMovies() {
 		return movieService.findMovies();
 	}
 
 	@GetMapping(path = "movies/{movieID}")
-	public ResponseEntity<Movie> getMovieDesc(@PathVariable int movieID) {
+	public ResponseEntity<MovieResponse> getMovieDesc(@PathVariable int movieID) {
 		return movieService.findMovieById(movieID);
 	}
 

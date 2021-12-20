@@ -81,6 +81,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
         		.antMatchers("/api/user/**")
         		.access("hasRole('ROLE_USER')");
+        
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
 
 
         http.authorizeRequests()

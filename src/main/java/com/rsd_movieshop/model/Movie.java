@@ -21,7 +21,7 @@ public class Movie {
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "movie_genre", joinColumns = @JoinColumn(name = "movieid"), 
 				inverseJoinColumns = @JoinColumn(name = "genreid"))
-	private List<Genre> genres = new ArrayList<>();
+	private List<Genre> genres;
 
 	private String picture;
 	private double price;

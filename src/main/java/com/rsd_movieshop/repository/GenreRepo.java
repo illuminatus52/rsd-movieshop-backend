@@ -9,5 +9,5 @@ public interface GenreRepo extends JpaRepository<Genre, Long> {
 
     Genre findByGenreId(long id);
 
-    Genre findGenreByMovieGenre(String movieGenre);
+    Genre findGenreByName(String genreName);
 }
