@@ -62,40 +62,43 @@ public class MovieService {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
 	}
-	
+
 	public ResponseEntity<MovieResponse> saveNewMovie(Movie movie) {
 		try {
 			List<Genre> genres = new ArrayList<>();
 			for (Genre genre : movie.getGenres()) {
-				Genre exitedGenre = genreRepo.findGenreByName(genre.getName());
-				if (exitedGenre != null) {
-					List<Movie> movies = exitedGenre.getMovies();
-					genres.add(exitedGenre);
-					if (genres.size() == 0) {
-						movie.setGenres(genres);
-					} else {
-						genres = movie.getGenres();
-						genres.add(exitedGenre);
-					}
-					movieRepo.save(movie);
-					movies.add(movie);
-					exitedGenre.setMovies(movies);
-					genreRepo.save(exitedGenre);
-				} else {
-					genreRepo.save(genre);
-					Genre genre2 = genreRepo.findGenreByName(genre.getName());
-					movieRepo.save(movie);
-					List<Movie> movies = new ArrayList<>();
+				Genre genre2 = genreRepo.findGenreByName(genre.getName());
+				if (genre2 != null) {
+					List<Movie> movies = genre2.getMovies();
 					movies.add(movie);
 					genre2.setMovies(movies);
-					genreRepo.save(genre2);
+					genres.add(genre2);
 				}
-				
 			}
-			MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null, movie.getPrice(), movie.getMovieStock());
+			if (genres.size() == movie.getGenres().size()) {
+				movie.setGenres(genres);
+			} if (genres.size() < movie.getGenres().size() &&  genres.size() > 0) {
+				List<Genre> genreList = movie.getGenres();
+				List<Genre> toRemove = new ArrayList<>();
+				List<Genre> toAdd = new ArrayList<>();
+				for (Genre genre : genreList) {
+					for (Genre genre1 : genres) {
+						if (genre.getName().equalsIgnoreCase(genre1.getName())) {
+							toRemove.add(genre);
+							toAdd.add(genre1);
+						}
+					}
+				}
+				genreList.removeAll(toRemove);
+				genreList.addAll(toAdd);
+				movie.setGenres(genreList);
+			}
+			movieRepo.save(movie);
+			MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
+					movie.getPrice(), movie.getMovieStock());
 			List<String> genreList = new ArrayList<>();
-			for (Genre genre : movie.getGenres()) {
-				String name = genre.getName();
+			for (Genre genre1 : movie.getGenres()) {
+				String name = genre1.getName();
 				genreList.add(name);
 			}
 			movieResponse.setGenres(genreList);
@@ -105,8 +108,8 @@ public class MovieService {
 		}
 	}
 
-	public ResponseEntity<MovieResponse> updateMovie(long id, int releaseYear, int movieStock, String title, String genres,
-			String pic, double price) {
+	public ResponseEntity<MovieResponse> updateMovie(long id, int releaseYear, int movieStock, String title,
+			String genres, String pic, double price) {
 		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie with id: " + id + " doesn't exist!");
 		} else {
@@ -139,7 +142,8 @@ public class MovieService {
 				}
 				movie.setGenres(genreList);
 				movieRepo.save(movie);
-				MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null, movie.getPrice(), movie.getMovieStock());
+				MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
+						movie.getPrice(), movie.getMovieStock());
 				List<String> genreStrings = new ArrayList<>();
 				for (Genre genre : movie.getGenres()) {
 					String name = genre.getName();

@@ -59,11 +59,10 @@ public class MovieServiceTest {
 
 	@Test
 	public void testAddMovie() {
-		List<Movie> movies = movieRepo.findAll();	
 		assertTrue(movieRepo.findByMovieId(7).getTitle().equalsIgnoreCase("Movie-01"));
 		assertTrue(movieRepo.findByMovieId(8).getGenres().get(0).getName().equalsIgnoreCase("Genre-03"));
 		assertTrue(movieRepo.findByMovieId(9).getTitle().equalsIgnoreCase("Movie-03"));
-		assertTrue(movieRepo.findByMovieId(9).getGenres().get(0).getMovies().get(1).getTitle()
+		assertTrue(movieRepo.findByMovieId(9).getGenres().get(0).getMovies().get(0).getTitle()
 				.equalsIgnoreCase("Movie-03"));
 	}
 
@@ -78,7 +77,6 @@ public class MovieServiceTest {
 
 	@Test
 	public void deleteMovie() {
-		List<Movie> movies = movieRepo.findAll();	
 		movieService.deleteMovieById(1);
 		assertFalse(movieRepo.findByMovieId(1) != null);
 		assertTrue(movieRepo.findByMovieId(2).getMovieStock() == 3);
@@ -86,7 +84,6 @@ public class MovieServiceTest {
 	
 	@Test
 	public void updateMovie() {
-		List<Movie> movies = movieRepo.findAll();	
 		movieService.updateMovie(4, 2002, 3, "Movie-01", "Genre-01,Genre-03", null, 4.99);
 		assertTrue(movieRepo.findByMovieId(4).getMovieStock() == 3);
 		assertTrue(movieRepo.findByMovieId(4).getPrice() == 4.99);
