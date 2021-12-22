@@ -35,9 +35,8 @@ public class GenreController {
 	}
 
 	@PutMapping(path = "admin/genre/{genreID}")
-	public ResponseEntity<Genre> updateGenre(@PathVariable long genreID, @RequestParam String genreName,
-			@RequestParam String movies) {
-		return genreService.updateGenre(genreID, genreName, movies);
+	public ResponseEntity<Genre> updateGenre(@PathVariable long genreID, @RequestParam String genreName) {
+		return genreService.updateGenre(genreID, genreName);
 	}
 
 	@DeleteMapping(path = "admin/genre/{genreID}")
