@@ -30,12 +30,12 @@ public class MovieController {
 	}
 
 	@PostMapping(path = "admin/addMovie")
-	public ResponseEntity<Movie> addNewMovie(@RequestBody Movie newMovie) {
+	public ResponseEntity<MovieResponse> addNewMovie(@RequestBody Movie newMovie) {
 		return movieService.saveNewMovie(newMovie);
 	}
 
 	@PutMapping(path = "admin/movies/{movieID}")
-	public ResponseEntity<Movie> updateMovie(@PathVariable long movieID, @RequestParam int releaseYear,
+	public ResponseEntity<MovieResponse> updateMovie(@PathVariable long movieID, @RequestParam int releaseYear,
 			@RequestParam int movieStock, @RequestParam String title, @RequestParam String genres,
 			@RequestParam String picture, @RequestParam double price) {
 		return movieService.updateMovie(movieID, releaseYear, movieStock, title, genres, picture, price);
