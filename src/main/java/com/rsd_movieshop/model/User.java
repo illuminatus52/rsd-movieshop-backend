@@ -2,7 +2,6 @@ package com.rsd_movieshop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 import javax.persistence.*;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class User {
 	private String email;
 
 	@Column(nullable = false, unique = true)
-	private String userName;
+	private String username;
 
 	@JsonIgnore
 	@Column(nullable = false)
@@ -33,81 +32,58 @@ public class User {
 	@Column(nullable = false)
 	private String role = "ROLE_USER";
 
-
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinColumn(name = "cart")
 	private Cart cart = new Cart();
-
-	
 
 	public User() {
 		super();
 	}
 
-
-	
-	
-
-	
-	public User(long userId, String familyName, String firstName, String email, String userName, String password) {
+	public User(long userId, String familyName, String firstName, String email, String username, String password) {
 		super();
 		this.userId = userId;
 		this.familyName = familyName;
 		this.firstName = firstName;
 		this.email = email;
-		this.userName = userName;
+		this.username = username;
 		this.password = password;
 	}
 
-
-
-
-
-
-	public User(String familyName, String firstName, String email, String userName, String password, String role) {
+	public User(String familyName, String firstName, String email, String username, String password, String role) {
 		super();
 		this.familyName = familyName;
 		this.firstName = firstName;
 		this.email = email;
-		this.userName = userName;
+		this.username = username;
 		this.password = password;
 		this.role = role;
 	}
 
-
-
-
-
-
-	public User(List<Orders> orders, String familyName, String firstName, String email, String userName,
+	public User(List<Orders> orders, String familyName, String firstName, String email, String username,
 			String password, String role) {
 		super();
 		this.orders = orders;
 		this.familyName = familyName;
 		this.firstName = firstName;
 		this.email = email;
-		this.userName = userName;
+		this.username = username;
 		this.password = password;
 		this.role = role;
 	}
 
-
-
-
-
-	public User(List<Orders> orders, String familyName, String firstName, String email, String userName,
+	public User(List<Orders> orders, String familyName, String firstName, String email, String username,
 			String password, String role, Cart cart) {
 		super();
 		this.orders = orders;
 		this.familyName = familyName;
 		this.firstName = firstName;
 		this.email = email;
-		this.userName = userName;
+		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.cart = cart;
 	}
-
 
 	public long getUserId() {
 		return userId;
@@ -149,12 +125,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -180,5 +156,4 @@ public class User {
 	public void setCart(Cart cart) {
 		this.cart = cart;
 	}
-	
 }

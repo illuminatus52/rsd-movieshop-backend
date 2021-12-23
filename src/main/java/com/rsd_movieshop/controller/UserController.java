@@ -28,8 +28,13 @@ public class UserController {
 	public ResponseEntity<List<User>> getUsers() {
 		return userService.findAllUser();
 	}
+	
+	@GetMapping(path = "user/username/{username}")
+	public ResponseEntity<User> getUserbyUsername(@PathVariable String username) {
+		return userService.findUserByUsername(username);
+	}
 
-	@PostMapping(path = "user/register")
+	@PostMapping(path = "register")
 	public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
 		return userService.saveUser(userDto);
 	}
@@ -37,6 +42,11 @@ public class UserController {
 	@PutMapping(path = "user/{username}")
 	public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody UserDto userDto) {
 		return userService.updateUser(username, userDto);
+	}
+	
+	@PutMapping(path = "admin/changeRole")
+	public ResponseEntity<User> changeRole(String username, String role) {
+		return userService.changeRole(username, role);
 	}
 
 	@DeleteMapping(path = "admin/user/{userID}")
