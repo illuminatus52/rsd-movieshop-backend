@@ -11,6 +11,10 @@ public class GenreResponse {
 	private String name;
 	private List<String> movieList;
 
+	public GenreResponse() {
+		super();
+	}
+
 	public GenreResponse(String name, List<String> movieList) {
 		super();
 		this.name = name;

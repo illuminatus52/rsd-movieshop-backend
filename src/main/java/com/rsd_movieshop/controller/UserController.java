@@ -1,7 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.dto.UserDto;
-import com.rsd_movieshop.model.User;
+import com.rsd_movieshop.model.UserResponse;
 import com.rsd_movieshop.service.UserService;
 
 import org.springframework.http.ResponseEntity;
@@ -20,32 +20,32 @@ public class UserController {
 	}
 	
 	@GetMapping(path = "user/{id}")
-	public ResponseEntity<User> getUser(@PathVariable long id) {
+	public ResponseEntity<UserResponse> getUser(@PathVariable long id) {
 		return userService.findUserById(id);
 	}
 
 	@GetMapping(path = "admin/all")
-	public ResponseEntity<List<User>> getUsers() {
+	public ResponseEntity<List<UserResponse>> getUsers() {
 		return userService.findAllUser();
 	}
 	
 	@GetMapping(path = "user/username/{username}")
-	public ResponseEntity<User> getUserbyUsername(@PathVariable String username) {
+	public ResponseEntity<UserResponse> getUserbyUsername(@PathVariable String username) {
 		return userService.findUserByUsername(username);
 	}
 
 	@PostMapping(path = "register")
-	public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
+	public ResponseEntity<UserResponse> addUser(@RequestBody UserDto userDto) {
 		return userService.saveUser(userDto);
 	}
 
 	@PutMapping(path = "user/{username}")
-	public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody UserDto userDto) {
+	public ResponseEntity<UserResponse> updateUser(@PathVariable String username, @RequestBody UserDto userDto) {
 		return userService.updateUser(username, userDto);
 	}
 	
 	@PutMapping(path = "admin/changeRole")
-	public ResponseEntity<User> changeRole(String username, String role) {
+	public ResponseEntity<UserResponse> changeRole(String username, String role) {
 		return userService.changeRole(username, role);
 	}
 

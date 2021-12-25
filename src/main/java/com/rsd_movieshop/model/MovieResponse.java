@@ -10,6 +10,10 @@ public class MovieResponse {
 	private double price;
 	private int amountInStock;
 
+	public MovieResponse() {
+		super();
+	}
+
 	public MovieResponse(String name, int releaseYear, List<String> genres, double price, int amountInStock) {
 		super();
 		this.name = name;
