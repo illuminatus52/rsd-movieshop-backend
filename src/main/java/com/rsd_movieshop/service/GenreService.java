@@ -27,14 +27,7 @@ public class GenreService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The genre " + genreName + " doesn't exist!");
 		} else {
 			try {
-				Genre genre = genreRepo.findGenreByName(genreName);
-				GenreResponse genreResponse = new GenreResponse(genreName, null);
-				List<String> movies = new ArrayList<>();
-				for (Movie movie : genre.getMovies()) {
-					String movieName = movie.getTitle();
-					movies.add(movieName);
-				}
-				genreResponse.setMovieList(movies);
+				GenreResponse genreResponse = getGenreResponse(genreRepo.findGenreByName(genreName));
 				return new ResponseEntity<>(genreResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -46,37 +39,31 @@ public class GenreService {
 		try {
 			List<GenreResponse> genres = new ArrayList<>();
 			for (Genre genre : genreRepo.findAll()) {
-				GenreResponse genreResponse = new GenreResponse(genre.getName(), null);
-				List<String> movieNames = new ArrayList<>();
-				for (Movie movie: genre.getMovies()) {
-					String name = movie.getTitle();
-					movieNames.add(name);
-				}
-				genreResponse.setMovieList(movieNames);
+				GenreResponse genreResponse = getGenreResponse(genre);
 				genres.add(genreResponse);
 			}
-			
+
 			return new ResponseEntity<>(genres, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
 	}
 
-	public ResponseEntity<Genre> saveGenre(String genreName) {
+	public ResponseEntity<GenreResponse> saveGenre(String genreName) {
 		if (genreRepo.findGenreByName(genreName) != null) {
-			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
-					"The genre " + genreName + " exists already!");
+			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The genre " + genreName + " exists already!");
 		}
 		try {
 			Genre genre = new Genre(genreName);
 			genreRepo.save(genre);
-			return new ResponseEntity<>(genre, HttpStatus.OK);
+			GenreResponse genreResponse = getGenreResponse(genre);
+			return new ResponseEntity<>(genreResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
 	}
 
-	public ResponseEntity<Genre> updateGenre(long id, String genreName) {
+	public ResponseEntity<GenreResponse> updateGenre(long id, String genreName) {
 		if (genreRepo.findByGenreId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The genre with id: " + id + " doesn't exist!");
 		} else {
@@ -84,7 +71,8 @@ public class GenreService {
 				Genre genre = genreRepo.findByGenreId(id);
 				genre.setName(genreName);
 				genreRepo.save(genre);
-				return new ResponseEntity<>(genre, HttpStatus.OK);
+				GenreResponse genreResponse = getGenreResponse(genre);
+				return new ResponseEntity<>(genreResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -100,4 +88,14 @@ public class GenreService {
 		}
 	}
 
+	public GenreResponse getGenreResponse(Genre genre) {
+		GenreResponse genreResponse = new GenreResponse(genre.getName(), null);
+		List<String> movies = new ArrayList<>();
+		for (Movie movie : genre.getMovies()) {
+			String movieName = movie.getTitle();
+			movies.add(movieName);
+		}
+		genreResponse.setMovieList(movies);
+		return genreResponse;
+	}
 }

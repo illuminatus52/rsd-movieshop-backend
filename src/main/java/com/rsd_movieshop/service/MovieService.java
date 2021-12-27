@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -30,15 +29,7 @@ public class MovieService {
 		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie with id: " + id + " doesn't exist!");
 		} else {
-			Movie movie = movieRepo.findByMovieId(id);
-			MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
-					movie.getPrice(), movie.getMovieStock());
-			List<String> genreList = new ArrayList<>();
-			for (Genre genre : movie.getGenres()) {
-				String name = genre.getName();
-				genreList.add(name);
-			}
-			movieResponse.setGenres(genreList);
+			MovieResponse movieResponse = getMovieResponse(movieRepo.findByMovieId(id));
 			return new ResponseEntity<>(movieResponse, HttpStatus.OK);
 		}
 	}
@@ -47,14 +38,7 @@ public class MovieService {
 		try {
 			List<MovieResponse> movies = new ArrayList<>();
 			for (Movie movie : movieRepo.findAll()) {
-				MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
-						movie.getPrice(), movie.getMovieStock());
-				List<String> genreList = new ArrayList<>();
-				for (Genre genre : movie.getGenres()) {
-					String name = genre.getName();
-					genreList.add(name);
-				}
-				movieResponse.setGenres(genreList);
+				MovieResponse movieResponse = getMovieResponse(movie);
 				movies.add(movieResponse);
 			}
 			return new ResponseEntity<>(movies, HttpStatus.OK);
@@ -77,7 +61,8 @@ public class MovieService {
 			}
 			if (genres.size() == movie.getGenres().size()) {
 				movie.setGenres(genres);
-			} if (genres.size() < movie.getGenres().size() &&  genres.size() > 0) {
+			}
+			if (genres.size() < movie.getGenres().size() && genres.size() > 0) {
 				List<Genre> genreList = movie.getGenres();
 				List<Genre> toRemove = new ArrayList<>();
 				List<Genre> toAdd = new ArrayList<>();
@@ -94,14 +79,7 @@ public class MovieService {
 				movie.setGenres(genreList);
 			}
 			movieRepo.save(movie);
-			MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
-					movie.getPrice(), movie.getMovieStock());
-			List<String> genreList = new ArrayList<>();
-			for (Genre genre1 : movie.getGenres()) {
-				String name = genre1.getName();
-				genreList.add(name);
-			}
-			movieResponse.setGenres(genreList);
+			MovieResponse movieResponse = getMovieResponse(movie);
 			return new ResponseEntity<>(movieResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -142,14 +120,7 @@ public class MovieService {
 				}
 				movie.setGenres(genreList);
 				movieRepo.save(movie);
-				MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
-						movie.getPrice(), movie.getMovieStock());
-				List<String> genreStrings = new ArrayList<>();
-				for (Genre genre : movie.getGenres()) {
-					String name = genre.getName();
-					genreStrings.add(name);
-				}
-				movieResponse.setGenres(genreStrings);
+				MovieResponse movieResponse = getMovieResponse(movie);
 				return new ResponseEntity<>(movieResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -173,5 +144,17 @@ public class MovieService {
 			movieRepo.deleteById(id);
 			return new ResponseEntity<>("The movie with id: " + id + " is deleted!", HttpStatus.OK);
 		}
+	}
+
+	public MovieResponse getMovieResponse(Movie movie) {
+		MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
+				movie.getPrice(), movie.getMovieStock());
+		List<String> genreList = new ArrayList<>();
+		for (Genre genre : movie.getGenres()) {
+			String name = genre.getName();
+			genreList.add(name);
+		}
+		movieResponse.setGenres(genreList);
+		return movieResponse;
 	}
 }

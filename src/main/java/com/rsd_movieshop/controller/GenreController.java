@@ -30,12 +30,12 @@ public class GenreController {
 	}
 
 	@PostMapping(path = "admin/genre/addGenre")
-	public ResponseEntity<Genre> addNewGenre(@RequestBody String genreName) {
+	public ResponseEntity<GenreResponse> addNewGenre(@RequestBody String genreName) {
 		return genreService.saveGenre(genreName);
 	}
 
 	@PutMapping(path = "admin/genre/{genreID}")
-	public ResponseEntity<Genre> updateGenre(@PathVariable long genreID, @RequestParam String genreName) {
+	public ResponseEntity<GenreResponse> updateGenre(@PathVariable long genreID, @RequestParam String genreName) {
 		return genreService.updateGenre(genreID, genreName);
 	}
 

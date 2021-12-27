@@ -3,11 +3,11 @@ package com.rsd_movieshop.service;
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
 import com.rsd_movieshop.model.CartItemRequest;
-import com.rsd_movieshop.responseModels.CartResponse;
 import com.rsd_movieshop.model.Movie;
 import com.rsd_movieshop.repository.CartItemRepo;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.MovieRepo;
+import com.rsd_movieshop.responseModels.CartResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +36,7 @@ public class CartService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no cart with this ID!");
 		} else {
 			try {
-				Cart cart = cartRepo.findByCartId(id);
-				CartResponse cartResponse = new CartResponse();
-				cartResponse.setCartId(id);
-				List<String> items = new ArrayList<>();
-				for (CartItem item : cart.getCartItems()) {
-					items.add(item.getMovie().getTitle());
-				}
-				cartResponse.setItems(items);
+				CartResponse cartResponse = getCartResponse(cartRepo.findByCartId(id));
 				return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -66,13 +59,7 @@ public class CartService {
 				cart.setCartItems(items);
 				cartItemRepo.save(item);
 				cartRepo.save(cart);
-				CartResponse cartResponse = new CartResponse();
-				cartResponse.setCartId(id);
-				List<String> itemsList = new ArrayList<>();
-				for (CartItem cartItem : cart.getCartItems()) {
-					itemsList.add(cartItem.getMovie().getTitle());
-				}
-				cartResponse.setItems(itemsList);
+				CartResponse cartResponse = getCartResponse(cart);
 				return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -91,16 +78,21 @@ public class CartService {
 			cart.setCartItems(items);
 			cartRepo.save(cart);
 			cartItemRepo.delete(item);
-			CartResponse cartResponse = new CartResponse();
-			cartResponse.setCartId(cartId);
-			List<String> itemsList = new ArrayList<>();
-			for (CartItem cartItem : cart.getCartItems()) {
-				itemsList.add(cartItem.getMovie().getTitle());
-			}
-			cartResponse.setItems(itemsList);
+			CartResponse cartResponse = getCartResponse(cart);
 			return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
+	}
+	
+	public CartResponse getCartResponse(Cart cart) {
+		CartResponse cartResponse = new CartResponse();
+		cartResponse.setCartId(cart.getCartId());
+		List<String> items = new ArrayList<>();
+		for (CartItem item : cart.getCartItems()) {
+			items.add(item.getMovie().getTitle());
+		}
+		cartResponse.setItems(items);
+		return cartResponse;
 	}
 }

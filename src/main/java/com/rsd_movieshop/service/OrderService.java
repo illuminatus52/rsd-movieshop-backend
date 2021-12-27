@@ -2,12 +2,14 @@ package com.rsd_movieshop.service;
 
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
+import com.rsd_movieshop.model.CartItemRequest;
 import com.rsd_movieshop.model.Movie;
 import com.rsd_movieshop.model.OrderStatus;
 import com.rsd_movieshop.model.Orders;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.OrderRepo;
 import com.rsd_movieshop.repository.UserRepo;
+import com.rsd_movieshop.responseModels.OrderResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,25 +32,29 @@ public class OrderService {
 		this.userRepo = userRepo;
 	}
 
-	public ResponseEntity<Orders> findOrderById(long id) {
+	public ResponseEntity<OrderResponse> findOrderById(long id) {
 		if (orderRepo.findByOrderId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The order with id: " + id + " doesn't exist!");
 		} else {
-			Orders order = orderRepo.findByOrderId(id);
-			return new ResponseEntity<>(order, HttpStatus.OK);
+			OrderResponse orderResponse = getOrderResponse(orderRepo.findByOrderId(id));
+			return new ResponseEntity<>(orderResponse, HttpStatus.OK);
 		}
 	}
 
-	public ResponseEntity<List<Orders>> findAllOrders() {
+	public ResponseEntity<List<OrderResponse>> findAllOrders() {
 		try {
-			List<Orders> orders = orderRepo.findAll();
+			List<OrderResponse> orders = new ArrayList<>();
+			for (Orders order1 : orderRepo.findAll()) {
+				OrderResponse orderResponse = getOrderResponse(order1);
+				orders.add(orderResponse);
+			}
 			return new ResponseEntity<>(orders, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
 	}
 
-	public ResponseEntity<Orders> createOrderFromCart(long id) {
+	public ResponseEntity<OrderResponse> createOrderFromCart(long id) {
 
 		try {
 			double sum = 0;
@@ -72,8 +78,9 @@ public class OrderService {
 			cart.setCartItems(newCartList);
 			cartRepo.save(cart);
 			orderRepo.save(order);
-			//FIXME error handling!
-			return new ResponseEntity<>(order, HttpStatus.OK);
+			// FIXME error handling!
+			OrderResponse orderResponse = getOrderResponse(order);
+			return new ResponseEntity<>(orderResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -98,5 +105,22 @@ public class OrderService {
 			orderRepo.deleteById(id);
 			return new ResponseEntity<>("The order with the id: " + id + " is deleted!", HttpStatus.OK);
 		}
+	}
+
+	public OrderResponse getOrderResponse(Orders order) {
+		OrderResponse orderResponse = new OrderResponse();
+		orderResponse.setOrderId(order.getOrderId());
+		orderResponse.setUserId(order.getUserid().getUserId());
+		orderResponse.setOrderStatus(order.getStatus());
+		orderResponse.setTotalPrice(order.getTotalPrice());
+		List<CartItemRequest> items = new ArrayList<>();
+		for (CartItem cartItem : order.getCartItems()) {
+			CartItemRequest cartItemRequest = new CartItemRequest();
+			cartItemRequest.setMovieName(cartItem.getMovie().getTitle());
+			cartItemRequest.setQuantity(cartItem.getQuantity());
+			items.add(cartItemRequest);
+		}
+		orderResponse.setItems(items);
+		return orderResponse;
 	}
 }

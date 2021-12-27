@@ -3,11 +3,11 @@ package com.rsd_movieshop.service;
 import com.rsd_movieshop.dto.UserDto;
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
-import com.rsd_movieshop.responseModels.CartResponse;
 import com.rsd_movieshop.model.User;
-import com.rsd_movieshop.responseModels.UserResponse;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.UserRepo;
+import com.rsd_movieshop.responseModels.CartResponse;
+import com.rsd_movieshop.responseModels.UserResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,18 +38,7 @@ public class UserService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with id: " + id + " doesn't exist!");
 		} else {
 			try {
-				User user = userRepo.findByUserId(id);
-				UserResponse userResponse = new UserResponse(user.getFirstName(), user.getFamilyName(), user.getEmail(),
-						user.getRole(), null);
-				Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
-				CartResponse cartResponse = new CartResponse();
-				cartResponse.setCartId(cart.getCartId());
-				List<String> items = new ArrayList<>();
-				for (CartItem item : cart.getCartItems()) {
-					items.add(item.getMovie().getTitle());
-				}
-				cartResponse.setItems(items);
-				userResponse.setCartResponse(cartResponse);
+				UserResponse userResponse = getUserResponse(userRepo.findByUserId(id));
 				return new ResponseEntity<>(userResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -64,17 +53,7 @@ public class UserService {
 					"The user with the username: " + username + " doesn't exist!");
 		}
 		try {
-			UserResponse userResponse = new UserResponse(user.getFirstName(), user.getFamilyName(), user.getEmail(),
-					user.getRole(), null);
-			Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
-			CartResponse cartResponse = new CartResponse();
-			cartResponse.setCartId(cart.getCartId());
-			List<String> items = new ArrayList<>();
-			for (CartItem item : cart.getCartItems()) {
-				items.add(item.getMovie().getTitle());
-			}
-			cartResponse.setItems(items);
-			userResponse.setCartResponse(cartResponse);
+			UserResponse userResponse = getUserResponse(user);
 			return new ResponseEntity<>(userResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -86,17 +65,7 @@ public class UserService {
 			List<User> users = userRepo.findAll();
 			List<UserResponse> userResponses = new ArrayList<>();
 			for (User user : users) {
-				UserResponse userResponse = new UserResponse(user.getFirstName(), user.getFamilyName(), user.getEmail(),
-						user.getRole(), null);
-				Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
-				CartResponse cartResponse = new CartResponse();
-				cartResponse.setCartId(cart.getCartId());
-				List<String> items = new ArrayList<>();
-				for (CartItem item : cart.getCartItems()) {
-					items.add(item.getMovie().getTitle());
-				}
-				cartResponse.setItems(items);
-				userResponse.setCartResponse(cartResponse);
+				UserResponse userResponse = getUserResponse(user);
 				userResponses.add(userResponse);
 			}
 			return new ResponseEntity<>(userResponses, HttpStatus.OK);
@@ -129,17 +98,7 @@ public class UserService {
 					user.setEmail(userDto.email);
 				}
 				userRepo.save(user);
-				UserResponse userResponse = new UserResponse(user.getFirstName(), user.getFamilyName(), user.getEmail(),
-						user.getRole(), null);
-				Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
-				CartResponse cartResponse = new CartResponse();
-				cartResponse.setCartId(cart.getCartId());
-				List<String> items = new ArrayList<>();
-				for (CartItem item : cart.getCartItems()) {
-					items.add(item.getMovie().getTitle());
-				}
-				cartResponse.setItems(items);
-				userResponse.setCartResponse(cartResponse);
+				UserResponse userResponse = getUserResponse(user);
 				return new ResponseEntity<>(userResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -177,17 +136,7 @@ public class UserService {
 				String encodedPassword = passwordEncoder.encode(userDto.password);
 				user.setPassword(encodedPassword);
 				userRepo.save(user);
-				UserResponse userResponse = new UserResponse(user.getFirstName(), user.getFamilyName(), user.getEmail(),
-						user.getRole(), null);
-				Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
-				CartResponse cartResponse = new CartResponse();
-				cartResponse.setCartId(cart.getCartId());
-				List<String> items = new ArrayList<>();
-				for (CartItem item : cart.getCartItems()) {
-					items.add(item.getMovie().getTitle());
-				}
-				cartResponse.setItems(items);
-				userResponse.setCartResponse(cartResponse);
+				UserResponse userResponse = getUserResponse(user);
 				return new ResponseEntity<>(userResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -203,17 +152,7 @@ public class UserService {
 			try {
 				user.setRole(role);
 				userRepo.save(user);
-				UserResponse userResponse = new UserResponse(user.getFirstName(), user.getFamilyName(), user.getEmail(),
-						user.getRole(), null);
-				Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
-				CartResponse cartResponse = new CartResponse();
-				cartResponse.setCartId(cart.getCartId());
-				List<String> items = new ArrayList<>();
-				for (CartItem item : cart.getCartItems()) {
-					items.add(item.getMovie().getTitle());
-				}
-				cartResponse.setItems(items);
-				userResponse.setCartResponse(cartResponse);
+				UserResponse userResponse = getUserResponse(user);
 				return new ResponseEntity<>(userResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -230,4 +169,18 @@ public class UserService {
 		return new ResponseEntity<>("The user with the Id = " + id + " is deleted!", HttpStatus.OK);
 	}
 
+	public UserResponse getUserResponse(User user) {
+		UserResponse userResponse = new UserResponse(user.getFirstName(), user.getFamilyName(), user.getEmail(),
+				user.getRole(), null);
+		Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
+		CartResponse cartResponse = new CartResponse();
+		cartResponse.setCartId(cart.getCartId());
+		List<String> items = new ArrayList<>();
+		for (CartItem item : cart.getCartItems()) {
+			items.add(item.getMovie().getTitle());
+		}
+		cartResponse.setItems(items);
+		userResponse.setCartResponse(cartResponse);
+		return userResponse;
+	}
 }
