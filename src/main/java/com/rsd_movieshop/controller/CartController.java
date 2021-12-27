@@ -2,7 +2,7 @@ package com.rsd_movieshop.controller;
 
 
 import com.rsd_movieshop.model.CartItemRequest;
-import com.rsd_movieshop.model.CartResponse;
+import com.rsd_movieshop.responseModels.CartResponse;
 import com.rsd_movieshop.service.CartService;
 
 import org.springframework.http.ResponseEntity;

@@ -3,9 +3,9 @@ package com.rsd_movieshop.service;
 import com.rsd_movieshop.dto.UserDto;
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
-import com.rsd_movieshop.model.CartResponse;
+import com.rsd_movieshop.responseModels.CartResponse;
 import com.rsd_movieshop.model.User;
-import com.rsd_movieshop.model.UserResponse;
+import com.rsd_movieshop.responseModels.UserResponse;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.UserRepo;
 
@@ -50,7 +50,7 @@ public class UserService {
 				}
 				cartResponse.setItems(items);
 				userResponse.setCartResponse(cartResponse);
-				return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+				return new ResponseEntity<>(userResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -75,7 +75,7 @@ public class UserService {
 			}
 			cartResponse.setItems(items);
 			userResponse.setCartResponse(cartResponse);
-			return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+			return new ResponseEntity<>(userResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -99,7 +99,7 @@ public class UserService {
 				userResponse.setCartResponse(cartResponse);
 				userResponses.add(userResponse);
 			}
-			return new ResponseEntity<List<UserResponse>>(userResponses, HttpStatus.OK);
+			return new ResponseEntity<>(userResponses, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -140,7 +140,7 @@ public class UserService {
 				}
 				cartResponse.setItems(items);
 				userResponse.setCartResponse(cartResponse);
-				return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+				return new ResponseEntity<>(userResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -188,7 +188,7 @@ public class UserService {
 				}
 				cartResponse.setItems(items);
 				userResponse.setCartResponse(cartResponse);
-				return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+				return new ResponseEntity<>(userResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -214,7 +214,7 @@ public class UserService {
 				}
 				cartResponse.setItems(items);
 				userResponse.setCartResponse(cartResponse);
-				return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+				return new ResponseEntity<>(userResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -227,7 +227,7 @@ public class UserService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 		userRepo.deleteById(id);
-		return new ResponseEntity<String>("The user with the Id = " + id + " is deleted!", HttpStatus.OK);
+		return new ResponseEntity<>("The user with the Id = " + id + " is deleted!", HttpStatus.OK);
 	}
 
 }

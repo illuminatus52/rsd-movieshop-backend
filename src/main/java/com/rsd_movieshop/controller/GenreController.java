@@ -1,7 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.Genre;
-import com.rsd_movieshop.model.GenreResponse;
+import com.rsd_movieshop.responseModels.GenreResponse;
 import com.rsd_movieshop.service.GenreService;
 
 import org.springframework.http.ResponseEntity;

@@ -35,14 +35,14 @@ public class OrderService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The order with id: " + id + " doesn't exist!");
 		} else {
 			Orders order = orderRepo.findByOrderId(id);
-			return new ResponseEntity<Orders>(order, HttpStatus.OK);
+			return new ResponseEntity<>(order, HttpStatus.OK);
 		}
 	}
 
 	public ResponseEntity<List<Orders>> findAllOrders() {
 		try {
 			List<Orders> orders = orderRepo.findAll();
-			return new ResponseEntity<List<Orders>>(orders, HttpStatus.OK);
+			return new ResponseEntity<>(orders, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -52,11 +52,11 @@ public class OrderService {
 
 		try {
 			double sum = 0;
-			int newStockQuantity = 0;
+			int newStockQuantity;
 			Cart cart = cartRepo.findByCartId(id);
 			List<CartItem> items = cart.getCartItems();
 			Orders order = new Orders(items, userRepo.findByCart_CartId(id));
-			List<CartItem> newCartList = new ArrayList<CartItem>();
+			List<CartItem> newCartList = new ArrayList<>();
 			for (CartItem cartItem : items) {
 				sum += cartItem.getMovie().getPrice();
 				Movie movie = cartItem.getMovie();
@@ -73,7 +73,7 @@ public class OrderService {
 			cartRepo.save(cart);
 			orderRepo.save(order);
 			//FIXME error handling!
-			return new ResponseEntity<Orders>(order, HttpStatus.OK);
+			return new ResponseEntity<>(order, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -86,7 +86,7 @@ public class OrderService {
 		} else {
 			Orders order = orderRepo.findByOrderId(id);
 			order.setStatus(orderStatus);
-			return new ResponseEntity<Orders>(order, HttpStatus.OK);
+			return new ResponseEntity<>(order, HttpStatus.OK);
 		}
 	}
 
@@ -96,7 +96,7 @@ public class OrderService {
 					null);
 		} else {
 			orderRepo.deleteById(id);
-			return new ResponseEntity<String>("The order with the id: " + id + " is deleted!", HttpStatus.OK);
+			return new ResponseEntity<>("The order with the id: " + id + " is deleted!", HttpStatus.OK);
 		}
 	}
 }

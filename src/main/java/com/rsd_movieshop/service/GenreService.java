@@ -1,7 +1,7 @@
 package com.rsd_movieshop.service;
 
 import com.rsd_movieshop.model.Genre;
-import com.rsd_movieshop.model.GenreResponse;
+import com.rsd_movieshop.responseModels.GenreResponse;
 import com.rsd_movieshop.model.Movie;
 import com.rsd_movieshop.repository.GenreRepo;
 
@@ -35,7 +35,7 @@ public class GenreService {
 					movies.add(movieName);
 				}
 				genreResponse.setMovieList(movies);
-				return new ResponseEntity<GenreResponse>(genreResponse, HttpStatus.OK);
+				return new ResponseEntity<>(genreResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -56,7 +56,7 @@ public class GenreService {
 				genres.add(genreResponse);
 			}
 			
-			return new ResponseEntity<List<GenreResponse>>(genres, HttpStatus.OK);
+			return new ResponseEntity<>(genres, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -70,7 +70,7 @@ public class GenreService {
 		try {
 			Genre genre = new Genre(genreName);
 			genreRepo.save(genre);
-			return new ResponseEntity<Genre>(genre, HttpStatus.OK);
+			return new ResponseEntity<>(genre, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -84,7 +84,7 @@ public class GenreService {
 				Genre genre = genreRepo.findByGenreId(id);
 				genre.setName(genreName);
 				genreRepo.save(genre);
-				return new ResponseEntity<Genre>(genre, HttpStatus.OK);
+				return new ResponseEntity<>(genre, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -96,7 +96,7 @@ public class GenreService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		} else {
 			genreRepo.deleteById(id);
-			return new ResponseEntity<String>("The genre with the id: " + id + " is deleted!", HttpStatus.OK);
+			return new ResponseEntity<>("The genre with the id: " + id + " is deleted!", HttpStatus.OK);
 		}
 	}
 

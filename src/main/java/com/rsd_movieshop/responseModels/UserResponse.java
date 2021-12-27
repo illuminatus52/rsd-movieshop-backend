@@ -1,4 +1,4 @@
-package com.rsd_movieshop.model;
+package com.rsd_movieshop.responseModels;
 
 public class UserResponse {
 

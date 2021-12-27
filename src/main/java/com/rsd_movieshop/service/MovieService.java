@@ -2,7 +2,7 @@ package com.rsd_movieshop.service;
 
 import com.rsd_movieshop.model.Genre;
 import com.rsd_movieshop.model.Movie;
-import com.rsd_movieshop.model.MovieResponse;
+import com.rsd_movieshop.responseModels.MovieResponse;
 import com.rsd_movieshop.repository.GenreRepo;
 import com.rsd_movieshop.repository.MovieRepo;
 
@@ -39,7 +39,7 @@ public class MovieService {
 				genreList.add(name);
 			}
 			movieResponse.setGenres(genreList);
-			return new ResponseEntity<MovieResponse>(movieResponse, HttpStatus.OK);
+			return new ResponseEntity<>(movieResponse, HttpStatus.OK);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class MovieService {
 				movieResponse.setGenres(genreList);
 				movies.add(movieResponse);
 			}
-			return new ResponseEntity<List<MovieResponse>>(movies, HttpStatus.OK);
+			return new ResponseEntity<>(movies, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -102,7 +102,7 @@ public class MovieService {
 				genreList.add(name);
 			}
 			movieResponse.setGenres(genreList);
-			return new ResponseEntity<MovieResponse>(movieResponse, HttpStatus.OK);
+			return new ResponseEntity<>(movieResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
@@ -121,13 +121,13 @@ public class MovieService {
 				movie.setPicture(pic);
 				movie.setPrice(price);
 				movie.setGenres(null);
-				List<String> splitGenres = Arrays.asList(genres.split(","));
+				String[] splitGenres = genres.split(",");
 				List<Genre> genreList = new ArrayList<>();
 				for (String genre : splitGenres) {
 					Genre genre2 = genreRepo.findGenreByName(genre);
 					if (genre2 == null) {
 						Genre genre3 = new Genre(genre);
-						List<Movie> movies = new ArrayList<Movie>();
+						List<Movie> movies = new ArrayList<>();
 						movies.add(movie);
 						genre3.setMovies(movies);
 						genreRepo.save(genre3);
@@ -150,7 +150,7 @@ public class MovieService {
 					genreStrings.add(name);
 				}
 				movieResponse.setGenres(genreStrings);
-				return new ResponseEntity<MovieResponse>(movieResponse, HttpStatus.OK);
+				return new ResponseEntity<>(movieResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -171,7 +171,7 @@ public class MovieService {
 			}
 			movie.setGenres(null);
 			movieRepo.deleteById(id);
-			return new ResponseEntity<String>("The movie with id: " + id + " is deleted!", HttpStatus.OK);
+			return new ResponseEntity<>("The movie with id: " + id + " is deleted!", HttpStatus.OK);
 		}
 	}
 }

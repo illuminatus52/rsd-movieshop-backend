@@ -1,7 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.dto.UserDto;
-import com.rsd_movieshop.model.UserResponse;
+import com.rsd_movieshop.responseModels.UserResponse;
 import com.rsd_movieshop.service.UserService;
 
 import org.springframework.http.ResponseEntity;

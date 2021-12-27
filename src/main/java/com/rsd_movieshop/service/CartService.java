@@ -3,7 +3,7 @@ package com.rsd_movieshop.service;
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
 import com.rsd_movieshop.model.CartItemRequest;
-import com.rsd_movieshop.model.CartResponse;
+import com.rsd_movieshop.responseModels.CartResponse;
 import com.rsd_movieshop.model.Movie;
 import com.rsd_movieshop.repository.CartItemRepo;
 import com.rsd_movieshop.repository.CartRepo;
@@ -44,7 +44,7 @@ public class CartService {
 					items.add(item.getMovie().getTitle());
 				}
 				cartResponse.setItems(items);
-				return new ResponseEntity<CartResponse>(cartResponse, HttpStatus.OK);
+				return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -73,7 +73,7 @@ public class CartService {
 					itemsList.add(cartItem.getMovie().getTitle());
 				}
 				cartResponse.setItems(itemsList);
-				return new ResponseEntity<CartResponse>(cartResponse, HttpStatus.OK);
+				return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 			}
@@ -98,7 +98,7 @@ public class CartService {
 				itemsList.add(cartItem.getMovie().getTitle());
 			}
 			cartResponse.setItems(itemsList);
-			return new ResponseEntity<CartResponse>(cartResponse, HttpStatus.OK);
+			return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
