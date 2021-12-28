@@ -5,13 +5,13 @@ import java.util.List;
 public class CartResponse {
 
 	private long cartId;
-	private List<String> items;
+	private List<CartItemResponse> items;
 
 	public CartResponse() {
 		super();
 	}
 
-	public CartResponse(long cartId, List<String> items) {
+	public CartResponse(long cartId, List<CartItemResponse> items) {
 		super();
 		this.cartId = cartId;
 		this.items = items;
@@ -25,12 +25,11 @@ public class CartResponse {
 		this.cartId = cartId;
 	}
 
-	public List<String> getItems() {
+	public List<CartItemResponse> getItems() {
 		return items;
 	}
 
-	public void setItems(List<String> items) {
+	public void setItems(List<CartItemResponse> items) {
 		this.items = items;
 	}
-
 }

@@ -64,20 +64,24 @@ public class OrderService {
 			Orders order = new Orders(items, userRepo.findByCart_CartId(id));
 			List<CartItem> newCartList = new ArrayList<>();
 			for (CartItem cartItem : items) {
-				sum += cartItem.getMovie().getPrice();
 				Movie movie = cartItem.getMovie();
 				if (movie.getMovieStock() < cartItem.getQuantity()) {
-					newStockQuantity = movie.getMovieStock();
+					cartItem.setQuantity(movie.getMovieStock());
+					movie.setMovieStock(0);
+					newStockQuantity = 0;
 				} else {
 					newStockQuantity = movie.getMovieStock() - cartItem.getQuantity();
 				}
+				sum += cartItem.getMovie().getPrice() * cartItem.getQuantity();
 				movie.setMovieStock(newStockQuantity);
+				cartItem.setOrder(order);
 				cartItem.setMovie(movie);
+				cartItem.setCart(null);
 			}
 			order.setTotalPrice(sum);
 			cart.setCartItems(newCartList);
-			cartRepo.save(cart);
 			orderRepo.save(order);
+			cartRepo.save(cart);
 			// FIXME error handling!
 			OrderResponse orderResponse = getOrderResponse(order);
 			return new ResponseEntity<>(orderResponse, HttpStatus.OK);
@@ -86,14 +90,16 @@ public class OrderService {
 		}
 	}
 
-	public ResponseEntity<Orders> updateOrder(long id, OrderStatus orderStatus) {
+	public ResponseEntity<OrderResponse> updateOrder(long id, OrderStatus orderStatus) {
 		if (orderRepo.findByOrderId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "the order with the id: " + id + " doesn't exist!",
 					null);
 		} else {
 			Orders order = orderRepo.findByOrderId(id);
 			order.setStatus(orderStatus);
-			return new ResponseEntity<>(order, HttpStatus.OK);
+			orderRepo.save(order);
+			OrderResponse orderResponse = getOrderResponse(order);
+			return new ResponseEntity<>(orderResponse, HttpStatus.OK);
 		}
 	}
 

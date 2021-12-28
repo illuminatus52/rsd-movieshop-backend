@@ -7,6 +7,7 @@ import com.rsd_movieshop.model.Movie;
 import com.rsd_movieshop.repository.CartItemRepo;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.MovieRepo;
+import com.rsd_movieshop.responseModels.CartItemResponse;
 import com.rsd_movieshop.responseModels.CartResponse;
 
 import java.util.ArrayList;
@@ -55,7 +56,18 @@ public class CartService {
 				}
 				CartItem item = new CartItem(movie, cart, quantity);
 				List<CartItem> items = cart.getCartItems();
-				items.add(item);
+				if (items.size() > 0) {
+					for (CartItem cartItem : items) {
+						if (cartItem.getMovie().getTitle().equalsIgnoreCase(cartItemRequest.getMovieName())) {
+							cartItem.setQuantity(cartItem.getQuantity() + quantity);
+							item = cartItem;
+						} else {
+							items.add(item);
+						}
+					}
+				} else {
+					items.add(item);
+				}
 				cart.setCartItems(items);
 				cartItemRepo.save(item);
 				cartRepo.save(cart);
@@ -84,13 +96,14 @@ public class CartService {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
 	}
-	
+
 	public CartResponse getCartResponse(Cart cart) {
 		CartResponse cartResponse = new CartResponse();
 		cartResponse.setCartId(cart.getCartId());
-		List<String> items = new ArrayList<>();
+		List<CartItemResponse> items = new ArrayList<>();
 		for (CartItem item : cart.getCartItems()) {
-			items.add(item.getMovie().getTitle());
+			CartItemResponse itemResponse = new CartItemResponse(item.getMovie().getTitle(), item.getQuantity());
+			items.add(itemResponse);
 		}
 		cartResponse.setItems(items);
 		return cartResponse;

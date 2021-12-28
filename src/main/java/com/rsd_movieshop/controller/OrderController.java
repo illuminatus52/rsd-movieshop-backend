@@ -1,7 +1,6 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.OrderStatus;
-import com.rsd_movieshop.model.Orders;
 import com.rsd_movieshop.responseModels.OrderResponse;
 import com.rsd_movieshop.service.OrderService;
 

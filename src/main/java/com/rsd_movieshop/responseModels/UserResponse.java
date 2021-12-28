@@ -6,19 +6,19 @@ public class UserResponse {
 	private String lastName;
 	private String email;
 	private String role;
-	private CartResponse cartResponse;
+	private CartResponse cart;
 
 	public UserResponse() {
 		super();
 	}
 
-	public UserResponse(String firstName, String lastName, String email, String role, CartResponse cartResponse) {
+	public UserResponse(String firstName, String lastName, String email, String role, CartResponse cart) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.role = role;
-		this.cartResponse = cartResponse;
+		this.cart = cart;
 	}
 
 	public String getFirstName() {
@@ -53,12 +53,12 @@ public class UserResponse {
 		this.role = role;
 	}
 
-	public CartResponse getCartResponse() {
-		return cartResponse;
+	public CartResponse getCart() {
+		return cart;
 	}
 
-	public void setCartResponse(CartResponse cartResponse) {
-		this.cartResponse = cartResponse;
+	public void setCart(CartResponse cart) {
+		this.cart = cart;
 	}
 
 }

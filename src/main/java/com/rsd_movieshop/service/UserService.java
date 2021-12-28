@@ -6,6 +6,7 @@ import com.rsd_movieshop.model.CartItem;
 import com.rsd_movieshop.model.User;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.UserRepo;
+import com.rsd_movieshop.responseModels.CartItemResponse;
 import com.rsd_movieshop.responseModels.CartResponse;
 import com.rsd_movieshop.responseModels.UserResponse;
 
@@ -175,12 +176,13 @@ public class UserService {
 		Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
 		CartResponse cartResponse = new CartResponse();
 		cartResponse.setCartId(cart.getCartId());
-		List<String> items = new ArrayList<>();
+		List<CartItemResponse> items = new ArrayList<>();
 		for (CartItem item : cart.getCartItems()) {
-			items.add(item.getMovie().getTitle());
+			CartItemResponse itemResponse = new CartItemResponse(item.getMovie().getTitle(), item.getQuantity());
+			items.add(itemResponse);
 		}
 		cartResponse.setItems(items);
-		userResponse.setCartResponse(cartResponse);
+		userResponse.setCart(cartResponse);
 		return userResponse;
 	}
 }
