@@ -4,9 +4,11 @@ import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
 import com.rsd_movieshop.model.CartItemRequest;
 import com.rsd_movieshop.model.Movie;
+import com.rsd_movieshop.model.User;
 import com.rsd_movieshop.repository.CartItemRepo;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.MovieRepo;
+import com.rsd_movieshop.repository.UserRepo;
 import com.rsd_movieshop.responseModels.CartItemResponse;
 import com.rsd_movieshop.responseModels.CartResponse;
 
@@ -24,20 +26,23 @@ public class CartService {
 	private final CartRepo cartRepo;
 	private final CartItemRepo cartItemRepo;
 	private final MovieRepo movieRepo;
+	private final UserRepo userRepo;
 
-	public CartService(CartRepo cartRepo, CartItemRepo cartItemRepo, MovieRepo movieRepo) {
+	public CartService(CartRepo cartRepo, CartItemRepo cartItemRepo, MovieRepo movieRepo, UserRepo userRepo) {
 		super();
 		this.cartRepo = cartRepo;
 		this.cartItemRepo = cartItemRepo;
 		this.movieRepo = movieRepo;
+		this.userRepo = userRepo;
 	}
 
-	public ResponseEntity<CartResponse> findCartById(long id) {
+	public ResponseEntity<CartResponse> findCartById(long id, String username) {
 		if (cartRepo.findByCartId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no cart with this ID!");
 		} else {
 			try {
-				CartResponse cartResponse = getCartResponse(cartRepo.findByCartId(id));
+				Cart cart = userCheck(username, id);
+				CartResponse cartResponse = getCartResponse(cart);
 				return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -45,11 +50,11 @@ public class CartService {
 		}
 	}
 
-	public ResponseEntity<CartResponse> addCartItem(long id, CartItemRequest cartItemRequest) {
+	public ResponseEntity<CartResponse> addCartItem(long id, String username, CartItemRequest cartItemRequest) {
 		Movie movie = movieRepo.findMovieByTitle(cartItemRequest.getMovieName());
 		if (movie.getMovieStock() > 0) {
 			try {
-				Cart cart = cartRepo.findByCartId(id);
+				Cart cart = userCheck(username, id);
 				int quantity = cartItemRequest.getQuantity();
 				if (quantity > movie.getMovieStock()) {
 					quantity = movie.getMovieStock();
@@ -107,5 +112,15 @@ public class CartService {
 		}
 		cartResponse.setItems(items);
 		return cartResponse;
+	}
+
+	public Cart userCheck(String username, long cartId) {
+		User user = userRepo.findByUsername(username);
+		if (user.getCart().getCartId() != cartId) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		} else {
+			Cart cart = cartRepo.findByCartId(cartId);
+			return cart;
+		}
 	}
 }

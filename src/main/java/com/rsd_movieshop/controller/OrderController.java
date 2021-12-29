@@ -19,9 +19,9 @@ public class OrderController {
 		this.orderService = orderService;
 	}
 
-	@GetMapping(path = "user/orders/{orderID}")
-	public ResponseEntity<OrderResponse> getOrder(@PathVariable long orderID) {
-		return orderService.findOrderById(orderID);
+	@GetMapping(path = "user/{username}/orders/{orderID}")
+	public ResponseEntity<OrderResponse> getOrder(@PathVariable String username, @PathVariable long orderID) {
+		return orderService.findOrderById(orderID,username);
 	}
 
 	@GetMapping(path = "admin/orders/all")
@@ -29,9 +29,9 @@ public class OrderController {
 		return orderService.findAllOrders();
 	}
 
-	@PostMapping(path = "user/orders/{cartID}")
-	public ResponseEntity<OrderResponse> createNewOrder(@PathVariable long cartID) {
-		return orderService.createOrderFromCart(cartID);
+	@PostMapping(path = "user/{username}/orders/{cartID}")
+	public ResponseEntity<OrderResponse> createNewOrder(@PathVariable String username, @PathVariable long cartID) {
+		return orderService.createOrderFromCart(cartID, username);
 	}
 
 	@PutMapping(path = "admin/orders/{orderID}")

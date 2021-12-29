@@ -6,6 +6,7 @@ import com.rsd_movieshop.model.CartItemRequest;
 import com.rsd_movieshop.model.Movie;
 import com.rsd_movieshop.model.OrderStatus;
 import com.rsd_movieshop.model.Orders;
+import com.rsd_movieshop.model.User;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.OrderRepo;
 import com.rsd_movieshop.repository.UserRepo;
@@ -32,11 +33,12 @@ public class OrderService {
 		this.userRepo = userRepo;
 	}
 
-	public ResponseEntity<OrderResponse> findOrderById(long id) {
+	public ResponseEntity<OrderResponse> findOrderById(long id, String username) {
 		if (orderRepo.findByOrderId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The order with id: " + id + " doesn't exist!");
 		} else {
-			OrderResponse orderResponse = getOrderResponse(orderRepo.findByOrderId(id));
+			Orders order = checkOrder(username, id);
+			OrderResponse orderResponse = getOrderResponse(order);
 			return new ResponseEntity<>(orderResponse, HttpStatus.OK);
 		}
 	}
@@ -54,12 +56,12 @@ public class OrderService {
 		}
 	}
 
-	public ResponseEntity<OrderResponse> createOrderFromCart(long id) {
+	public ResponseEntity<OrderResponse> createOrderFromCart(long id, String username) {
 
 		try {
 			double sum = 0;
 			int newStockQuantity;
-			Cart cart = cartRepo.findByCartId(id);
+			Cart cart = userCheck(username, id);
 			List<CartItem> items = cart.getCartItems();
 			Orders order = new Orders(items, userRepo.findByCart_CartId(id));
 			List<CartItem> newCartList = new ArrayList<>();
@@ -129,4 +131,24 @@ public class OrderService {
 		orderResponse.setItems(items);
 		return orderResponse;
 	}
+	
+	public Cart userCheck(String username, long cartId) {
+		User user = userRepo.findByUsername(username);
+		if (user.getCart().getCartId() != cartId) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		} else {
+			Cart cart = cartRepo.findByCartId(cartId);
+			return cart;
+		}
+	}
+	
+	public Orders checkOrder(String username, long OrderId) {
+		Orders order = orderRepo.findByOrderId(OrderId);
+		if (!order.getUserid().getUsername().equalsIgnoreCase(username)) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		} else {
+			return order;
+		}
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.Movie;
+import com.rsd_movieshop.model.MovieRequest;
 import com.rsd_movieshop.responseModels.MovieResponse;
 import com.rsd_movieshop.service.MovieService;
 
@@ -35,10 +36,8 @@ public class MovieController {
 	}
 
 	@PutMapping(path = "admin/movies/{movieID}")
-	public ResponseEntity<MovieResponse> updateMovie(@PathVariable long movieID, @RequestParam int releaseYear,
-			@RequestParam int movieStock, @RequestParam String title, @RequestParam String genres,
-			@RequestParam String picture, @RequestParam double price) {
-		return movieService.updateMovie(movieID, releaseYear, movieStock, title, genres, picture, price);
+	public ResponseEntity<MovieResponse> updateMovie(@PathVariable long movieID, @RequestBody MovieRequest movie) {
+		return movieService.updateMovie(movieID, movie);
 	}
 
 	@DeleteMapping(path = "admin/movies/{movieID}")

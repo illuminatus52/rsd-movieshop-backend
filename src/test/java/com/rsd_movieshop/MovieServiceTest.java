@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.rsd_movieshop.model.Genre;
 import com.rsd_movieshop.model.Movie;
+import com.rsd_movieshop.model.MovieRequest;
 import com.rsd_movieshop.repository.MovieRepo;
 import com.rsd_movieshop.service.MovieService;
 
@@ -84,7 +85,8 @@ public class MovieServiceTest {
 	
 	@Test
 	public void updateMovie() {
-		movieService.updateMovie(4, 2002, 3, "Movie-01", "Genre-01,Genre-03", null, 4.99);
+		MovieRequest movieRequest = new MovieRequest("Movie-01", 2002, 3, "Genre-01,Genre-03", null, 4.99);
+		movieService.updateMovie(4, movieRequest);
 		assertTrue(movieRepo.findByMovieId(4).getMovieStock() == 3);
 		assertTrue(movieRepo.findByMovieId(4).getPrice() == 4.99);
 		

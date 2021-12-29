@@ -71,8 +71,8 @@ public class OrderServiceTest {
 	@Test
 	public void createNewOrder() {
 		CartItemRequest request = new CartItemRequest("Movie-01", 1);
-		cartService.addCartItem(1, request);
-		orderService.createOrderFromCart(1);
+		cartService.addCartItem(1, "username1", request);
+		orderService.createOrderFromCart(1, "username1");
 		List<Orders> orders = orderRepo.findAll();
 		List<Cart> list = cartRepo.findAll();
 		assertNotEquals(orders.size(), 0);
