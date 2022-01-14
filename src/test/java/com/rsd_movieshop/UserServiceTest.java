@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.rsd_movieshop.dto.UserDto;
+import com.rsd_movieshop.model.ChangeRoleRequest;
 import com.rsd_movieshop.model.User;
 import com.rsd_movieshop.repository.UserRepo;
 import com.rsd_movieshop.service.UserService;
@@ -62,7 +63,8 @@ public class UserServiceTest {
 
 	@Test
 	public void changeRole() {
-		userService.changeRole("username1", "ROLE_ADMIN");
+		ChangeRoleRequest request = new ChangeRoleRequest("username1", "ROLE_ADMIN");
+		userService.changeRole(request);
 		User user = userRepo.findByUsername("username1");
 		assertTrue(user.getRole().equalsIgnoreCase("ROLE_ADMIN"));
 	}

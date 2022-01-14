@@ -1,6 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.dto.UserDto;
+import com.rsd_movieshop.model.ChangeRoleRequest;
 import com.rsd_movieshop.responseModels.UserResponse;
 import com.rsd_movieshop.service.UserService;
 
@@ -45,8 +46,8 @@ public class UserController {
 	}
 	
 	@PutMapping(path = "admin/changeRole")
-	public ResponseEntity<UserResponse> changeRole(String username, String role) {
-		return userService.changeRole(username, role);
+	public ResponseEntity<UserResponse> changeRole(@RequestBody ChangeRoleRequest request) {
+		return userService.changeRole(request);
 	}
 
 	@DeleteMapping(path = "admin/user/{userID}")

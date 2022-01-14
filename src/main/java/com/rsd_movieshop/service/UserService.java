@@ -3,6 +3,7 @@ package com.rsd_movieshop.service;
 import com.rsd_movieshop.dto.UserDto;
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
+import com.rsd_movieshop.model.ChangeRoleRequest;
 import com.rsd_movieshop.model.User;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.UserRepo;
@@ -145,13 +146,13 @@ public class UserService {
 		}
 	}
 
-	public ResponseEntity<UserResponse> changeRole(String username, String role) {
-		User user = userRepo.findByUsername(username);
+	public ResponseEntity<UserResponse> changeRole(ChangeRoleRequest request) {
+		User user = userRepo.findByUsername(request.getUsername());
 		if (user == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user  " + username + " doesn't exist!");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user  " + request.getUsername() + " doesn't exist!");
 		} else {
 			try {
-				user.setRole(role);
+				user.setRole(request.getRole());
 				userRepo.save(user);
 				UserResponse userResponse = getUserResponse(user);
 				return new ResponseEntity<>(userResponse, HttpStatus.OK);
