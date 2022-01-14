@@ -18,7 +18,7 @@ public class Movie {
 	private int movieStock;
 	private String title;
 
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
 	@JoinTable(name = "movie_genre", joinColumns = @JoinColumn(name = "movieid"), 
 				inverseJoinColumns = @JoinColumn(name = "genreid"))
 	private List<Genre> genres = new ArrayList<>();

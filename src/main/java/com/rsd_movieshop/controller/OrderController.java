@@ -1,7 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.model.OrderStatus;
-import com.rsd_movieshop.model.Orders;
+import com.rsd_movieshop.responseModels.OrderResponse;
 import com.rsd_movieshop.service.OrderService;
 
 import org.springframework.http.ResponseEntity;
@@ -19,28 +19,28 @@ public class OrderController {
 		this.orderService = orderService;
 	}
 
-	@GetMapping("user/{orderID}")
-	public ResponseEntity<Orders> getOrder(@PathVariable long orderID) {
-		return orderService.findOrderById(orderID);
+	@GetMapping(path = "user/{username}/orders/{orderID}")
+	public ResponseEntity<OrderResponse> getOrder(@PathVariable String username, @PathVariable long orderID) {
+		return orderService.findOrderById(orderID,username);
 	}
 
-	@GetMapping("admin/orders")
-	public ResponseEntity<List<Orders>> getOrders() {
+	@GetMapping(path = "admin/orders/all")
+	public ResponseEntity<List<OrderResponse>> getOrders() {
 		return orderService.findAllOrders();
 	}
 
-	@PostMapping("user/order/{cartID}")
-	public ResponseEntity<Orders> createNewOrder(@PathVariable long cartID) {
-		return orderService.createOrderFromCart(cartID);
+	@PostMapping(path = "user/{username}/orders/{cartID}")
+	public ResponseEntity<OrderResponse> createNewOrder(@PathVariable String username, @PathVariable long cartID) {
+		return orderService.createOrderFromCart(cartID, username);
 	}
 
-	@PutMapping(path = "admin/{orderID}")
-	public ResponseEntity<Orders> updateOrder(@PathVariable long orderID,
+	@PutMapping(path = "admin/orders/{orderID}")
+	public ResponseEntity<OrderResponse> updateOrder(@PathVariable long orderID,
 			@RequestParam OrderStatus orderStatus) {
 		return orderService.updateOrder(orderID, orderStatus);
 	}
 
-	@DeleteMapping("admin/{orderID}")
+	@DeleteMapping(path = "admin/orders/{orderID}")
 	public ResponseEntity<String> deleteOrder(@PathVariable long orderID) {
 		return orderService.deleteOrder(orderID);
 	}

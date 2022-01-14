@@ -1,7 +1,8 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.dto.UserDto;
-import com.rsd_movieshop.model.User;
+import com.rsd_movieshop.model.ChangeRoleRequest;
+import com.rsd_movieshop.responseModels.UserResponse;
 import com.rsd_movieshop.service.UserService;
 
 import org.springframework.http.ResponseEntity;
@@ -18,28 +19,38 @@ public class UserController {
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
+	
+	@GetMapping(path = "user/{id}")
+	public ResponseEntity<UserResponse> getUser(@PathVariable long id) {
+		return userService.findUserById(id);
+	}
 
-	@GetMapping(path = "admin/all-users")
-	public ResponseEntity<List<User>> getUsers() {
+	@GetMapping(path = "admin/all")
+	public ResponseEntity<List<UserResponse>> getUsers() {
 		return userService.findAllUser();
 	}
-
-	@GetMapping(path = "user/{userID}")
-	public ResponseEntity<User> getUser(@PathVariable int userID) {
-		return userService.findUserById(userID);
+	
+	@GetMapping(path = "user/username/{username}")
+	public ResponseEntity<UserResponse> getUserbyUsername(@PathVariable String username) {
+		return userService.findUserByUsername(username);
 	}
 
-	@PostMapping(path = "user/register")
-	public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
+	@PostMapping(path = "register")
+	public ResponseEntity<UserResponse> addUser(@RequestBody UserDto userDto) {
 		return userService.saveUser(userDto);
 	}
 
-	@PutMapping(path = "user/{userID}")
-	public ResponseEntity<User> updateUser(@PathVariable int userID, @RequestBody UserDto userDto) {
-		return userService.saveUser(userDto);
+	@PutMapping(path = "user/{username}")
+	public ResponseEntity<UserResponse> updateUser(@PathVariable String username, @RequestBody UserDto userDto) {
+		return userService.updateUser(username, userDto);
+	}
+	
+	@PutMapping(path = "admin/changeRole")
+	public ResponseEntity<UserResponse> changeRole(@RequestBody ChangeRoleRequest request) {
+		return userService.changeRole(request);
 	}
 
-	@DeleteMapping("user/{userID}")
+	@DeleteMapping(path = "admin/user/{userID}")
 	public ResponseEntity<String> deleteUser(@PathVariable int userID) {
 		return userService.deleteUser(userID);
 	}

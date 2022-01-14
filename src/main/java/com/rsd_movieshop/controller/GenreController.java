@@ -1,6 +1,6 @@
 package com.rsd_movieshop.controller;
 
-import com.rsd_movieshop.model.Genre;
+import com.rsd_movieshop.responseModels.GenreResponse;
 import com.rsd_movieshop.service.GenreService;
 
 import org.springframework.http.ResponseEntity;
@@ -18,28 +18,27 @@ public class GenreController {
 		this.genreService = genreService;
 	}
 
-	@GetMapping("{genreName}")
-	public ResponseEntity<Genre> getGenre(@PathVariable String genreName) {
+	@GetMapping(path = "genre/{genreName}")
+	public ResponseEntity<GenreResponse> getGenre(@PathVariable String genreName) {
 		return genreService.findGenreByName(genreName);
 	}
 
-	@GetMapping("genre")
-	public ResponseEntity<List<Genre>> getGenres() {
+	@GetMapping(path = "genre/all")
+	public ResponseEntity<List<GenreResponse>> getGenres() {
 		return genreService.findAllGenre();
 	}
 
-	@PostMapping("admin/addGenre")
-	public ResponseEntity<Genre> addNewGenre(@RequestBody String genreName) {
+	@PostMapping(path = "admin/genre/addGenre")
+	public ResponseEntity<GenreResponse> addNewGenre(@RequestBody String genreName) {
 		return genreService.saveGenre(genreName);
 	}
 
-	@PutMapping(path = "admin/{genreID}")
-	public ResponseEntity<Genre> updateGenre(@PathVariable long genreID, @RequestParam String genreName,
-			@RequestParam String movies) {
-		return genreService.updateGenre(genreID, genreName, movies);
+	@PutMapping(path = "admin/genre/{genreID}")
+	public ResponseEntity<GenreResponse> updateGenre(@PathVariable long genreID, @RequestParam String genreName) {
+		return genreService.updateGenre(genreID, genreName);
 	}
 
-	@DeleteMapping(path = "admin/{genreID}")
+	@DeleteMapping(path = "admin/genre/{genreID}")
 	public ResponseEntity<String> deleteGenre(@PathVariable int genreID) {
 		return genreService.deleteGenre(genreID);
 	}
