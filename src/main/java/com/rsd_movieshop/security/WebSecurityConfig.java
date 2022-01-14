@@ -70,11 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	
         configurationForCors.applyPermitDefaultValues();
         configurationForCors.setAllowedOrigins(List.of("http://localhost:63343/", "http://localhost:63342/"));
-        configurationForCors.setAllowedHeaders(List.of(""));
-        configurationForCors.setExposedHeaders(List.of(""));
+        configurationForCors.setAllowedHeaders(List.of("*"));
+        configurationForCors.setExposedHeaders(List.of("*"));
         configurationForCors.setAllowCredentials(true);
         
-        http.cors().configurationSource(request -> configurationForCors);
+        http.cors().configurationSource(request -> configurationForCors)
+        .and().sessionManagement();
     	
     	
     	http.authorizeRequests()
