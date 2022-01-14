@@ -7,12 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.rsd_movieshop.model.Genre;
 import com.rsd_movieshop.repository.GenreRepo;
 import com.rsd_movieshop.service.GenreService;
 
 @SpringBootTest
+@ActiveProfiles("h2")
 public class GenreServiceTest {
 	
 	@Autowired

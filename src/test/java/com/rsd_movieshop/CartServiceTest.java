@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.rsd_movieshop.dto.UserDto;
 import com.rsd_movieshop.model.Cart;
@@ -24,6 +25,7 @@ import com.rsd_movieshop.service.MovieService;
 import com.rsd_movieshop.service.UserService;
 
 @SpringBootTest
+@ActiveProfiles("h2")
 @Transactional
 public class CartServiceTest {
 
