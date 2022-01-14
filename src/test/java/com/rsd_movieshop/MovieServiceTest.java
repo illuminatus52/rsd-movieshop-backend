@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.rsd_movieshop.model.Genre;
 import com.rsd_movieshop.model.Movie;
@@ -20,6 +21,7 @@ import com.rsd_movieshop.repository.MovieRepo;
 import com.rsd_movieshop.service.MovieService;
 
 @SpringBootTest
+@ActiveProfiles("h2")
 @Transactional
 public class MovieServiceTest {
 
