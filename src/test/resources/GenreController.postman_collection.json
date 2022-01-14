@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "edddb193-0c5d-4402-a2ec-0723ef7b06aa",
+		"name": "GenreController",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetAllGenres",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/genre/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"genre",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetGenreByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/genre/Genre-2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"genre",
+						"Genre-2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddNewGenre1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "Genre-1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/genre/addGenre",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"genre",
+						"addGenre"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddNewGenre2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "Genre-2",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/genre/addGenre",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"genre",
+						"addGenre"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateGenre",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/admin/genre/1?genreName=Genre-3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"genre",
+						"1"
+					],
+					"query": [
+						{
+							"key": "genreName",
+							"value": "Genre-3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteGenre",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/admin/genre/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"genre",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
