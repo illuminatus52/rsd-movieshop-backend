@@ -4,6 +4,7 @@ import java.util.List;
 
 public class MovieResponse {
 
+	private long movieId;
 	private String name;
 	private int releaseYear;
 	private List<String> genres;
@@ -12,6 +13,15 @@ public class MovieResponse {
 
 	public MovieResponse() {
 		super();
+	}
+
+	public MovieResponse(long movieId, String name, int releaseYear, List<String> genres, double price, int amountInStock) {
+		this.movieId = movieId;
+		this.name = name;
+		this.releaseYear = releaseYear;
+		this.genres = genres;
+		this.price = price;
+		this.amountInStock = amountInStock;
 	}
 
 	public MovieResponse(String name, int releaseYear, List<String> genres, double price, int amountInStock) {
@@ -63,4 +73,11 @@ public class MovieResponse {
 		this.amountInStock = amountInStock;
 	}
 
+	public long getMovieId() {
+		return movieId;
+	}
+
+	public void setMovieId(long movieId) {
+		this.movieId = movieId;
+	}
 }

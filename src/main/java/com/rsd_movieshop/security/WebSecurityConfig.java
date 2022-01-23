@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -72,6 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configurationForCors.setAllowedOrigins(List.of("http://localhost:63343/", "http://localhost:63342/"));
         configurationForCors.setAllowedHeaders(List.of("*"));
         configurationForCors.setExposedHeaders(List.of("*"));
+		configurationForCors.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
         configurationForCors.setAllowCredentials(true);
         
         http.cors().configurationSource(request -> configurationForCors)

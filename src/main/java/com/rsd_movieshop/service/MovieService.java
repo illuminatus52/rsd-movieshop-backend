@@ -160,7 +160,7 @@ public class MovieService {
 	}
 
 	public MovieResponse getMovieResponse(Movie movie) {
-		MovieResponse movieResponse = new MovieResponse(movie.getTitle(), movie.getReleaseYear(), null,
+		MovieResponse movieResponse = new MovieResponse(movie.getMovieID(),movie.getTitle(), movie.getReleaseYear(), null,
 				movie.getPrice(), movie.getMovieStock());
 		List<String> genreList = new ArrayList<>();
 		for (Genre genre : movie.getGenres()) {
