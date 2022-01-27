@@ -17,15 +17,15 @@ import java.util.List;
 
 @Service
 public class MovieService {
-
+	
 	private final MovieRepo movieRepo;
 	private final GenreRepo genreRepo;
-
+	
 	public MovieService(MovieRepo movieRepo, GenreRepo genreRepo) {
 		this.movieRepo = movieRepo;
 		this.genreRepo = genreRepo;
 	}
-
+	
 	public ResponseEntity<MovieResponse> findMovieById(long id) {
 		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie with id: " + id + " doesn't exist!");
@@ -34,7 +34,7 @@ public class MovieService {
 			return new ResponseEntity<>(movieResponse, HttpStatus.OK);
 		}
 	}
-
+	
 	public ResponseEntity<List<MovieResponse>> findMovies() {
 		try {
 			List<MovieResponse> movies = new ArrayList<>();
@@ -47,12 +47,14 @@ public class MovieService {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
 	}
-
+	
 	public ResponseEntity<MovieResponse> saveNewMovie(Movie movie) {
 		try {
 			List<Genre> genres = new ArrayList<>();
+			
 			for (Genre genre : movie.getGenres()) {
 				Genre genre2 = genreRepo.findGenreByName(genre.getName());
+				
 				if (genre2 != null) {
 					List<Movie> movies = genre2.getMovies();
 					movies.add(movie);
@@ -60,15 +62,20 @@ public class MovieService {
 					genres.add(genre2);
 				}
 			}
+			
 			if (genres.size() == movie.getGenres().size()) {
 				movie.setGenres(genres);
 			}
+			
 			if (genres.size() < movie.getGenres().size() && genres.size() > 0) {
 				List<Genre> genreList = movie.getGenres();
 				List<Genre> toRemove = new ArrayList<>();
 				List<Genre> toAdd = new ArrayList<>();
+				
 				for (Genre genre : genreList) {
+					
 					for (Genre genre1 : genres) {
+						
 						if (genre.getName().equalsIgnoreCase(genre1.getName())) {
 							toRemove.add(genre);
 							toAdd.add(genre1);
@@ -81,40 +88,49 @@ public class MovieService {
 			}
 			movieRepo.save(movie);
 			MovieResponse movieResponse = getMovieResponse(movie);
+			
 			return new ResponseEntity<>(movieResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
 	}
-
+	
 	public ResponseEntity<MovieResponse> updateMovie(long id, MovieRequest movieRequest) {
 		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie with id: " + id + " doesn't exist!");
 		} else {
 			try {
 				Movie movie = movieRepo.findByMovieId(id);
+				
 				if (movieRequest.getReleaseYear() > 0) {
 					movie.setReleaseYear(movieRequest.getReleaseYear());
 				}
+				
 				if (movieRequest.getName() != null) {
 					movie.setTitle(movieRequest.getName());
 				}
+				
 				if (movieRequest.getStock() > 0) {
 					movie.setMovieStock(movieRequest.getStock());
 				}
+				
 				if (movieRequest.getPicture() != null) {
 					movie.setPicture(movieRequest.getPicture());
 				}
+				
 				if (movieRequest.getPrice() > 0) {
 					movie.setPrice(movieRequest.getPrice());
 				}
 				String genres = movieRequest.getGenres();
+				
 				if (genres != null) {
 					movie.setGenres(null);
 					String[] splitGenres = genres.split(",");
 					List<Genre> genreList = new ArrayList<>();
+					
 					for (String genre : splitGenres) {
 						Genre genre2 = genreRepo.findGenreByName(genre);
+						
 						if (genre2 == null) {
 							Genre genre3 = new Genre(genre);
 							List<Movie> movies = new ArrayList<>();
@@ -140,13 +156,14 @@ public class MovieService {
 			}
 		}
 	}
-
+	
 	public ResponseEntity<String> deleteMovieById(long id) {
 		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		} else {
 			Movie movie = movieRepo.findByMovieId(id);
 			List<Genre> genres = movie.getGenres();
+			
 			for (Genre genre : genres) {
 				List<Movie> movies = genre.getMovies();
 				movies.remove(movie);
@@ -158,12 +175,18 @@ public class MovieService {
 			return new ResponseEntity<>("The movie with id: " + id + " is deleted!", HttpStatus.OK);
 		}
 	}
-
+	
 	public MovieResponse getMovieResponse(Movie movie) {
-		MovieResponse movieResponse = new MovieResponse(movie.getMovieID(),movie.getTitle(), movie.getReleaseYear(), null,
-				movie.getPrice(), movie.getMovieStock());
+		MovieResponse movieResponse = new MovieResponse(
+				movie.getMovieID(),
+				movie.getTitle(),
+				movie.getReleaseYear(),
+				null,
+				movie.getPrice(),
+				movie.getMovieStock());
+		
 		movieResponse.setMovieUrl(movie.getPicture());
-
+		
 		List<String> genreList = new ArrayList<>();
 		for (Genre genre : movie.getGenres()) {
 			String name = genre.getName();

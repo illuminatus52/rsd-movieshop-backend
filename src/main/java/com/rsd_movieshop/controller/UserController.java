@@ -13,9 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/")
 public class UserController {
-
+	
 	private final UserService userService;
-
+	
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
@@ -24,7 +24,7 @@ public class UserController {
 	public ResponseEntity<UserResponse> getUser(@PathVariable long id) {
 		return userService.findUserById(id);
 	}
-
+	
 	@GetMapping(path = "admin/all")
 	public ResponseEntity<List<UserResponse>> getUsers() {
 		return userService.findAllUser();
@@ -34,14 +34,16 @@ public class UserController {
 	public ResponseEntity<UserResponse> getUserbyUsername(@PathVariable String username) {
 		return userService.findUserByUsername(username);
 	}
-
+	
 	@PostMapping(path = "register")
 	public ResponseEntity<UserResponse> addUser(@RequestBody UserDto userDto) {
 		return userService.saveUser(userDto);
 	}
-
+	
 	@PutMapping(path = "user/{username}")
-	public ResponseEntity<UserResponse> updateUser(@PathVariable String username, @RequestBody UserDto userDto) {
+	public ResponseEntity<UserResponse> updateUser(
+			@PathVariable String username,
+			@RequestBody UserDto userDto) {
 		return userService.updateUser(username, userDto);
 	}
 	
@@ -49,7 +51,7 @@ public class UserController {
 	public ResponseEntity<UserResponse> changeRole(@RequestBody ChangeRoleRequest request) {
 		return userService.changeRole(request);
 	}
-
+	
 	@DeleteMapping(path = "admin/user/{userID}")
 	public ResponseEntity<String> deleteUser(@PathVariable int userID) {
 		return userService.deleteUser(userID);

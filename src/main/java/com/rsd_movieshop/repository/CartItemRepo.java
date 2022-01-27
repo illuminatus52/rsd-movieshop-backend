@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.rsd_movieshop.model.CartItem;
 
 @Repository
-public interface CartItemRepo extends JpaRepository<CartItem, Long>{
-
+public interface CartItemRepo extends JpaRepository<CartItem, Long> {
 	CartItem findByItemId(long id);
 }

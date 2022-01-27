@@ -9,20 +9,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
-    private final UserRepo userRepo;
-
-    public CustomUserDetailsService(UserRepo userRepo) {
-        this.userRepo = userRepo;
-    }
-
-
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = this.userRepo.findByUsername(s);
-        if (null == user) {
-            throw new UsernameNotFoundException(s);
-        }
-        return new CustomUserDetails(user);
-    }
+	
+	private final UserRepo userRepo;
+	
+	public CustomUserDetailsService(UserRepo userRepo) {
+		this.userRepo = userRepo;
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+		User user = this.userRepo.findByUsername(s);
+		if (null == user) {
+			throw new UsernameNotFoundException(s);
+		}
+		return new CustomUserDetails(user);
+	}
 }

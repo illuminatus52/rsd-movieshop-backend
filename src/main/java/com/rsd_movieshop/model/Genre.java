@@ -16,24 +16,23 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "genre")
 public class Genre {
+	
 	@Id
 	@SequenceGenerator(name = "genre_seq", allocationSize = 1)
 	@GeneratedValue(generator = "genre_seq")
 	@Column(name = "genre_id")
 	private long genreId;
-
+	
 	@Column(name = "Genre_Name", unique = true)
 	private String name;
-
-	@ManyToMany(mappedBy = "genres", cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
-	private List<Movie> movies = new ArrayList<>();
-
 	
-
+	@ManyToMany(mappedBy = "genres", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	private List<Movie> movies = new ArrayList<>();
+	
 	public Genre() {
 		super();
 	}
-
+	
 	public Genre(String movieGenre, List<Movie> movies) {
 		this.name = movieGenre;
 		this.movies = movies;
@@ -42,7 +41,7 @@ public class Genre {
 	public Genre(String movieGenre) {
 		this.name = movieGenre;
 	}
-
+	
 	public long getGenreID() {
 		return genreId;
 	}
@@ -58,14 +57,12 @@ public class Genre {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public List<Movie> getMovies() {
 		return movies;
 	}
-
+	
 	public void setMovies(List<Movie> movies) {
 		this.movies = movies;
 	}
-
-	
 }

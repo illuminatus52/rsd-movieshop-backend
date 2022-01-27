@@ -14,24 +14,23 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
-    private static final String ERROR_MESSAGE = "ERROR!";
-
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
-        String requestBody;
-
-        try{
-            requestBody = request.getReader().lines().collect(Collectors.joining());
-            LoginRequest loginRequest = new ObjectMapper().readValue(requestBody, LoginRequest.class);
-
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password);
-            return this.getAuthenticationManager().authenticate(authenticationToken);
-        } catch (IOException e) {
-            throw new InternalAuthenticationServiceException(ERROR_MESSAGE, e);
-        }
-
-    }
+	
+	private static final String ERROR_MESSAGE = "ERROR!";
+	
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException {
+		String requestBody;
+		
+		try {
+			requestBody = request.getReader().lines().collect(Collectors.joining());
+			LoginRequest loginRequest = new ObjectMapper().readValue(requestBody, LoginRequest.class);
+			
+			UsernamePasswordAuthenticationToken authenticationToken =
+					new UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password);
+			return this.getAuthenticationManager().authenticate(authenticationToken);
+		} catch (IOException e) {
+			throw new InternalAuthenticationServiceException(ERROR_MESSAGE, e);
+		}
+	}
 }
