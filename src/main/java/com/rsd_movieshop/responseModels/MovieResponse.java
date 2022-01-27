@@ -6,6 +6,7 @@ public class MovieResponse {
 
 	private long movieId;
 	private String name;
+	private String movieUrl;
 	private int releaseYear;
 	private List<String> genres;
 	private double price;
@@ -47,6 +48,14 @@ public class MovieResponse {
 
 	public void setReleaseYear(int releaseYear) {
 		this.releaseYear = releaseYear;
+	}
+
+	public String getMovieUrl() {
+		return movieUrl;
+	}
+
+	public void setMovieUrl(String movieUrl) {
+		this.movieUrl = movieUrl;
 	}
 
 	public List<String> getGenres() {

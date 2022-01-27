@@ -162,6 +162,8 @@ public class MovieService {
 	public MovieResponse getMovieResponse(Movie movie) {
 		MovieResponse movieResponse = new MovieResponse(movie.getMovieID(),movie.getTitle(), movie.getReleaseYear(), null,
 				movie.getPrice(), movie.getMovieStock());
+		movieResponse.setMovieUrl(movie.getPicture());
+
 		List<String> genreList = new ArrayList<>();
 		for (Genre genre : movie.getGenres()) {
 			String name = genre.getName();
