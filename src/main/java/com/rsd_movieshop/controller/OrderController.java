@@ -1,49 +1,52 @@
 package com.rsd_movieshop.controller;
 
-import com.rsd_movieshop.model.Order;
+import com.rsd_movieshop.model.OrderStatus;
+import com.rsd_movieshop.responseModels.OrderResponse;
 import com.rsd_movieshop.service.OrderService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping(path = "/orders")
+@RequestMapping(path = "/api/")
 public class OrderController {
-
+	
 	private final OrderService orderService;
-
+	
 	public OrderController(OrderService orderService) {
 		this.orderService = orderService;
 	}
-
-
-	@GetMapping("/{orderID}")
-	public Order getOrder(@PathVariable int orderID) {
-		// get specific order
-		return null;
+	
+	@GetMapping(path = "user/{username}/orders/{orderID}")
+	public ResponseEntity<OrderResponse> getOrder(
+			@PathVariable String username,
+			@PathVariable long orderID) {
+		return orderService.findOrderById(orderID, username);
 	}
 	
-	@GetMapping
-	public ArrayList<Order> getOrders() {
-		// return all orders (admin only)
-		System.out.println("OrderController: getOrders");
-		return null;
+	@GetMapping(path = "admin/orders/all")
+	public ResponseEntity<List<OrderResponse>> getOrders() {
+		return orderService.findAllOrders();
 	}
 	
-	@PostMapping
-	public void addNewOrder(@RequestBody Order order) {
-		// add Order from Cart
+	@PostMapping(path = "user/{username}/orders/{cartID}")
+	public ResponseEntity<OrderResponse> createNewOrder(
+			@PathVariable String username,
+			@PathVariable long cartID) {
+		return orderService.createOrderFromCart(cartID, username);
 	}
 	
-	@PutMapping(path = "/{orderID}")
-	public void updateOrder(@PathVariable int orderID) {
-		// update specific order (admin only)
-		System.out.println("OrderController: updateOrder");
+	@PutMapping(path = "admin/orders/{orderID}")
+	public ResponseEntity<OrderResponse> updateOrder(
+			@PathVariable long orderID,
+			@RequestParam OrderStatus orderStatus) {
+		return orderService.updateOrder(orderID, orderStatus);
 	}
 	
-	@DeleteMapping("/{orderID}")
-	public void deleteOrder(@PathVariable int orderID) {
-		// delete specific order (admin only)
-		System.out.println("OrderController: deleteOrder");
+	@DeleteMapping(path = "admin/orders/{orderID}")
+	public ResponseEntity<String> deleteOrder(@PathVariable long orderID) {
+		return orderService.deleteOrder(orderID);
 	}
 }

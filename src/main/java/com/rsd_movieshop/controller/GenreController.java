@@ -1,49 +1,47 @@
 package com.rsd_movieshop.controller;
 
-import com.rsd_movieshop.model.Genre;
+import com.rsd_movieshop.responseModels.GenreResponse;
 import com.rsd_movieshop.service.GenreService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping(path = "/genre")
+@RequestMapping(path = "/api/")
 public class GenreController {
-
+	
 	private final GenreService genreService;
-
-
+	
 	public GenreController(GenreService genreService) {
 		this.genreService = genreService;
 	}
-
-
-	@GetMapping("/{genreID}")
-	public Genre getGenre (@PathVariable int genreID){
-		// return specific genre
-		System.out.println("GenreController: ");
-		return null;
+	
+	@GetMapping(path = "genre/{genreName}")
+	public ResponseEntity<GenreResponse> getGenre(@PathVariable String genreName) {
+		return genreService.findGenreByName(genreName);
 	}
 	
-	@GetMapping
-	public ArrayList<Genre> getGenres() {
-		// return all orders
-		System.out.println("GenreController: getAllOrders");
-		return null;
+	@GetMapping(path = "genre/all")
+	public ResponseEntity<List<GenreResponse>> getGenres() {
+		return genreService.findAllGenre();
 	}
 	
-	@PostMapping
-	public void addNewGenre(@RequestBody Genre genre) {
-		System.out.println("GenreController: addNewGenre");
+	@PostMapping(path = "admin/genre/addGenre")
+	public ResponseEntity<GenreResponse> addNewGenre(@RequestBody String genreName) {
+		return genreService.saveGenre(genreName);
 	}
 	
-	@PutMapping(path = "/{genreID}")
-	public void updateGenre(@PathVariable int genreID) {
-		System.out.println("GenreController: updateGenre");
+	@PutMapping(path = "admin/genre/{genreID}")
+	public ResponseEntity<GenreResponse> updateGenre(
+			@PathVariable long genreID,
+			@RequestParam String genreName) {
+		return genreService.updateGenre(genreID, genreName);
 	}
 	
-	@DeleteMapping(path = "/{genreID}")
-	public void deleteGenre(@PathVariable int genreID) {
-		System.out.println("GenreController: deleteGenre");
+	@DeleteMapping(path = "admin/genre/{genreID}")
+	public ResponseEntity<String> deleteGenre(@PathVariable int genreID) {
+		return genreService.deleteGenre(genreID);
 	}
 }

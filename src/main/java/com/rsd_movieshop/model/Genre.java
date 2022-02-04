@@ -1,56 +1,68 @@
 package com.rsd_movieshop.model;
 
-import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "Genre")
+@Table(name = "genre")
 public class Genre {
+	
 	@Id
-	@Column(name = "genreid")
-	private int genreID;
-
-	private String movieGenre;
-
-	@ManyToMany(mappedBy = "genres")
-	private Set<Movie> movies = new HashSet<>();
-
+	@SequenceGenerator(name = "genre_seq", allocationSize = 1)
+	@GeneratedValue(generator = "genre_seq")
+	@Column(name = "genre_id")
+	private long genreId;
+	
+	@Column(name = "Genre_Name", unique = true)
+	private String name;
+	
+	@ManyToMany(mappedBy = "genres", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	private List<Movie> movies = new ArrayList<>();
+	
 	public Genre() {
+		super();
 	}
-
-	public Genre(int genreID, String movieGenre) {
-		this.genreID = genreID;
-		this.movieGenre = movieGenre;
+	
+	public Genre(String movieGenre, List<Movie> movies) {
+		this.name = movieGenre;
+		this.movies = movies;
 	}
-
+	
 	public Genre(String movieGenre) {
-		this.movieGenre = movieGenre;
-	}
-
-	public int getGenreID() {
-		return genreID;
+		this.name = movieGenre;
 	}
 	
-	public void setGenreID(int genreID) {
-		this.genreID = genreID;
+	public long getGenreID() {
+		return genreId;
 	}
 	
-	public String getMovieGenre() {
-		return movieGenre;
+	public void setGenreID(long genreID) {
+		this.genreId = genreID;
 	}
 	
-	public void setMovieGenre(String movieGenre) {
-		this.movieGenre = movieGenre;
+	public String getName() {
+		return name;
 	}
 	
-	@Override
-	public String toString() {
-		return "Genre{" +
-				"genreID=" + genreID +
-				", movieGenre='" + movieGenre + '\'' +
-				'}';
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public List<Movie> getMovies() {
+		return movies;
+	}
+	
+	public void setMovies(List<Movie> movies) {
+		this.movies = movies;
 	}
 }
