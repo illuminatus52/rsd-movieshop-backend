@@ -70,7 +70,7 @@ public class CartServiceTest {
 
 	@Test
 	public void addItemTest() {
-		CartItemRequest request = new CartItemRequest("Movie-01", 1);
+		CartItemRequest request = new CartItemRequest(2L, 1);
 		cartService.addCartItem(2, "username1", request);
 		Cart cart = cartRepo.findByCartId(2);
 		assertTrue(cart.getCartItems().get(0).getMovie() == movie01);
@@ -79,7 +79,7 @@ public class CartServiceTest {
 	
 	@Test
 	public void deleteItem() {
-		CartItemRequest request = new CartItemRequest("Movie-01", 1);
+		CartItemRequest request = new CartItemRequest(3L, 1);
 		cartService.addCartItem(3, "username1", request);
 		Cart cart = cartRepo.findByCartId(3);
 		assertTrue(cart.getCartItems().get(0).getMovie() == movie01);

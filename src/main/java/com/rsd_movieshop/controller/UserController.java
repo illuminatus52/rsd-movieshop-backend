@@ -20,9 +20,9 @@ public class UserController {
 		this.userService = userService;
 	}
 	
-	@GetMapping(path = "user/{id}")
-	public ResponseEntity<UserResponse> getUser(@PathVariable long id) {
-		return userService.findUserById(id);
+	@GetMapping(path = "user/{username}/user/{id}")
+	public ResponseEntity<UserResponse> getUser(@PathVariable String username, @PathVariable long id) {
+		return userService.findUserById(id, username);
 	}
 	
 	@GetMapping(path = "admin/all")
@@ -50,6 +50,11 @@ public class UserController {
 	@PutMapping(path = "admin/changeRole")
 	public ResponseEntity<UserResponse> changeRole(@RequestBody ChangeRoleRequest request) {
 		return userService.changeRole(request);
+	}
+	
+	@PostMapping(path = "admin/{username}/")
+	public ResponseEntity<UserResponse> enableAndDisableUser(@PathVariable String username, @RequestParam boolean isEnable) {
+		return userService.enableAndDisablebUser(username, isEnable);
 	}
 	
 	@DeleteMapping(path = "admin/user/{userID}")

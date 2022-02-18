@@ -1,6 +1,12 @@
 package com.rsd_movieshop.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 
 import java.util.*;
 
@@ -13,9 +19,13 @@ public class Movie {
 	@GeneratedValue(generator = "movie_seq")
 	@Column(name = "movie_id")
 	private long movieId;
+	private String imdbId;
 	
 	private int releaseYear;
 	private int movieStock;
+	@NotNull(message = "Movie title is mandatory")
+	@NotEmpty(message = "Movie title is mandatory")
+	@NotBlank(message = "Movie title is mandatory")
 	private String title;
 	
 	@ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
@@ -24,6 +34,9 @@ public class Movie {
 	private List<Genre> genres = new ArrayList<>();
 	
 	private String picture;
+	
+	@DecimalMin(value = "0.1", message = "price is too low!")
+	@DecimalMax(value = "1000", message = "price is too high!")
 	private double price;
 	
 	public Movie() {
@@ -39,6 +52,22 @@ public class Movie {
 		this.price = price;
 	}
 	
+	
+	
+	public Movie(String imdbId, int releaseYear, int movieStock,
+			@NotNull(message = "Movie title is mandatory") @NotEmpty(message = "Movie title is mandatory") @NotBlank(message = "Movie title is mandatory") String title,
+			List<Genre> genres, String picture,
+			@DecimalMin(value = "0.1", message = "price is too low!") @DecimalMax(value = "1000", message = "price is too high!") double price) {
+		super();
+		this.imdbId = imdbId;
+		this.releaseYear = releaseYear;
+		this.movieStock = movieStock;
+		this.title = title;
+		this.genres = genres;
+		this.picture = picture;
+		this.price = price;
+	}
+
 	public long getMovieID() {
 		return movieId;
 	}
@@ -47,6 +76,14 @@ public class Movie {
 		this.movieId = movieID;
 	}
 	
+	public String getImdbId() {
+		return imdbId;
+	}
+
+	public void setImdbId(String imdbId) {
+		this.imdbId = imdbId;
+	}
+
 	public String getTitle() {
 		return title;
 	}

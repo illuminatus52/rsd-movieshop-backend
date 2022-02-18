@@ -51,7 +51,8 @@ public class CartService {
 	}
 	
 	public ResponseEntity<CartResponse> addCartItem(long id, String username, CartItemRequest cartItemRequest) {
-		Movie movie = movieRepo.findMovieByTitle(cartItemRequest.getMovieName());
+		List<Movie> movies = movieRepo.findAll();
+		Movie movie = movieRepo.findByMovieId(cartItemRequest.getMovieID());
 		
 		if (movie.getMovieStock() > 0) {
 			try {
@@ -66,7 +67,7 @@ public class CartService {
 				
 				if (items.size() > 0) {
 					for (CartItem cartItem : items) {
-						if (cartItem.getMovie().getTitle().equalsIgnoreCase(cartItemRequest.getMovieName())) {
+						if (cartItem.getMovie().getMovieID() == cartItemRequest.getMovieID()) {
 							cartItem.setQuantity(cartItem.getQuantity() + quantity);
 							item = cartItem;
 						} else {
@@ -123,6 +124,7 @@ public class CartService {
 	}
 	
 	public Cart userCheck(String username, long cartId) {
+		List<User> list = userRepo.findAll();
 		User user = userRepo.findByUsername(username);
 		
 		if (user.getCart().getCartId() != cartId) {
