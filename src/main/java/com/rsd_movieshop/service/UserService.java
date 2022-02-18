@@ -110,6 +110,9 @@ public class UserService {
 				if (userDto.email != null || userDto.email.isEmpty()) {
 					user.setEmail(userDto.email);
 				}
+				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+				String encodedPassword = passwordEncoder.encode(userDto.password);
+				user.setPassword(encodedPassword);
 				userRepo.save(user);
 				UserResponse userResponse = getUserResponse(user);
 				return new ResponseEntity<>(userResponse, HttpStatus.OK);
