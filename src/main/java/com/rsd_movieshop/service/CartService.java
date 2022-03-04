@@ -42,7 +42,7 @@ public class CartService {
 		} else {
 			try {
 				Cart cart = userCheck(username, id);
-				CartResponse cartResponse = getCartResponse(cart);
+				CartResponse cartResponse = getCartResponse(cart.getCartId());
 				return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -91,7 +91,7 @@ public class CartService {
 				}
 				cart.setCartItems(itemsAlreadyExist);
 				cartRepo.save(cart);
-				CartResponse cartResponse = getCartResponse(cart);
+				CartResponse cartResponse = getCartResponse(id);
 
 				return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 			} catch (Exception e) {
@@ -102,16 +102,16 @@ public class CartService {
 		}
 	}
 
-	public ResponseEntity<CartResponse> deleteItem(long cartId, long itemId) {
+	public ResponseEntity<CartResponse> deleteItem(long cartId, String username, long itemId) {
 		try {
-			Cart cart = cartRepo.findByCartId(cartId);
+			Cart cart = userCheck(username, cartId);
 			CartItem item = cartItemRepo.findByItemId(itemId);
 			List<CartItem> items = cart.getCartItems();
 			items.remove(item);
 			cart.setCartItems(items);
 			cartRepo.save(cart);
 			cartItemRepo.delete(item);
-			CartResponse cartResponse = getCartResponse(cart);
+			CartResponse cartResponse = getCartResponse(cartId);
 
 			return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 		} catch (Exception e) {
@@ -119,13 +119,13 @@ public class CartService {
 		}
 	}
 
-	public CartResponse getCartResponse(Cart cart) {
+	public CartResponse getCartResponse(long cartId) {
 		CartResponse cartResponse = new CartResponse();
-		cartResponse.setCartId(cart.getCartId());
+		cartResponse.setCartId(cartId);
 		List<CartItemResponse> items = new ArrayList<>();
-
+		Cart cart = cartRepo.findByCartId(cartId);
 		for (CartItem item : cart.getCartItems()) {
-			CartItemResponse itemResponse = new CartItemResponse(item.getMovie().getTitle(), item.getQuantity());
+			CartItemResponse itemResponse = new CartItemResponse(item.getItemID(), item.getMovie().getTitle(), item.getQuantity());
 			items.add(itemResponse);
 		}
 		cartResponse.setItems(items);

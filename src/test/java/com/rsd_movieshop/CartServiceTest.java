@@ -83,7 +83,7 @@ public class CartServiceTest {
 		cartService.addCartItem(3, "username1", request);
 		Cart cart = cartRepo.findByCartId(3);
 		assertTrue(cart.getCartItems().get(0).getMovie() == movie01);
-		cartService.deleteItem(3, 2);
+		cartService.deleteItem(3, "username1", 2);
 		assertTrue(cart.getCartItems().size() == 0);
 	}
 }

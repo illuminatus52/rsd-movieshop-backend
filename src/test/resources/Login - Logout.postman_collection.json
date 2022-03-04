@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "f35f1701-ae0f-4d8b-a437-70600e83523b",
-		"name": "LoginAndLogout",
+		"_postman_id": "978b1eaf-ac9d-488e-92c7-8beb643fd047",
+		"name": "Login / Logout",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [

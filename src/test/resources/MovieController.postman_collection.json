@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7f7d4da5-01c2-42c8-a9fd-56009ee57cf8",
+		"_postman_id": "d6c45d60-e0e0-471e-89f1-99867154bd00",
 		"name": "MovieController",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -48,73 +48,13 @@
 			"response": []
 		},
 		{
-			"name": "AddNewMovie1",
+			"name": "AddNewMovie",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t\"releaseYear\" : 2000,\r\n\t\"movieStock\" : 2,\r\n\t\"title\" : \"Movie-1\",\r\n\t\"genres\" : \r\n\t[{\r\n\t\t\"name\" : \"Genre-1\"\r\n\t},\r\n\t{\r\n\t\t\"name\" : \"Genre-2\"\r\n\t}],\r\n\t\"picture\" : \"none\",\r\n\t\"price\" : 4.99\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/admin/addMovie",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"admin",
-						"addMovie"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddNewMovie2",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\"releaseYear\" : 2001,\r\n\t\"movieStock\" : 3,\r\n\t\"title\" : \"Movie-2\",\r\n\t\"genres\" : \r\n\t[{\r\n\t\t\"name\" : \"Genre-3\"\r\n\t},\r\n\t{\r\n\t\t\"name\" : \"Genre-4\"\r\n\t}],\r\n\t\"picture\" : \"none\",\r\n\t\"price\" : 5.99\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/admin/addMovie",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"admin",
-						"addMovie"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddNewMovie3",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\t\"releaseYear\" : 2003,\r\n\t\"movieStock\" : 3,\r\n\t\"title\" : \"Movie-3\",\r\n\t\"genres\" : \r\n\t[{\r\n\t\t\"name\" : \"Genre-1\"\r\n\t},\r\n\t{\r\n\t\t\"name\" : \"Genre-4\"\r\n\t}],\r\n\t\"picture\" : \"none\",\r\n\t\"price\" : 3.99\r\n}",
+					"raw": "{\r\n    \"releaseYear\": 2019,\r\n    \"movieStock\": 20,\r\n    \"title\": \"John Wick\",\r\n    \"genres\": [\r\n        {\r\n            \"name\": \"Action\"\r\n        }\r\n    ],\r\n    \"picture\": \"https://www.ubuy.com.kz/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvODFGNVBGOW9IaEwuX0FDX1NMMTUwMF8uanBn.jpg\",\r\n    \"price\": 14.99\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -144,7 +84,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"Movie-1\",\r\n    \"releaseYear\" : 2020,\r\n    \"stock\" : 12,\r\n    \"genres\" : \"Genre-1,Genre-3\",\r\n    \"picture\" : \"none\",\r\n    \"price\" : 9.99\r\n}",
+					"raw": "{\r\n    \"releaseYear\" : 2020,\r\n    \"stock\" : 13,\r\n    \"genres\" : \"Genre-2,Genre-3\",\r\n    \"picture\" : \"none\",\r\n    \"price\" : 9.99\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -152,7 +92,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/admin/movies/1",
+					"raw": "http://localhost:8080/api/admin/movies/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -162,7 +102,7 @@
 						"api",
 						"admin",
 						"movies",
-						"1"
+						"2"
 					]
 				}
 			},
