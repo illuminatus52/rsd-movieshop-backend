@@ -22,12 +22,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class CartService {
-	
+
 	private final CartRepo cartRepo;
 	private final CartItemRepo cartItemRepo;
 	private final MovieRepo movieRepo;
 	private final UserRepo userRepo;
-	
+
 	public CartService(CartRepo cartRepo, CartItemRepo cartItemRepo, MovieRepo movieRepo, UserRepo userRepo) {
 		super();
 		this.cartRepo = cartRepo;
@@ -35,7 +35,7 @@ public class CartService {
 		this.movieRepo = movieRepo;
 		this.userRepo = userRepo;
 	}
-	
+
 	public ResponseEntity<CartResponse> findCartById(long id, String username) {
 		if (cartRepo.findByCartId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no cart with this ID!");
@@ -49,11 +49,10 @@ public class CartService {
 			}
 		}
 	}
-	
+
 	public ResponseEntity<CartResponse> addCartItem(long id, String username, CartItemRequest cartItemRequest) {
-		List<Movie> movies = movieRepo.findAll();
 		Movie movie = movieRepo.findByMovieId(cartItemRequest.getMovieID());
-		
+
 		if (movie.getMovieStock() > 0) {
 			try {
 				Cart cart = userCheck(username, id);
@@ -61,28 +60,39 @@ public class CartService {
 				if (quantity > movie.getMovieStock()) {
 					quantity = movie.getMovieStock();
 				}
+				List<CartItem> itemsAlreadyExist = cart.getCartItems();
+				List<Movie> allTheMoviesInThisCart = getAllMovies(itemsAlreadyExist);
 				
-				CartItem item = new CartItem(movie, cart, quantity);
-				List<CartItem> items = cart.getCartItems();
-				
-				if (items.size() > 0) {
-					for (CartItem cartItem : items) {
-						if (cartItem.getMovie().getMovieID() == cartItemRequest.getMovieID()) {
-							cartItem.setQuantity(cartItem.getQuantity() + quantity);
-							item = cartItem;
-						} else {
-							items.add(item);
+				List<CartItem> newItems = new ArrayList<>();
+				if (itemsAlreadyExist.size() == 0) {
+					CartItem item = new CartItem(movie, cart, quantity);
+					itemsAlreadyExist.add(item);
+					cartItemRepo.save(item);
+				} else {
+					CartItem item = new CartItem(movie, cart, quantity);
+					
+					if (!allTheMoviesInThisCart.contains(movie)) {
+						cartItemRepo.save(item);
+						newItems.add(item);
+					} else {
+						for (CartItem cartItem : itemsAlreadyExist) {
+							if (cartItem.getMovie() == movie) {
+								if (cartItem.getQuantity() + quantity > movie.getMovieStock()) {
+									cartItem.setQuantity(movie.getMovieStock());
+								} else {
+									cartItem.setQuantity(cartItem.getQuantity() + quantity);
+								}
+							}
 						}
 					}
-				} else {
-					items.add(item);
+					if (newItems.size() > 0) {
+						itemsAlreadyExist.addAll(newItems);
+					}
 				}
-				
-				cart.setCartItems(items);
-				cartItemRepo.save(item);
+				cart.setCartItems(itemsAlreadyExist);
 				cartRepo.save(cart);
 				CartResponse cartResponse = getCartResponse(cart);
-				
+
 				return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
@@ -91,7 +101,7 @@ public class CartService {
 			throw new ResponseStatusException(HttpStatus.OK, "This item is sold out");
 		}
 	}
-	
+
 	public ResponseEntity<CartResponse> deleteItem(long cartId, long itemId) {
 		try {
 			Cart cart = cartRepo.findByCartId(cartId);
@@ -102,31 +112,30 @@ public class CartService {
 			cartRepo.save(cart);
 			cartItemRepo.delete(item);
 			CartResponse cartResponse = getCartResponse(cart);
-			
+
 			return new ResponseEntity<>(cartResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
 		}
 	}
-	
+
 	public CartResponse getCartResponse(Cart cart) {
 		CartResponse cartResponse = new CartResponse();
 		cartResponse.setCartId(cart.getCartId());
 		List<CartItemResponse> items = new ArrayList<>();
-		
+
 		for (CartItem item : cart.getCartItems()) {
 			CartItemResponse itemResponse = new CartItemResponse(item.getMovie().getTitle(), item.getQuantity());
 			items.add(itemResponse);
 		}
 		cartResponse.setItems(items);
-		
+
 		return cartResponse;
 	}
-	
+
 	public Cart userCheck(String username, long cartId) {
-		List<User> list = userRepo.findAll();
 		User user = userRepo.findByUsername(username);
-		
+
 		if (user.getCart().getCartId() != cartId) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		} else {
@@ -134,4 +143,13 @@ public class CartService {
 			return cart;
 		}
 	}
-}
+	
+	public List<Movie> getAllMovies(List<CartItem> itemsAlreadyExist) {
+		List<Movie> movies = new ArrayList<>();
+		for (CartItem cartItem : itemsAlreadyExist) {
+			Movie movie = cartItem.getMovie();
+			movies.add(movie);
+		}
+		return movies;
+	}
+ }
