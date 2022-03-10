@@ -47,7 +47,7 @@ public class User {
 	private Role role = Role.ROLE_USER;
 	private boolean isEnabled = true;
 
-	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name = "cart")
 	private Cart cart = new Cart();
 
