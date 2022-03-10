@@ -1,12 +1,15 @@
 package com.rsd_movieshop.responseModels;
 
+import com.rsd_movieshop.model.Role;
+
 public class UserResponse {
 
 	private long id;
+	private String username;
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String role;
+	private Role role;
 	private CartResponse cart;
 	private boolean isEnabled;
 	private String picture;
@@ -16,10 +19,11 @@ public class UserResponse {
 		super();
 	}
 
-	public UserResponse(long id, String firstName, String lastName, String email, String role, CartResponse cart,
-			boolean isEnabled, String picture, String shippingAddress) {
+	public UserResponse(long id, String username, String firstName, String lastName, String email, Role role,
+			CartResponse cart, boolean isEnabled, String picture, String shippingAddress) {
 		super();
 		this.id = id;
+		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -28,6 +32,14 @@ public class UserResponse {
 		this.isEnabled = isEnabled;
 		this.picture = picture;
 		this.shippingAddress = shippingAddress;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public long getId() {
@@ -62,11 +74,11 @@ public class UserResponse {
 		this.email = email;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.rsd_movieshop.dto.UserDto;
+import com.rsd_movieshop.model.Role;
 import com.rsd_movieshop.model.UpdateUserRequest;
 import com.rsd_movieshop.model.User;
 import com.rsd_movieshop.repository.UserRepo;
@@ -65,10 +66,10 @@ public class UserServiceTest {
 
 	@Test
 	public void changeRole() {
-		UpdateUserRequest userRequest = new UpdateUserRequest("username1", null, null, null, null, "ROLE_ADMIN", true);
+		UpdateUserRequest userRequest = new UpdateUserRequest("username1", null, null, null, null, Role.ROLE_ADMIN, true);
 		userService.updateUserAsAdmin(userRequest);
 		User user = userRepo.findByUsername("username1");
-		assertTrue(user.getRole().equalsIgnoreCase("ROLE_ADMIN"));
+		assertTrue(user.getRole() == Role.ROLE_ADMIN);
 	}
 
 	@Test

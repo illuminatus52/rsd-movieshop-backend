@@ -43,7 +43,8 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 	@Column(nullable = false)
-	private String role = "ROLE_USER";
+	@Enumerated(EnumType.STRING)
+	private Role role = Role.ROLE_USER;
 	private boolean isEnabled = true;
 
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
@@ -77,7 +78,7 @@ public class User {
 			@NotNull(message = "Email is mandatory") @NotEmpty(message = "Email is mandatory") @NotBlank(message = "Email is mandatory") String email,
 			@NotNull(message = "Username is mandatory") @NotEmpty(message = "Username is mandatory") @NotBlank(message = "Username is mandatory") String username,
 			@NotNull(message = "Password is mandatory") @NotEmpty(message = "Password is mandatory") @NotBlank(message = "Password is mandatory") String password,
-			String role, boolean isEnabled, Cart cart, String picture, String shippingAddress) {
+			Role role, boolean isEnabled, Cart cart, String picture, String shippingAddress) {
 		super();
 		this.orders = orders;
 		this.familyName = familyName;
@@ -148,7 +149,7 @@ public class User {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
@@ -160,7 +161,7 @@ public class User {
 		this.isEnabled = isEnabled;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 

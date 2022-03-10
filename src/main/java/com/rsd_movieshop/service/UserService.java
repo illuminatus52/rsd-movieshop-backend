@@ -194,7 +194,7 @@ public class UserService {
 					String encodedPassword = passwordEncoder.encode(request.getPassword());
 					user.setPassword(encodedPassword);
 				}
-				if (request.getRole() != null && !request.getRole().isEmpty()) {
+				if (request.getRole() != null) {
 					user.setRole(request.getRole());
 				}
 				if (!request.isEnabled()) {
@@ -233,7 +233,7 @@ public class UserService {
 	}
 
 	public UserResponse getUserResponse(User user) {
-		UserResponse userResponse = new UserResponse(user.getUserId(), user.getFirstName(), user.getFamilyName(),
+		UserResponse userResponse = new UserResponse(user.getUserId(), user.getUsername(), user.getFirstName(), user.getFamilyName(),
 				user.getEmail(), user.getRole(), null, user.isEnabled(), user.getPicture(), user.getShippingAddress());
 
 		Cart cart = cartRepo.findByCartId(user.getCart().getCartId());

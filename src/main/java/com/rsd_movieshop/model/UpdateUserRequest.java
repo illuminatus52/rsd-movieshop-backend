@@ -7,13 +7,13 @@ public class UpdateUserRequest {
 	private String lastName;
 	private String email;
 	private String password;
-	private String role;
+	private Role role;
 	private boolean isEnabled;
 
 	
 
 	public UpdateUserRequest(String username, String firstName, String lastName, String email, String password,
-			String role, boolean isEnabled) {
+			Role role, boolean isEnabled) {
 		super();
 		this.username = username;
 		this.firstName = firstName;
@@ -64,11 +64,11 @@ public class UpdateUserRequest {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 
