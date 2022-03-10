@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "edddb193-0c5d-4402-a2ec-0723ef7b06aa",
+		"_postman_id": "8914b905-a166-4d14-a9aa-3d762f69c632",
 		"name": "GenreController",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -48,44 +48,13 @@
 			"response": []
 		},
 		{
-			"name": "AddNewGenre1",
+			"name": "AddNewGenre",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "Genre-1",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/admin/genre/addGenre",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"admin",
-						"genre",
-						"addGenre"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddNewGenre2",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "Genre-2",
 					"options": {
 						"raw": {
 							"language": "json"

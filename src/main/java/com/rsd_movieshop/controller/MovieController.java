@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping(path = "/api/")
 public class MovieController {
 	
-	private final MovieService movieService;
+	private MovieService movieService;
 	
 	public MovieController(MovieService movieService) {
 		this.movieService = movieService;

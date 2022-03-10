@@ -87,7 +87,7 @@ public class MovieServiceTest {
 	
 	@Test
 	public void updateMovie() {
-		MovieRequest movieRequest = new MovieRequest("Movie-01", 2002, 3, "Genre-01,Genre-03", null, 4.99);
+		MovieRequest movieRequest = new MovieRequest("imdbID", "Movie-01", 2002, 3, "Genre-01,Genre-03", null, 4.99);
 		movieService.updateMovie(4, movieRequest);
 		assertTrue(movieRepo.findByMovieId(4).getMovieStock() == 3);
 		assertTrue(movieRepo.findByMovieId(4).getPrice() == 4.99);

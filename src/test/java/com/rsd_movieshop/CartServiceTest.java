@@ -49,7 +49,7 @@ public class CartServiceTest {
 	@BeforeEach
 	public void init() {
 
-		UserDto userDto1 = new UserDto("Last1", "First1", "email1@gmail.com", "username1", "123456");
+		UserDto userDto1 = new UserDto("Last1", "First1", "email1@gmail.com", "username1", "123456", "picture", "Address");
 		userService.saveUser(userDto1);
 
 		Genre genre01 = new Genre("Genre-01");
@@ -70,7 +70,7 @@ public class CartServiceTest {
 
 	@Test
 	public void addItemTest() {
-		CartItemRequest request = new CartItemRequest("Movie-01", 1);
+		CartItemRequest request = new CartItemRequest(2L, 1);
 		cartService.addCartItem(2, "username1", request);
 		Cart cart = cartRepo.findByCartId(2);
 		assertTrue(cart.getCartItems().get(0).getMovie() == movie01);
@@ -79,11 +79,11 @@ public class CartServiceTest {
 	
 	@Test
 	public void deleteItem() {
-		CartItemRequest request = new CartItemRequest("Movie-01", 1);
+		CartItemRequest request = new CartItemRequest(3L, 1);
 		cartService.addCartItem(3, "username1", request);
 		Cart cart = cartRepo.findByCartId(3);
 		assertTrue(cart.getCartItems().get(0).getMovie() == movie01);
-		cartService.deleteItem(3, 2);
+		cartService.deleteItem(3, "username1", 2);
 		assertTrue(cart.getCartItems().size() == 0);
 	}
 }

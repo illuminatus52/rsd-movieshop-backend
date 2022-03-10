@@ -15,11 +15,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 @Service
 public class MovieService {
 	
-	private final MovieRepo movieRepo;
-	private final GenreRepo genreRepo;
+	private MovieRepo movieRepo;
+	private GenreRepo genreRepo;
 	
 	public MovieService(MovieRepo movieRepo, GenreRepo genreRepo) {
 		this.movieRepo = movieRepo;
@@ -95,6 +97,7 @@ public class MovieService {
 		}
 	}
 	
+	@Transactional
 	public ResponseEntity<MovieResponse> updateMovie(long id, MovieRequest movieRequest) {
 		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie with id: " + id + " doesn't exist!");
@@ -104,6 +107,10 @@ public class MovieService {
 				
 				if (movieRequest.getReleaseYear() > 0) {
 					movie.setReleaseYear(movieRequest.getReleaseYear());
+				}
+				
+				if (movieRequest.getImdbID() != null) {
+					movie.setImdbId(movieRequest.getImdbID());
 				}
 				
 				if (movieRequest.getName() != null) {
@@ -124,29 +131,33 @@ public class MovieService {
 				String genres = movieRequest.getGenres();
 				
 				if (genres != null) {
-					movie.setGenres(null);
 					String[] splitGenres = genres.split(",");
 					List<Genre> genreList = new ArrayList<>();
 					
 					for (String genre : splitGenres) {
-						Genre genre2 = genreRepo.findGenreByName(genre);
-						
-						if (genre2 == null) {
-							Genre genre3 = new Genre(genre);
-							List<Movie> movies = new ArrayList<>();
-							movies.add(movie);
-							genre3.setMovies(movies);
-							genreRepo.save(genre3);
-							genreList.add(genre3);
+						Genre existingGenre = genreRepo.findGenreByName(genre);
+						if (!movie.getGenres().contains(existingGenre)) {
+							if (existingGenre == null) {
+								Genre newGenre = new Genre(genre);
+								List<Movie> movies = new ArrayList<>();
+								movies.add(movie);
+								newGenre.setMovies(movies);
+								genreRepo.save(newGenre);
+								genreList.add(newGenre);
+							} else {
+								List<Movie> movies = existingGenre.getMovies();
+								if (!movies.contains(movie)) {
+									movies.add(movie);
+									existingGenre.setMovies(movies);
+									genreRepo.save(existingGenre);
+								}
+								genreList.add(existingGenre);
+							}
 						} else {
-							List<Movie> movies = genre2.getMovies();
-							movies.add(movie);
-							genre2.setMovies(movies);
-							genreRepo.save(genre2);
-							genreList.add(genre2);
+							genreList.add(existingGenre);
 						}
+						movie.setGenres(genreList);
 					}
-					movie.setGenres(genreList);
 				}
 				movieRepo.save(movie);
 				MovieResponse movieResponse = getMovieResponse(movie);

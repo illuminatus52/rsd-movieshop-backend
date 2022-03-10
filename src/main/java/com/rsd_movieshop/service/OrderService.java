@@ -126,7 +126,7 @@ public class OrderService {
 		List<CartItemRequest> items = new ArrayList<>();
 		for (CartItem cartItem : order.getCartItems()) {
 			CartItemRequest cartItemRequest = new CartItemRequest();
-			cartItemRequest.setMovieName(cartItem.getMovie().getTitle());
+			cartItemRequest.setMovieID(cartItem.getMovie().getMovieID());
 			cartItemRequest.setQuantity(cartItem.getQuantity());
 			items.add(cartItemRequest);
 		}

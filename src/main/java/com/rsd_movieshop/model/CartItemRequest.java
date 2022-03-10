@@ -2,27 +2,31 @@ package com.rsd_movieshop.model;
 
 public class CartItemRequest {
 	
-	private String MovieName;
+	private long movieID;
 	private int quantity;
 	
 	public CartItemRequest() {
 		super();
 	}
 	
-	public CartItemRequest(String movieName, int quantity) {
+	
+	public CartItemRequest(long movieID, int quantity) {
 		super();
-		MovieName = movieName;
+		this.movieID = movieID;
 		this.quantity = quantity;
 	}
-	
-	public String getMovieName() {
-		return MovieName;
+
+
+	public long getMovieID() {
+		return movieID;
 	}
-	
-	public void setMovieName(String movieName) {
-		MovieName = movieName;
+
+
+	public void setMovieID(long movieID) {
+		this.movieID = movieID;
 	}
-	
+
+
 	public int getQuantity() {
 		return quantity;
 	}
