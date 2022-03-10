@@ -1,9 +1,10 @@
 package com.rsd_movieshop.service;
 
+import com.rsd_movieshop.dto.ImgDto;
 import com.rsd_movieshop.dto.UserDto;
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
-import com.rsd_movieshop.model.ChangeRoleRequest;
+import com.rsd_movieshop.model.UpdateUserRequest;
 import com.rsd_movieshop.model.User;
 import com.rsd_movieshop.repository.CartRepo;
 import com.rsd_movieshop.repository.UserRepo;
@@ -86,33 +87,26 @@ public class UserService {
 			try {
 				User user = userRepo.findByUsername(username);
 
-				if (userDto.firstName != null || userDto.firstName.isEmpty()) {
+				if (userDto.firstName != null && !userDto.firstName.isEmpty()) {
 					user.setFirstName(userDto.firstName);
 				}
-
-				if (userDto.familyName != null || userDto.familyName.isEmpty()) {
-					user.setFamilyName(userDto.familyName);
+				if (userDto.lastName != null && !userDto.lastName.isEmpty()) {
+					user.setFamilyName(userDto.lastName);
 				}
-
-				if (userDto.userName != null || userDto.userName.isEmpty()) {
-
-					if (!username.equalsIgnoreCase(userDto.userName)) {
-
-						if (userRepo.findByUsername(userDto.userName) == null) {
-							user.setUsername(userDto.userName);
-						} else {
-							throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
-									"This username is not available!");
-						}
-					}
-				}
-
-				if (userDto.email != null || userDto.email.isEmpty()) {
+				if (userDto.email != null && !userDto.email.isEmpty()) {
 					user.setEmail(userDto.email);
 				}
-				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-				String encodedPassword = passwordEncoder.encode(userDto.password);
-				user.setPassword(encodedPassword);
+				if (userDto.password != null && !userDto.password.isEmpty() && !userDto.password.isBlank()) {
+					BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+					String encodedPassword = passwordEncoder.encode(userDto.password);
+					user.setPassword(encodedPassword);
+				}
+				if (userDto.picture != null && !userDto.picture.isEmpty()) {
+					user.setPicture(userDto.picture);
+				}
+				if (userDto.shippingAddress != null && !userDto.shippingAddress.isEmpty()) {
+					user.setShippingAddress(userDto.shippingAddress);
+				}
 				userRepo.save(user);
 				UserResponse userResponse = getUserResponse(user);
 				return new ResponseEntity<>(userResponse, HttpStatus.OK);
@@ -129,7 +123,7 @@ public class UserService {
 			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
 		}
 
-		if (userDto.familyName == null) {
+		if (userDto.lastName == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
 		}
 
@@ -154,13 +148,15 @@ public class UserService {
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, e.getMessage());
 			}
-			
+
 			try {
 				User user = new User();
 				user.setEmail(userDto.email);
-				user.setFamilyName(userDto.familyName);
+				user.setFamilyName(userDto.lastName);
 				user.setFirstName(userDto.firstName);
 				user.setUsername(userDto.userName);
+				user.setPicture(userDto.picture);
+				user.setShippingAddress(userDto.shippingAddress);
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				String encodedPassword = passwordEncoder.encode(userDto.password);
 				user.setPassword(encodedPassword);
@@ -173,7 +169,7 @@ public class UserService {
 		}
 	}
 
-	public ResponseEntity<UserResponse> changeRole(ChangeRoleRequest request) {
+	public ResponseEntity<UserResponse> updateUserAsAdmin(UpdateUserRequest request) {
 		User user = userRepo.findByUsername(request.getUsername());
 
 		if (user == null) {
@@ -181,7 +177,31 @@ public class UserService {
 					"The user  " + request.getUsername() + " doesn't exist!");
 		} else {
 			try {
-				user.setRole(request.getRole());
+				if (request.getFirstName() != null && !request.getFirstName().isEmpty()) {
+					user.setFirstName(request.getFirstName());
+				}
+				if (request.getLastName() != null && !request.getLastName().isEmpty()) {
+					user.setFamilyName(request.getLastName());
+				}
+				if (request.getUsername() != null && !request.getUsername().isEmpty()) {
+					user.setUsername(request.getUsername());
+				}
+				if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+					user.setEmail(request.getEmail());
+				}
+				if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+					BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+					String encodedPassword = passwordEncoder.encode(request.getPassword());
+					user.setPassword(encodedPassword);
+				}
+				if (request.getRole() != null && !request.getRole().isEmpty()) {
+					user.setRole(request.getRole());
+				}
+				if (!request.isEnabled()) {
+					user.setEnabled(false);
+				} else {
+					user.setEnabled(true);
+				}
 				userRepo.save(user);
 				UserResponse userResponse = getUserResponse(user);
 				return new ResponseEntity<>(userResponse, HttpStatus.OK);
@@ -201,7 +221,7 @@ public class UserService {
 	}
 
 	public ResponseEntity<UserResponse> enableAndDisablebUser(String username, boolean isEnable) {
-		if(userRepo.findByUsername(username) == null) {
+		if (userRepo.findByUsername(username) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "there is no user with the username: " + username);
 		} else {
 			User user = userRepo.findByUsername(username);
@@ -212,10 +232,9 @@ public class UserService {
 		}
 	}
 
-	
 	public UserResponse getUserResponse(User user) {
-		UserResponse userResponse = new UserResponse(user.getUserId(), user.getFirstName(), user.getFamilyName(), user.getEmail(),
-				user.getRole(), null, user.isEnabled());
+		UserResponse userResponse = new UserResponse(user.getUserId(), user.getFirstName(), user.getFamilyName(),
+				user.getEmail(), user.getRole(), null, user.isEnabled(), user.getPicture(), user.getShippingAddress());
 
 		Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
 		CartResponse cartResponse = new CartResponse();
@@ -228,9 +247,9 @@ public class UserService {
 		}
 		cartResponse.setItems(items);
 		userResponse.setCart(cartResponse);
+
 		return userResponse;
 	}
-	
 
 	public User userCheck(String username, long id) {
 		User user = userRepo.findByUsername(username);
@@ -240,5 +259,9 @@ public class UserService {
 		} else {
 			return user;
 		}
+	}
+	
+	public void imgUpload(ImgDto imgDto) {
+
 	}
 }

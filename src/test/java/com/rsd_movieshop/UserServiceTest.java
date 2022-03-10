@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.rsd_movieshop.dto.UserDto;
-import com.rsd_movieshop.model.ChangeRoleRequest;
+import com.rsd_movieshop.model.UpdateUserRequest;
 import com.rsd_movieshop.model.User;
 import com.rsd_movieshop.repository.UserRepo;
 import com.rsd_movieshop.service.UserService;
@@ -33,9 +33,9 @@ public class UserServiceTest {
 	@BeforeEach
 	public void init() {
 
-		UserDto userDto1 = new UserDto("Last1", "First1", "email1@gmail.com", "username1", "123456");
-		UserDto userDto2 = new UserDto("Last2", "First2", "email2@gmail.com", "username2", "123455");
-		UserDto userDto3 = new UserDto("Last3", "First3", "email3@gmail.com", "username3", "123445");
+		UserDto userDto1 = new UserDto("Last1", "First1", "email1@gmail.com", "username1", "123456", "picture", "Address");
+		UserDto userDto2 = new UserDto("Last2", "First2", "email2@gmail.com", "username2", "123455", "picture", "Address");
+		UserDto userDto3 = new UserDto("Last3", "First3", "email3@gmail.com", "username3", "123445", "picture", "Address");
 
 		userService.saveUser(userDto1);
 		userService.saveUser(userDto2);
@@ -56,7 +56,7 @@ public class UserServiceTest {
 
 	@Test
 	public void updateUser() {
-		UserDto userDtoUpdate = new UserDto("LastName", "FirstName", "newEmail@gmail.com", "username1", null);
+		UserDto userDtoUpdate = new UserDto("LastName", "FirstName", "newEmail@gmail.com", "username1", null, "picture", "Address");
 		userService.updateUser("username1", userDtoUpdate);
 		User user = userRepo.findByUsername("username1");
 		assertFalse(user.getEmail().equalsIgnoreCase("email1@gmail.com"));
@@ -65,8 +65,8 @@ public class UserServiceTest {
 
 	@Test
 	public void changeRole() {
-		ChangeRoleRequest request = new ChangeRoleRequest("username1", "ROLE_ADMIN");
-		userService.changeRole(request);
+		UpdateUserRequest userRequest = new UpdateUserRequest("username1", null, null, null, null, "ROLE_ADMIN", true);
+		userService.updateUserAsAdmin(userRequest);
 		User user = userRepo.findByUsername("username1");
 		assertTrue(user.getRole().equalsIgnoreCase("ROLE_ADMIN"));
 	}

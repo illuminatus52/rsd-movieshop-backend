@@ -1,7 +1,7 @@
 package com.rsd_movieshop.controller;
 
 import com.rsd_movieshop.dto.UserDto;
-import com.rsd_movieshop.model.ChangeRoleRequest;
+import com.rsd_movieshop.model.UpdateUserRequest;
 import com.rsd_movieshop.responseModels.UserResponse;
 import com.rsd_movieshop.service.UserService;
 
@@ -47,9 +47,9 @@ public class UserController {
 		return userService.updateUser(username, userDto);
 	}
 	
-	@PutMapping(path = "admin/changeRole")
-	public ResponseEntity<UserResponse> changeRole(@RequestBody ChangeRoleRequest request) {
-		return userService.changeRole(request);
+	@PutMapping(path = "admin/updateUsers")
+	public ResponseEntity<UserResponse> updateUserAsAdmin(@RequestBody UpdateUserRequest request) {
+		return userService.updateUserAsAdmin(request);
 	}
 	
 	@PostMapping(path = "admin/{username}/")

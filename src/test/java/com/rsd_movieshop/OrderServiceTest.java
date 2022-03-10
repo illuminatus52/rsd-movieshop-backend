@@ -56,7 +56,7 @@ public class OrderServiceTest {
 	@BeforeEach
 	public void init() {
 		
-		UserDto userDto1 = new UserDto("Last1", "First1", "email1@gmail.com", "username1", "123456");
+		UserDto userDto1 = new UserDto("Last1", "First1", "email1@gmail.com", "username1", "123456", "picture", "Address");
 		userService.saveUser(userDto1);
 
 		Genre genre01 = new Genre("Genre-01");

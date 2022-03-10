@@ -20,7 +20,7 @@ public class User {
 	@Column(name = "user_id")
 	private long userId;
 
-	@OneToMany(mappedBy = "userid")
+	@OneToMany(mappedBy = "userid", cascade = CascadeType.REMOVE)
 	private List<Orders> orders = new ArrayList<Orders>();
 
 	private String familyName;
@@ -50,11 +50,18 @@ public class User {
 	@JoinColumn(name = "cart")
 	private Cart cart = new Cart();
 
+	private String picture;
+	private String shippingAddress;
+
 	public User() {
 		super();
 	}
 
-	public User(long userId, String familyName, String firstName, String email, String username, String password) {
+	public User(long userId, String familyName, String firstName,
+			@NotNull(message = "Email is mandatory") @NotEmpty(message = "Email is mandatory") @NotBlank(message = "Email is mandatory") String email,
+			@NotNull(message = "Username is mandatory") @NotEmpty(message = "Username is mandatory") @NotBlank(message = "Username is mandatory") String username,
+			@NotNull(message = "Password is mandatory") @NotEmpty(message = "Password is mandatory") @NotBlank(message = "Password is mandatory") String password,
+			String picture, String shippingAddress) {
 		super();
 		this.userId = userId;
 		this.familyName = familyName;
@@ -62,13 +69,15 @@ public class User {
 		this.email = email;
 		this.username = username;
 		this.password = password;
+		this.picture = picture;
+		this.shippingAddress = shippingAddress;
 	}
 
 	public User(List<Orders> orders, String familyName, String firstName,
 			@NotNull(message = "Email is mandatory") @NotEmpty(message = "Email is mandatory") @NotBlank(message = "Email is mandatory") String email,
 			@NotNull(message = "Username is mandatory") @NotEmpty(message = "Username is mandatory") @NotBlank(message = "Username is mandatory") String username,
 			@NotNull(message = "Password is mandatory") @NotEmpty(message = "Password is mandatory") @NotBlank(message = "Password is mandatory") String password,
-			String role, boolean isEnabled, Cart cart) {
+			String role, boolean isEnabled, Cart cart, String picture, String shippingAddress) {
 		super();
 		this.orders = orders;
 		this.familyName = familyName;
@@ -79,6 +88,8 @@ public class User {
 		this.role = role;
 		this.isEnabled = isEnabled;
 		this.cart = cart;
+		this.picture = picture;
+		this.shippingAddress = shippingAddress;
 	}
 
 	public long getUserId() {
@@ -140,7 +151,7 @@ public class User {
 	public String getRole() {
 		return role;
 	}
-	
+
 	public boolean isEnabled() {
 		return isEnabled;
 	}
@@ -160,4 +171,21 @@ public class User {
 	public void setCart(Cart cart) {
 		this.cart = cart;
 	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+
 }
