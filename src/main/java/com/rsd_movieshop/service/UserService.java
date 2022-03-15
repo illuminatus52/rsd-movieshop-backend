@@ -12,12 +12,17 @@ import com.rsd_movieshop.responseModels.CartItemResponse;
 import com.rsd_movieshop.responseModels.CartResponse;
 import com.rsd_movieshop.responseModels.UserResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +31,9 @@ public class UserService {
 
 	private final UserRepo userRepo;
 	private final CartRepo cartRepo;
+
+	@Value("${saved.photos.path}")
+	private String photosPath;
 
 	public UserService(UserRepo userRepo, CartRepo cartRepo) {
 		super();
@@ -82,6 +90,23 @@ public class UserService {
 		}
 	}
 
+	public ResponseEntity<UserResponse> updateImg(String username, long id, ImgDto imgDto) {
+		User user = userCheck(username, id);
+		String uploadFilePath = photosPath + "/" + id + ".jpg";
+
+		try {
+			byte[] bytes = imgDto.getFile()[0].getBytes();
+			Path path = Paths.get(uploadFilePath);
+			Files.write(path, bytes);
+			user.setPicture(uploadFilePath);
+			userRepo.save(user);
+			UserResponse userResponse = getUserResponse(user);
+			return new ResponseEntity<>(userResponse, HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()); 
+		}
+	}
+
 	public ResponseEntity<UserResponse> updateUser(String username, UserDto userDto) {
 		if (userRepo.findByUsername(username) != null) {
 			try {
@@ -100,9 +125,6 @@ public class UserService {
 					BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 					String encodedPassword = passwordEncoder.encode(userDto.password);
 					user.setPassword(encodedPassword);
-				}
-				if (userDto.picture != null && !userDto.picture.isEmpty()) {
-					user.setPicture(userDto.picture);
 				}
 				if (userDto.shippingAddress != null && !userDto.shippingAddress.isEmpty()) {
 					user.setShippingAddress(userDto.shippingAddress);
@@ -155,7 +177,6 @@ public class UserService {
 				user.setFamilyName(userDto.lastName);
 				user.setFirstName(userDto.firstName);
 				user.setUsername(userDto.userName);
-				user.setPicture(userDto.picture);
 				user.setShippingAddress(userDto.shippingAddress);
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				String encodedPassword = passwordEncoder.encode(userDto.password);
@@ -233,8 +254,9 @@ public class UserService {
 	}
 
 	public UserResponse getUserResponse(User user) {
-		UserResponse userResponse = new UserResponse(user.getUserId(), user.getUsername(), user.getFirstName(), user.getFamilyName(),
-				user.getEmail(), user.getRole(), null, user.isEnabled(), user.getPicture(), user.getShippingAddress());
+		UserResponse userResponse = new UserResponse(user.getUserId(), user.getUsername(), user.getFirstName(),
+				user.getFamilyName(), user.getEmail(), user.getRole(), null, user.isEnabled(), user.getPicture(),
+				user.getShippingAddress());
 
 		Cart cart = cartRepo.findByCartId(user.getCart().getCartId());
 		CartResponse cartResponse = new CartResponse();
@@ -260,8 +282,22 @@ public class UserService {
 			return user;
 		}
 	}
-	
-	public void imgUpload(ImgDto imgDto) {
+
+	public void imgUpload(ImgDto imgDto, long id) {
+		String uploadFilePath = photosPath + "/" + id + ".jpg";
+		StringBuilder stringBuilder = new StringBuilder();
+
+		try {
+			byte[] bytes = imgDto.getFile()[0].getBytes();
+			Path path = Paths.get(uploadFilePath);
+			Files.write(path, bytes);
+			stringBuilder.append(uploadFilePath);
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
 
 	}
+
 }

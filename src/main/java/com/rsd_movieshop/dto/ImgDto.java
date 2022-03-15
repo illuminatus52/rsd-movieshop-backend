@@ -4,8 +4,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ImgDto {
 
-	private long itemNumber;
 	private MultipartFile[] file;
+
+	public ImgDto() {
+		super();
+	}
+
+	public ImgDto(MultipartFile[] file) {
+		super();
+		this.file = file;
+	}
 
 	public MultipartFile[] getFile() {
 		return file;
@@ -15,12 +23,6 @@ public class ImgDto {
 		this.file = file;
 	}
 
-	long getItemNumber() {
-		return itemNumber;
-	}
-
-	void setItemNumber(long itemNumber) {
-		this.itemNumber = itemNumber;
-	}
-
+	
+	
 }
