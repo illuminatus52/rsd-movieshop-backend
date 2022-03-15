@@ -1,6 +1,5 @@
 package com.rsd_movieshop.service;
 
-import com.rsd_movieshop.dto.ImgDto;
 import com.rsd_movieshop.dto.UserDto;
 import com.rsd_movieshop.model.Cart;
 import com.rsd_movieshop.model.CartItem;
@@ -17,9 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,6 +30,7 @@ public class UserService {
 
 	private final UserRepo userRepo;
 	private final CartRepo cartRepo;
+	
 
 	@Value("${saved.photos.path}")
 	private String photosPath;
@@ -90,12 +90,12 @@ public class UserService {
 		}
 	}
 
-	public ResponseEntity<UserResponse> updateImg(String username, long id, ImgDto imgDto) {
+	public ResponseEntity<UserResponse> updateImg(String username, long id, MultipartFile imgDto) {
 		User user = userCheck(username, id);
 		String uploadFilePath = photosPath + "/" + id + ".jpg";
 
 		try {
-			byte[] bytes = imgDto.getFile()[0].getBytes();
+			byte[] bytes = imgDto.getBytes();
 			Path path = Paths.get(uploadFilePath);
 			Files.write(path, bytes);
 			user.setPicture(uploadFilePath);
@@ -272,6 +272,11 @@ public class UserService {
 
 		return userResponse;
 	}
+	
+	public void getImg (String username, long id, long imgId) {
+		User user = userCheck(username, id);
+	//TODO :	
+	}
 
 	public User userCheck(String username, long id) {
 		User user = userRepo.findByUsername(username);
@@ -281,23 +286,6 @@ public class UserService {
 		} else {
 			return user;
 		}
-	}
-
-	public void imgUpload(ImgDto imgDto, long id) {
-		String uploadFilePath = photosPath + "/" + id + ".jpg";
-		StringBuilder stringBuilder = new StringBuilder();
-
-		try {
-			byte[] bytes = imgDto.getFile()[0].getBytes();
-			Path path = Paths.get(uploadFilePath);
-			Files.write(path, bytes);
-			stringBuilder.append(uploadFilePath);
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-		}
-
 	}
 
 }
