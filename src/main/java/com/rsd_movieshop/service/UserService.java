@@ -99,23 +99,6 @@ public class UserService {
 		}
 	}
 
-	public ResponseEntity<UserResponse> updateImg(String username, long id, MultipartFile imgDto) {
-		User user = userCheck(username, id);
-		String uploadFilePath = photosPath + id + ".jpg";
-
-		try {
-			byte[] bytes = imgDto.getBytes();
-			Path path = Paths.get(uploadFilePath);
-			Files.write(path, bytes);
-			user.setPicture(uploadFilePath);
-			userRepo.save(user);
-			UserResponse userResponse = getUserResponse(user);
-			return new ResponseEntity<>(userResponse, HttpStatus.OK);
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-		}
-	}
-
 	public ResponseEntity<UserResponse> updateUser(String username, UserDto userDto) {
 		if (userRepo.findByUsername(username) != null) {
 			try {
@@ -261,23 +244,44 @@ public class UserService {
 			return new ResponseEntity<>(userResponse, HttpStatus.OK);
 		}
 	}
+	
+	public ResponseEntity<UserResponse> updateImg(String username, long id, MultipartFile imgDto) {
+		User user = userCheck(username, id);
+		String uploadFilePath = photosPath + id + ".jpg";
+
+		try {
+			byte[] bytes = imgDto.getBytes();
+			Path path = Paths.get(uploadFilePath);
+			Files.write(path, bytes);
+			BufferedImage originalImage = ImageIO.read(new File(photosPath + user.getUserId() + ".jpg"));
+			int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+			
+			BufferedImage resizeImageBmp = resizeImage(originalImage, type);
+			ImageIO.write(resizeImageBmp, "jpg", new File(photosPath + user.getUserId() + ".jpg"));
+			
+			user.setPicture(uploadFilePath);
+			userRepo.save(user);
+			UserResponse userResponse = getUserResponse(user);
+			return new ResponseEntity<>(userResponse, HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+	}
 
 	public @ResponseBody byte[] getImg(String username, long id) {
 		User user = userCheck(username, id);
-		
-		try {
-			BufferedImage originalImage = ImageIO.read(new File(photosPath + user.getUserId() + ".jpg"));
-			int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-
-			BufferedImage resizeImageBmp = resizeImage(originalImage, type);
-			ImageIO.write(resizeImageBmp, "jpg", new File(photosPath + user.getUserId() + ".jpg"));
-
-			File file = new File(photosPath + user.getUserId() + ".jpg");
-			FileInputStream inputStream = new FileInputStream(file);
-			return IOUtils.toByteArray(inputStream);
-		} catch (IOException e) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+		if (user.getPicture() != null) {
+			try {
+				File file = new File(photosPath + user.getUserId() + ".jpg");
+				FileInputStream inputStream = new FileInputStream(file);
+				return IOUtils.toByteArray(inputStream);
+			} catch (IOException e) {
+				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+			}
+		} else {
+			return null;
 		}
+		
 	}
 
 	public UserResponse getUserResponse(User user) {
