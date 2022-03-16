@@ -11,29 +11,38 @@ import com.rsd_movieshop.responseModels.CartItemResponse;
 import com.rsd_movieshop.responseModels.CartResponse;
 import com.rsd_movieshop.responseModels.UserResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 @Service
 public class UserService {
 
 	private final UserRepo userRepo;
 	private final CartRepo cartRepo;
-	
 
 	@Value("${saved.photos.path}")
 	private String photosPath;
+
 
 	public UserService(UserRepo userRepo, CartRepo cartRepo) {
 		super();
@@ -92,7 +101,7 @@ public class UserService {
 
 	public ResponseEntity<UserResponse> updateImg(String username, long id, MultipartFile imgDto) {
 		User user = userCheck(username, id);
-		String uploadFilePath = photosPath + "/" + id + ".jpg";
+		String uploadFilePath = photosPath + id + ".jpg";
 
 		try {
 			byte[] bytes = imgDto.getBytes();
@@ -103,7 +112,7 @@ public class UserService {
 			UserResponse userResponse = getUserResponse(user);
 			return new ResponseEntity<>(userResponse, HttpStatus.OK);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()); 
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 	}
 
@@ -253,6 +262,24 @@ public class UserService {
 		}
 	}
 
+	public @ResponseBody byte[] getImg(String username, long id) {
+		User user = userCheck(username, id);
+		
+		try {
+			BufferedImage originalImage = ImageIO.read(new File(photosPath + user.getUserId() + ".jpg"));
+			int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+
+			BufferedImage resizeImageBmp = resizeImage(originalImage, type);
+			ImageIO.write(resizeImageBmp, "jpg", new File(photosPath + user.getUserId() + ".jpg"));
+
+			File file = new File(photosPath + user.getUserId() + ".jpg");
+			FileInputStream inputStream = new FileInputStream(file);
+			return IOUtils.toByteArray(inputStream);
+		} catch (IOException e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+	}
+
 	public UserResponse getUserResponse(User user) {
 		UserResponse userResponse = new UserResponse(user.getUserId(), user.getUsername(), user.getFirstName(),
 				user.getFamilyName(), user.getEmail(), user.getRole(), null, user.isEnabled(), user.getPicture(),
@@ -272,10 +299,15 @@ public class UserService {
 
 		return userResponse;
 	}
-	
-	public void getImg (String username, long id, long imgId) {
-		User user = userCheck(username, id);
-	//TODO :	
+
+	private BufferedImage resizeImage(BufferedImage originalImage, int type) {
+		int IMG_WIDTH = 512;
+		int IMG_CLAHEIGHT = 512;
+		BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_CLAHEIGHT, type);
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_CLAHEIGHT, null);
+		g.dispose();
+		return resizedImage;
 	}
 
 	public User userCheck(String username, long id) {
@@ -287,5 +319,4 @@ public class UserService {
 			return user;
 		}
 	}
-
 }
