@@ -1,6 +1,7 @@
 ### Semesterprojekt RSD-MovieShop
 
 für Backend Development ILV
+(passendes Frontend [hier](https://github.com/DavidKitz/rsdMovieShop_Frontend))
 
 Im Projekt soll das Backend für einen Webshop samt
 - Controllern
