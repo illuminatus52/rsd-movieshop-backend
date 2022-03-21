@@ -309,8 +309,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`user_id`, `email`, `family_name`, `first_name`, `password`, `role`, `username`, `cart`, `is_enabled`, `picture`, `shipping_address`) VALUES
-(3, 'admin@movieshop.com', 'admin', 'admin', '$2a$10$cOpqAlLtxQdZo3jCpDoh4OWCdwLa0yftyNIFxfKAqdNZmpiVuPk1C', 'ROLE_ADMIN', 'admin', 3, b'1', 'C:/tools/3.jpg', 'admin'),
-(4, 'techuser@movieshop.com', 'user', 'tech', '$2a$10$HL5BVn7tuDVvPEYZSHENJ.d2Ogk8/krMrgjccUp/LA5Y6WYRt8Nzy', 'ROLE_USER', 'techuser', 4, b'1', 'C:/tools/4.jpg', 'techuser'),
+(3, 'admin@movieshop.com', 'admin', 'admin', '$2a$10$cOpqAlLtxQdZo3jCpDoh4OWCdwLa0yftyNIFxfKAqdNZmpiVuPk1C', 'ROLE_ADMIN', 'admin', 3, b'1', NULL, 'admin'),
+(4, 'techuser@movieshop.com', 'user', 'tech', '$2a$10$HL5BVn7tuDVvPEYZSHENJ.d2Ogk8/krMrgjccUp/LA5Y6WYRt8Nzy', 'ROLE_USER', 'techuser', 4, b'1', NULL, 'techuser'),
 (6, 'Toney69@gmail.com', 'Bruen', 'Sterling', '$2a$10$RmlYPoCksX5lIiciOU2Gse19trH1ceWFXnS1z26TqgdLUTeOTeoUC', 'ROLE_USER', 'Jaunita.Jacobson86', 6, b'1', NULL, '5617 Lowe Route, Henriettefort, Trinidad and Tobago'),
 (7, 'Quentin.Schmidt29@hotmail.com', 'Greenholt', 'Araceli', '$2a$10$0e0SjIZWCFtjdJqsOP.vBeUcvps1/tWCOkWZvz4.T8qmz.bm89coq', 'ROLE_USER', 'Harmony_Runolfsson77', 7, b'1', NULL, '02790 Katlynn Isle, Port Aubreystad, Saint Kitts and Nevis');
 
