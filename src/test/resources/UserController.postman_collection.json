@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1e035c41-42d1-4b3f-a85b-2acd83b61e6b",
+		"_postman_id": "c44c02e7-b576-42e6-afab-73770dc654e0",
 		"name": "UserController",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -27,12 +27,12 @@
 			"response": []
 		},
 		{
-			"name": "GetUserByID",
+			"name": "GetUserByID&Username",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/user/1",
+					"raw": "http://localhost:8080/api/user/rajeh123/user/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -41,7 +41,9 @@
 					"path": [
 						"api",
 						"user",
-						"1"
+						"rajeh123",
+						"user",
+						"2"
 					]
 				}
 			},
@@ -53,7 +55,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/user/username/username1",
+					"raw": "http://localhost:8080/api/user/username/user123",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -63,20 +65,20 @@
 						"api",
 						"user",
 						"username",
-						"username1"
+						"user123"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "AddNewUser1",
+			"name": "AddNewRandomUser",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"familyName\" : \"Abdulhadi\",\r\n    \"firstName\" : \"Rajeh\",\r\n    \"email\" : \"rajeh1@gmail.com\",\r\n    \"userName\" : \"rajeh123\",\r\n    \"password\" : \"rajeh123\"\r\n}",
+					"raw": "{\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"userName\": \"user12345\",\r\n    \"password\": \"user123\",\r\n    \"picture\" : \"NONE\",\r\n    \"shippingAddress\": \"somewhere\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,7 +107,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"familyName\" : \"Lastname\",\r\n    \"firstName\" : \"Firstname\",\r\n    \"email\" : \"user1@gmail.com\",\r\n    \"userName\" : \"username1\",\r\n    \"password\" : null\r\n}",
+					"raw": "{\r\n    \"userName\" : \"user123\",\r\n    \"familyName\" : \"user123\",\r\n    \"firstName\" : \"user213\",\r\n    \"email\" : \"user123@gmail.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -113,7 +115,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/user/username",
+					"raw": "http://localhost:8080/api/user/user123",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -122,19 +124,28 @@
 					"path": [
 						"api",
 						"user",
-						"username"
+						"user123"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "ChangeRole",
+			"name": "UpdateUsers-Admin",
 			"request": {
 				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"user123\",\r\n    \"firstName\" : \"David\",\r\n    \"lastName\" : \"Kitz\",\r\n    \"email\" : \"dk@gmail.com\",\r\n    \"password\" : \"dk123\",\r\n    \"role\" : \"ADMIN_ROLE\",\r\n    \"isEnabled\" : true \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8080/api/admin/changeRole?username=rajeh123&role=ROLE_ADMIN",
+					"raw": "http://localhost:8080/api/admin/updateUsers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -143,17 +154,7 @@
 					"path": [
 						"api",
 						"admin",
-						"changeRole"
-					],
-					"query": [
-						{
-							"key": "username",
-							"value": "rajeh123"
-						},
-						{
-							"key": "role",
-							"value": "ROLE_ADMIN"
-						}
+						"updateUsers"
 					]
 				}
 			},
@@ -165,7 +166,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/admin/user/1",
+					"raw": "http://localhost:8080/api/admin/user/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -175,20 +176,48 @@
 						"api",
 						"admin",
 						"user",
-						"1"
+						"3"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "AddNewUser2",
+			"name": "Enable/Disable User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/admin/user123/?isEnable=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"user123",
+						""
+					],
+					"query": [
+						{
+							"key": "isEnable",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddAdmin",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"familyName\" : \"user\",\r\n    \"firstName\" : \"user\",\r\n    \"email\" : \"user1@gmail.com\",\r\n    \"userName\" : \"user123\",\r\n    \"password\" : \"user123\"\r\n}",
+					"raw": "{\r\n    \"familyName\": \"RAJEH\",\r\n    \"firstName\": \"ABDULHADI\",\r\n    \"email\": \"rajeh@gmail.com\",\r\n    \"userName\": \"rajeh123\",\r\n    \"password\": \"rajeh123\",\r\n    \"picture\" : \"pic\",\r\n    \"shippingAddress\": \"test\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

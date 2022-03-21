@@ -3,7 +3,7 @@ package com.rsd_movieshop.responseModels;
 import java.util.List;
 
 public class CartResponse {
-	
+
 	private long cartId;
 	private List<CartItemResponse> items;
 	
@@ -16,6 +16,8 @@ public class CartResponse {
 		this.cartId = cartId;
 		this.items = items;
 	}
+	
+	
 	
 	public long getCartId() {
 		return cartId;

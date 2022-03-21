@@ -2,6 +2,7 @@ package com.rsd_movieshop.model;
 
 public class MovieRequest {
 	
+	private String imdbID;
 	private String name;
 	private int releaseYear;
 	private int stock;
@@ -13,8 +14,11 @@ public class MovieRequest {
 		super();
 	}
 	
-	public MovieRequest(String name, int releaseYear, int stock, String genres, String picture, double price) {
+	
+	public MovieRequest(String imdbID, String name, int releaseYear, int stock, String genres, String picture,
+			double price) {
 		super();
+		this.imdbID = imdbID;
 		this.name = name;
 		this.releaseYear = releaseYear;
 		this.stock = stock;
@@ -22,7 +26,16 @@ public class MovieRequest {
 		this.picture = picture;
 		this.price = price;
 	}
-	
+
+
+	public String getImdbID() {
+		return imdbID;
+	}
+
+	public void setImdbID(String imdbID) {
+		this.imdbID = imdbID;
+	}
+
 	public String getName() {
 		return name;
 	}

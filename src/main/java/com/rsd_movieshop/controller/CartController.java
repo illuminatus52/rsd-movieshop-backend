@@ -32,9 +32,9 @@ public class CartController {
 		return cartService.addCartItem(cartid, username, cartItemRequest);
 	}
 	
-	@DeleteMapping(path = "admin/cart/{cartid}")
-	public ResponseEntity<CartResponse> deleteCartItem(
-			@PathVariable long cartid, long cartItemId) {
-		return cartService.deleteItem(cartid, cartItemId);
+	@DeleteMapping(path = "user/{username}/cart/{cartid}")
+	public ResponseEntity<CartResponse> deleteCartItem(@PathVariable String username,
+			@PathVariable long cartid, @RequestParam long cartItemId) {
+		return cartService.deleteItem(cartid, username, cartItemId);
 	}
 }

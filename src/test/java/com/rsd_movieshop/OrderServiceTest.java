@@ -56,7 +56,7 @@ public class OrderServiceTest {
 	@BeforeEach
 	public void init() {
 		
-		UserDto userDto1 = new UserDto("Last1", "First1", "email1@gmail.com", "username1", "123456");
+		UserDto userDto1 = new UserDto("Last1", "First1", "email1@gmail.com", "username1", "123456", "picture", "Address");
 		userService.saveUser(userDto1);
 
 		Genre genre01 = new Genre("Genre-01");
@@ -72,7 +72,7 @@ public class OrderServiceTest {
 	
 	@Test
 	public void createNewOrder() {
-		CartItemRequest request = new CartItemRequest("Movie-01", 1);
+		CartItemRequest request = new CartItemRequest(1L, 1);
 		cartService.addCartItem(1, "username1", request);
 		orderService.createOrderFromCart(1, "username1");
 		List<Orders> orders = orderRepo.findAll();

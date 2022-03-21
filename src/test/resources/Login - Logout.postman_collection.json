@@ -1,41 +1,18 @@
 {
 	"info": {
-		"_postman_id": "bf4f823f-b0d9-4c7a-9d56-30c383ba43c0",
-		"name": "CartController",
+		"_postman_id": "978b1eaf-ac9d-488e-92c7-8beb643fd047",
+		"name": "Login / Logout",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "GetCartByID",
+			"name": "LoginAdmin",
 			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/user/user123/cart/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"user",
-						"user123",
-						"cart",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddItem",
-			"request": {
-				"method": "PUT",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"movieID\" : 2,\r\n\"quantity\" : 2}",
+					"raw": "{\r\n    \"username\": \"rajeh123\",\r\n    \"password\": \"rajeh123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -43,47 +20,61 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/user/user123/cart/3",
+					"raw": "http://localhost:8080/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
-						"user",
-						"user123",
-						"cart",
-						"3"
+						"login"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "DeleteItem",
+			"name": "LoginUser",
 			"request": {
-				"method": "DELETE",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user123\",\r\n    \"password\": \"user123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8080/api/user/user123/cart/3?cartItemId=14",
+					"raw": "http://localhost:8080/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
-						"user",
-						"user123",
-						"cart",
-						"3"
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
 					],
-					"query": [
-						{
-							"key": "cartItemId",
-							"value": "14"
-						}
+					"port": "8080",
+					"path": [
+						"logout"
 					]
 				}
 			},

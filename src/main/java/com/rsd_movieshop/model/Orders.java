@@ -20,7 +20,7 @@ public class Orders {
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status = OrderStatus.In_process;
 	
-	@OneToMany(mappedBy = "orderid")
+	@OneToMany(mappedBy = "orderid", cascade = CascadeType.REMOVE)
 	private List<CartItem> cartItems = new ArrayList<>();
 	
 	private double totalPrice;

@@ -13,15 +13,19 @@ import java.util.List;
 public class CustomUserDetails implements UserDetails {
 	
 	private final User user;
+	private final boolean isEnabled;
 	
-	public CustomUserDetails(User user) {
+	
+	public CustomUserDetails(User user, boolean isEnabled) {
+		super();
 		this.user = user;
+		this.isEnabled = isEnabled;
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority> authorities = new LinkedList<>();
-		authorities.add(new SimpleGrantedAuthority(this.user.getRole()));
+		authorities.add(new SimpleGrantedAuthority(this.user.getRole().toString()));
 		return authorities;
 	}
 	
@@ -52,6 +56,6 @@ public class CustomUserDetails implements UserDetails {
 	
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return isEnabled;
 	}
 }
