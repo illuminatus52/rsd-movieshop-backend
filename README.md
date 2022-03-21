@@ -1,7 +1,7 @@
 # Semesterprojekt RSD-MovieShop
 
 für Backend Development ILV
-(passendes Frontend [hier](https://github.com/DavidKitz/rsdMovieShop_Frontend))
+(zugehöriges Frontend [hier](https://github.com/DavidKitz/rsdMovieShop_Frontend))
 
 Im Projekt soll das Backend für einen Webshop samt
 - Controllern
@@ -21,13 +21,13 @@ Die Verwendung von CMS o.Ä. ist dabei untersagt.
 
     importieren.
 
-2) Danach in den Spring Application Properties unter
+2) Danach in den [Spring Application Properties](src/main/resources/application.properties) unter
     - `spring.datasource.username=` den eigenen MySQL-Usernamen sowie bei
     - `spring.datasource.password=` das zugehörige Passwort
     
     einfügen.
 
-3) Das Backend starten und dann per WebStorm die index.html aufrufen, um im Webshop zu navigieren.
+3) Das Backend als Spring Boot Applikation starten und dann per WebStorm die [index.html](https://github.com/DavidKitz/rsdMovieShop_Frontend/blob/608a8419406e4a8dc469332a0c7de2d0f5267e54/view/index.html) aufrufen, um den Webshop zu starten.
 
 Viel Spaß!
 
