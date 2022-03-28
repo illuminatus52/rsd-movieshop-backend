@@ -129,7 +129,7 @@ public class OrderService {
 				}
 				orderRepo.deleteById(id);
 			} catch (Exception e) {
-				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 			}
 			return new ResponseEntity<>("The order with the id: " + id + " is deleted!", HttpStatus.OK);
 		}

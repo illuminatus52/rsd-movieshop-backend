@@ -172,18 +172,23 @@ public class MovieService {
 		if (movieRepo.findByMovieId(id) == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		} else {
-			Movie movie = movieRepo.findByMovieId(id);
-			List<Genre> genres = movie.getGenres();
-			
-			for (Genre genre : genres) {
-				List<Movie> movies = genre.getMovies();
-				movies.remove(movie);
-				genre.setMovies(movies);
-				genreRepo.save(genre);
+			try {
+				Movie movie = movieRepo.findByMovieId(id);
+				List<Genre> genres = movie.getGenres();
+
+				for (Genre genre : genres) {
+					List<Movie> movies = genre.getMovies();
+					movies.remove(movie);
+					genre.setMovies(movies);
+					genreRepo.save(genre);
+				}
+				movie.setGenres(null);
+				movieRepo.deleteById(id);
+				return new ResponseEntity<>("The movie with id: " + id + " is deleted!", HttpStatus.OK);
+			} catch (Exception e) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 			}
-			movie.setGenres(null);
-			movieRepo.deleteById(id);
-			return new ResponseEntity<>("The movie with id: " + id + " is deleted!", HttpStatus.OK);
+
 		}
 	}
 	

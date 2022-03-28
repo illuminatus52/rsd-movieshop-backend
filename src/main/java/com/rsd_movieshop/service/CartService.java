@@ -50,7 +50,47 @@ public class CartService {
 		}
 	}
 
-	public ResponseEntity<CartResponse> addCartItem(long id, String username, CartItemRequest cartItemRequest) {
+	public ResponseEntity<CartResponse> addItemToCart(long id, String username, long movieId) {
+		Movie movie = movieRepo.findByMovieId(movieId);
+		try {
+			Cart cart = userCheck(username, id);
+			List<CartItem> items = new ArrayList<>();
+			List<CartItem> cartItems = cart.getCartItems();
+			List<Movie> moviesInCart = getAllMovies(cartItems);
+			if (cartItems.size() > 0) {
+				for (CartItem cartItem : cartItems) {
+					if (cartItem.getMovie() == movie) {
+						if (movie.getMovieStock() > cartItem.getQuantity() + 1) {
+							cartItem.setQuantity(cartItem.getQuantity() + 1);
+						} else {
+							cartItem.setQuantity(cartItem.getQuantity());
+						}
+						cartItemRepo.save(cartItem);
+					} else if (!moviesInCart.contains(movie)){
+						CartItem newCartItem = new CartItem(movie, cart, 1);
+						cartItemRepo.save(newCartItem);
+						items.add(newCartItem);
+						cart.setCartItems(cartItems);
+					}
+				}
+			} else {
+				CartItem newCartItem = new CartItem(movie, cart, 1);
+				cartItemRepo.save(newCartItem);
+				cartItems.add(newCartItem);
+				cart.setCartItems(cartItems);
+
+			}
+			
+			cartItems.addAll(items);
+			cartRepo.save(cart);
+			CartResponse cartResponse = getCartResponse(id);
+			return new ResponseEntity<>(cartResponse, HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
+		}
+	}
+
+	public ResponseEntity<CartResponse> updateCart(long id, String username, CartItemRequest cartItemRequest) {
 		Movie movie = movieRepo.findByMovieId(cartItemRequest.getMovieID());
 
 		if (movie.getMovieStock() > 0) {
@@ -77,11 +117,7 @@ public class CartService {
 					} else {
 						for (CartItem cartItem : itemsAlreadyExist) {
 							if (cartItem.getMovie() == movie) {
-								if (cartItem.getQuantity() + quantity > movie.getMovieStock()) {
-									cartItem.setQuantity(movie.getMovieStock());
-								} else {
-									cartItem.setQuantity(cartItem.getQuantity() + quantity);
-								}
+									cartItem.setQuantity(quantity);
 							}
 						}
 					}
