@@ -54,6 +54,7 @@ public class CartService {
 		Movie movie = movieRepo.findByMovieId(movieId);
 		try {
 			Cart cart = userCheck(username, id);
+			List<CartItem> items = new ArrayList<>();
 			List<CartItem> cartItems = cart.getCartItems();
 			if (cartItems.size() > 0) {
 				for (CartItem cartItem : cartItems) {
@@ -67,7 +68,7 @@ public class CartService {
 					} else {
 						CartItem newCartItem = new CartItem(movie, cart, 1);
 						cartItemRepo.save(newCartItem);
-						cartItems.add(newCartItem);
+						items.add(newCartItem);
 						cart.setCartItems(cartItems);
 					}
 				}
@@ -78,6 +79,8 @@ public class CartService {
 				cart.setCartItems(cartItems);
 
 			}
+			
+			cartItems.addAll(items);
 			cartRepo.save(cart);
 			CartResponse cartResponse = getCartResponse(id);
 			return new ResponseEntity<>(cartResponse, HttpStatus.OK);
