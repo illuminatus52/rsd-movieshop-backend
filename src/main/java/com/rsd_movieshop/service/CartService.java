@@ -50,7 +50,42 @@ public class CartService {
 		}
 	}
 
-	public ResponseEntity<CartResponse> addCartItem(long id, String username, CartItemRequest cartItemRequest) {
+	public ResponseEntity<CartResponse> addItemToCart(long id, String username, long movieId) {
+		Movie movie = movieRepo.findByMovieId(movieId);
+		try {
+			Cart cart = userCheck(username, id);
+			List<CartItem> cartItems = cart.getCartItems();
+			if (cartItems != null && cartItems.size() > 0) {
+				for (CartItem cartItem : cartItems) {
+					if (cartItem.getMovie() == movie) {
+						if (movie.getMovieStock() > cartItem.getQuantity() + 1) {
+							cartItem.setQuantity(cartItem.getQuantity() + 1);
+						} else {
+							cartItem.setQuantity(cartItem.getQuantity());
+						}
+						cartItemRepo.save(cartItem);
+					} else {
+						CartItem newCartItem = new CartItem(movie, cart, 1);
+						cartItemRepo.save(newCartItem);
+						cartItems.add(newCartItem);
+					}
+				}
+			} else {
+				CartItem newCartItem = new CartItem(movie, cart, 1);
+				cartItemRepo.save(newCartItem);
+				cartItems.add(newCartItem);
+
+			}
+			cart.setCartItems(cartItems);
+			cartRepo.save(cart);
+			CartResponse cartResponse = getCartResponse(id);
+			return new ResponseEntity<>(cartResponse, HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
+		}
+	}
+
+	public ResponseEntity<CartResponse> updateCart(long id, String username, CartItemRequest cartItemRequest) {
 		Movie movie = movieRepo.findByMovieId(cartItemRequest.getMovieID());
 
 		if (movie.getMovieStock() > 0) {

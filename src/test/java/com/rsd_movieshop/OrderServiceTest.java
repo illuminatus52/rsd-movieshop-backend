@@ -73,7 +73,7 @@ public class OrderServiceTest {
 	@Test
 	public void createNewOrder() {
 		CartItemRequest request = new CartItemRequest(1L, 1);
-		cartService.addCartItem(1, "username1", request);
+		cartService.updateCart(1, "username1", request);
 		orderService.createOrderFromCart(1, "username1");
 		List<Orders> orders = orderRepo.findAll();
 		List<Cart> list = cartRepo.findAll();

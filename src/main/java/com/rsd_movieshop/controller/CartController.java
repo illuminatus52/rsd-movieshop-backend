@@ -23,13 +23,20 @@ public class CartController {
 			@PathVariable long cartid) {
 		return cartService.findCartById(cartid, username);
 	}
+	@PutMapping(path = "user/{username}/cart/{cartid}/movieId/{id}")
+	public ResponseEntity<CartResponse> addItem(@PathVariable String username,
+												@PathVariable long cartid,
+												@PathVariable long id) {
+		return cartService.addItemToCart(cartid, username, id);
+	}
+
 	
 	@PutMapping(path = "user/{username}/cart/{cartid}")
 	public ResponseEntity<CartResponse> addCartItem(
 			@PathVariable String username,
 			@PathVariable long cartid,
 			@RequestBody CartItemRequest cartItemRequest) {
-		return cartService.addCartItem(cartid, username, cartItemRequest);
+		return cartService.updateCart(cartid, username, cartItemRequest);
 	}
 	
 	@DeleteMapping(path = "user/{username}/cart/{cartid}")

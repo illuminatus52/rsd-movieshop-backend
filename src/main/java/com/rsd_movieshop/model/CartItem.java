@@ -59,7 +59,10 @@ public class CartItem {
 		this.movie = movie;
 		this.quantity = quantity;
 	}
-	
+
+	public CartItem(Movie movie, long cartId, int quantity) {
+	}
+
 	public int getQuantity() {
 		return quantity;
 	}
