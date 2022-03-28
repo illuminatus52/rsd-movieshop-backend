@@ -56,6 +56,7 @@ public class CartService {
 			Cart cart = userCheck(username, id);
 			List<CartItem> items = new ArrayList<>();
 			List<CartItem> cartItems = cart.getCartItems();
+			List<Movie> moviesInCart = getAllMovies(cartItems);
 			if (cartItems.size() > 0) {
 				for (CartItem cartItem : cartItems) {
 					if (cartItem.getMovie() == movie) {
@@ -65,7 +66,7 @@ public class CartService {
 							cartItem.setQuantity(cartItem.getQuantity());
 						}
 						cartItemRepo.save(cartItem);
-					} else {
+					} else if (!moviesInCart.contains(movie)){
 						CartItem newCartItem = new CartItem(movie, cart, 1);
 						cartItemRepo.save(newCartItem);
 						items.add(newCartItem);
