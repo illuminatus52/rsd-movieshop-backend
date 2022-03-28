@@ -55,7 +55,7 @@ public class CartService {
 		try {
 			Cart cart = userCheck(username, id);
 			List<CartItem> cartItems = cart.getCartItems();
-			if (cartItems != null && cartItems.size() > 0) {
+			if (cartItems.size() > 0) {
 				for (CartItem cartItem : cartItems) {
 					if (cartItem.getMovie() == movie) {
 						if (movie.getMovieStock() > cartItem.getQuantity() + 1) {
@@ -68,15 +68,16 @@ public class CartService {
 						CartItem newCartItem = new CartItem(movie, cart, 1);
 						cartItemRepo.save(newCartItem);
 						cartItems.add(newCartItem);
+						cart.setCartItems(cartItems);
 					}
 				}
 			} else {
 				CartItem newCartItem = new CartItem(movie, cart, 1);
 				cartItemRepo.save(newCartItem);
 				cartItems.add(newCartItem);
+				cart.setCartItems(cartItems);
 
 			}
-			cart.setCartItems(cartItems);
 			cartRepo.save(cart);
 			CartResponse cartResponse = getCartResponse(id);
 			return new ResponseEntity<>(cartResponse, HttpStatus.OK);
