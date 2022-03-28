@@ -77,11 +77,7 @@ public class CartService {
 					} else {
 						for (CartItem cartItem : itemsAlreadyExist) {
 							if (cartItem.getMovie() == movie) {
-								if (cartItem.getQuantity() + quantity > movie.getMovieStock()) {
-									cartItem.setQuantity(movie.getMovieStock());
-								} else {
-									cartItem.setQuantity(cartItem.getQuantity() + quantity);
-								}
+									cartItem.setQuantity(quantity);
 							}
 						}
 					}
